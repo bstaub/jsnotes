@@ -1,0 +1,261 @@
+//
+// Custom CSS for Projekt 1 JSNotes Applikation mit JavaScript
+// ------------------------------------------------------------------
+
+/******************************
+* Custom CSS by Bruno Staub
+* Created: 05.05.2018
+* Creator: Bruno Staub
+* Last updated: 05.05.2018
+*
+* Used Frameworks / Extensions
+* https://handlebarsjs.com/
+* Node Backend
+******************************/
+
+/**************
+* Browser Reset
+***************/
+*,
+*:before,
+*:after{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  //outline: none;
+}
+
+/**************
+* Base Styles
+***************/
+html{
+  //https://marksheet.io/css-font-shorthand.html
+  //https://developer.mozilla.org/de/docs/Web/CSS/font-family
+  font: normal 16px/1.5 Arial, sans-serif;
+}
+
+.site {
+  width: 95vw;
+  height: 95vh;
+  margin: 20px auto;
+}
+
+.flexCenterCenter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/**************
+* Components
+***************/
+button, select.dropStyleSwitcher{
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  box-shadow: 1px 2px 3px 0px black;
+  margin-right:4px;
+  outline-offset: -5px;
+  outline-color: orange;
+}
+
+a.btnCreateNewNote{
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  box-shadow: 1px 2px 3px 0px black;
+  margin-right:4px;
+  outline-offset: -5px;
+  outline-color: orange;
+
+  @extend .flexCenterCenter;
+  text-decoration: none;
+  font-size: 11px;
+}
+
+
+
+/**************
+* Site - Home
+***************/
+.site{
+
+  .home{
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-template-rows: 40px 40px auto 40px;
+    grid-template-areas:
+            "nav1 nav1 nav1 nav1"
+            "filter filter filter nav2"
+            "content content content content"
+            "footer footer footer footer";
+    grid-gap: 20px;
+
+    .item{
+      &--navigation{
+        grid-area: nav1;
+
+        .flexNav1{
+          display: flex;
+          justify-content: space-between;
+          padding-bottom: 15px;
+
+          a.btnCreateNewNote{
+            background-color: lightgrey;
+          }
+          select.dropStyleSwitcher{
+            background-color: lightgrey;
+          }
+
+        }
+
+      }
+      &--nav-filters{
+        grid-area: filter;
+
+        button#btnSortByFinishdate{
+          background-color: lightgrey;
+        }
+
+        button#btnSortByCreateddate{
+          background-color: lightgrey;
+        }
+
+        button#btnSortByImportance{
+          background-color: lightgrey;
+        }
+
+        button#btnShowFinished{
+          background-color: lightgrey;
+        }
+      }
+      &--nav-finished{
+        grid-area: nav2;
+        display: flex;
+        justify-content: flex-end;
+        button#btnShowFinished{
+          background-color: lightgrey;
+        }
+      }
+      &--main-content{
+        grid-area: content;
+
+        .note{
+          display: grid;
+          grid-template-columns: 2fr 10fr 1fr;
+          grid-template-areas:
+                  "listDateStatus listTitleDescriptionImportance listActionButton";
+          grid-auto-flow: row;  //default
+          grid-auto-rows: 150px;
+
+          background-color: #d5e6d6;
+          border: 1px solid black;
+
+          .listDateStatus{
+            grid-area: listDateStatus;
+          }
+          .listTitleDescriptionImportance{
+            grid-area: listTitleDescriptionImportance;
+            padding: 20px;
+
+            .flexTitleImportance{
+              display: flex;
+              justify-content: space-between;
+
+              .title{
+
+
+              }
+              .importance{
+
+              }
+            }
+
+            textarea.description{
+              width: 100%;
+            }
+
+          }
+          .listActionButton{
+            grid-area: listActionButton;
+          }
+        }
+
+
+      }
+
+      footer{
+        grid-area: footer;
+      }
+
+    }
+  }
+}
+
+
+
+
+/**************
+* Site - Detail
+***************/
+.site{
+
+  .detail{
+
+    .note{
+      display: grid;
+      grid-template-columns: 3fr 10fr 2fr;
+      grid-template-rows: 30px 250px 30px 30px 30px 30px 40px;
+      grid-template-areas:
+              "labeltitle title title"
+              "labeldescription description ."
+              "labelimportance importance importance"
+              "labeldate datepicker datepicker"
+              "speichern speichern speichern"
+              ". . cancel"
+              "footer footer footer";
+      grid-gap: 20px;
+
+
+      &__labeltitel{
+        grid-area: labeltitle;
+      }
+      &__titel{
+        grid-area: title;
+      }
+      &__labeldescription{
+        grid-area: labeldescription;
+      }
+      &__description{
+        grid-area: description;
+      }
+      &__labelimportance {
+        grid-area: labelimportance;
+      }
+      &__importance{
+        grid-area: importance;
+      }
+      &__labeldate{
+        grid-area: labeldate;
+      }
+      &__datepicker{
+        grid-area: datepicker;
+      }
+      &__speichern{
+        grid-area: speichern;
+        width: 100%;
+      }
+      &__cancel{
+        grid-area: cancel;
+        justify-self: end;
+
+      }
+
+    }
+
+    footer{
+      grid-area: footer;
+    }
+
+  }
+}

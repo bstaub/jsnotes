@@ -1,0 +1,192 @@
+/******************************
+* Custom CSS by Bruno Staub
+* Created: 05.05.2018
+* Creator: Bruno Staub
+* Last updated: 05.05.2018
+*
+* Used Frameworks / Extensions
+* https://handlebarsjs.com/
+* Node Backend
+******************************/
+/**************
+* Browser Reset
+***************/
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/**************
+* Base Styles
+***************/
+html {
+  font: normal 16px/1.5 Arial, sans-serif;
+}
+
+.site {
+  width: 95vw;
+  height: 95vh;
+  margin: 20px auto;
+}
+
+.flexCenterCenter, a.btnCreateNewNote {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/**************
+* Components
+***************/
+button, select.dropStyleSwitcher {
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  box-shadow: 1px 2px 3px 0px black;
+  margin-right: 4px;
+  outline-offset: -5px;
+  outline-color: orange;
+}
+
+a.btnCreateNewNote {
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  box-shadow: 1px 2px 3px 0px black;
+  margin-right: 4px;
+  outline-offset: -5px;
+  outline-color: orange;
+  text-decoration: none;
+  font-size: 11px;
+}
+
+/**************
+* Site - Home
+***************/
+.site .home {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  grid-template-rows: 40px 40px auto 40px;
+  grid-template-areas: "nav1 nav1 nav1 nav1" "filter filter filter nav2" "content content content content" "footer footer footer footer";
+  grid-gap: 20px;
+}
+.site .home .item--navigation {
+  grid-area: nav1;
+}
+.site .home .item--navigation .flexNav1 {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 15px;
+}
+.site .home .item--navigation .flexNav1 a.btnCreateNewNote {
+  background-color: lightgrey;
+}
+.site .home .item--navigation .flexNav1 select.dropStyleSwitcher {
+  background-color: lightgrey;
+}
+.site .home .item--nav-filters {
+  grid-area: filter;
+}
+.site .home .item--nav-filters button#btnSortByFinishdate {
+  background-color: lightgrey;
+}
+.site .home .item--nav-filters button#btnSortByCreateddate {
+  background-color: lightgrey;
+}
+.site .home .item--nav-filters button#btnSortByImportance {
+  background-color: lightgrey;
+}
+.site .home .item--nav-filters button#btnShowFinished {
+  background-color: lightgrey;
+}
+.site .home .item--nav-finished {
+  grid-area: nav2;
+  display: flex;
+  justify-content: flex-end;
+}
+.site .home .item--nav-finished button#btnShowFinished {
+  background-color: lightgrey;
+}
+.site .home .item--main-content {
+  grid-area: content;
+}
+.site .home .item--main-content .note {
+  display: grid;
+  grid-template-columns: 2fr 10fr 1fr;
+  grid-template-areas: "listDateStatus listTitleDescriptionImportance listActionButton";
+  grid-auto-flow: row;
+  grid-auto-rows: 150px;
+  background-color: #d5e6d6;
+  border: 1px solid black;
+}
+.site .home .item--main-content .note .listDateStatus {
+  grid-area: listDateStatus;
+}
+.site .home .item--main-content .note .listTitleDescriptionImportance {
+  grid-area: listTitleDescriptionImportance;
+  padding: 20px;
+}
+.site .home .item--main-content .note .listTitleDescriptionImportance .flexTitleImportance {
+  display: flex;
+  justify-content: space-between;
+}
+.site .home .item--main-content .note .listTitleDescriptionImportance textarea.description {
+  width: 100%;
+}
+.site .home .item--main-content .note .listActionButton {
+  grid-area: listActionButton;
+}
+.site .home .item footer {
+  grid-area: footer;
+}
+
+/**************
+* Site - Detail
+***************/
+.site .detail .note {
+  display: grid;
+  grid-template-columns: 3fr 10fr 2fr;
+  grid-template-rows: 30px 250px 30px 30px 30px 30px 40px;
+  grid-template-areas: "labeltitle title title" "labeldescription description ." "labelimportance importance importance" "labeldate datepicker datepicker" "speichern speichern speichern" ". . cancel" "footer footer footer";
+  grid-gap: 20px;
+}
+.site .detail .note__labeltitel {
+  grid-area: labeltitle;
+}
+.site .detail .note__titel {
+  grid-area: title;
+}
+.site .detail .note__labeldescription {
+  grid-area: labeldescription;
+}
+.site .detail .note__description {
+  grid-area: description;
+}
+.site .detail .note__labelimportance {
+  grid-area: labelimportance;
+}
+.site .detail .note__importance {
+  grid-area: importance;
+}
+.site .detail .note__labeldate {
+  grid-area: labeldate;
+}
+.site .detail .note__datepicker {
+  grid-area: datepicker;
+}
+.site .detail .note__speichern {
+  grid-area: speichern;
+  width: 100%;
+}
+.site .detail .note__cancel {
+  grid-area: cancel;
+  justify-self: end;
+}
+.site .detail footer {
+  grid-area: footer;
+}
+
+/*# sourceMappingURL=custom.css.map */

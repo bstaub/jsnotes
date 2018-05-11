@@ -1,0 +1,28 @@
+{
+  "name": "jsnotes",
+  "version": "1.0.0",
+  "description": "simple notes application for for getting your stuff done",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bstaub/jsnotes.git"
+  },
+  "keywords": [],
+  "author": "Bruno Staub <bruno.staub@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bstaub/jsnotes/issues"
+  },
+  "homepage": "https://github.com/bstaub/jsnotes#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3"
+  }
+}

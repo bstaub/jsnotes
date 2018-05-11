@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Bruno Staub">
+    <meta name="description" content="Notiz Applikation mit Javascrpt, Projekt1">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jsnotes</title>
+    <link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+<div class="site">
+    <!-- Flex und Grid Layout must use -->
+    <div class="home">
+        <nav class="item--navigation">
+            <div class="flexNav1">
+                <a href="detail.html" class="btnCreateNewNote">Create new Note</a>
+                <select name="dropStyleSwitcher" id="dropStyleSwitcher" class="dropStyleSwitcher">
+                    <option value="styleWhite">BlockWhite Style</option>
+                    <option value="styleGreen">BlockGreen Style</option>
+                </select>
+            </div>
+        </nav>
+        <nav class="item--nav-filters">
+            <button id="btnSortByFinishdate">By finish Date</button>
+            <button id="btnSortByCreateddate">By created Date</button>
+            <button id="btnSortByImportance">By Importance</button>
+        </nav>
+        <div class="item--nav-finished">
+            <button id="btnShowFinished">Show finished</button>
+        </div>
+        <main class="item--main-content">
+
+            <div class="note">
+                <div class="listDateStatus">
+                    <p>Today1</p>
+                    <p>Status1</p>
+                </div>
+                <div class="listTitleDescriptionImportance">
+                    <div class="flexTitleImportance">
+                        <div class="title">
+                            <p>Titel1</p>
+                        </div>
+                        <div class="importance">
+                            <select name="dropImportance" class="dropImportance">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <textarea class="description" name="description" cols="30" rows="6"></textarea>
+
+                </div>
+                <div class="listActionButton">
+                    <button>Edit1</button>
+                </div>
+            </div>
+
+            <div class="note">
+                <div class="listDateStatus">
+                    <p>Today2</p>
+                    <p>Status2</p>
+                </div>
+                <div class="listTitleDescriptionImportance">
+                    <div class="flexTitleImportance">
+                        <div class="title">
+                            <p>Titel2</p>
+                        </div>
+                        <div class="importance">
+                            <select name="dropImportance" class="dropImportance">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <textarea class="description" name="description" cols="30" rows="6"></textarea>
+
+                </div>
+                <div class="listActionButton">
+                    <button>Edit2</button>
+                </div>
+            </div>
+
+
+            <div class="note">
+                <div class="listDateStatus">
+                    <p>Today3</p>
+                    <p>Status3</p>
+                </div>
+                <div class="listTitleDescriptionImportance">
+                    <div class="flexTitleImportance">
+                        <div class="title">
+                            <p>Titel3</p>
+                        </div>
+                        <div class="importance">
+                            <select name="dropImportance" class="dropImportance">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <textarea class="description" name="description" cols="30" rows="6"></textarea>
+
+                </div>
+                <div class="listActionButton">
+                    <button>Edit3</button>
+                </div>
+            </div>
+
+        </main>
+        <footer>
+            <p>&copy 2018, Bruno Staub</p>
+        </footer>
+    </div>
+</div>
+
+
+<script src="js/bundle.js"></script>
+</body>
+</html>
