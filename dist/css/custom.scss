@@ -34,6 +34,23 @@ html{
   font: normal 16px/1.5 Arial, sans-serif;
 }
 
+body{
+  background-color: #ccc;
+  //background: linear-gradient(to right, #cccccc, #ffffff);
+
+  &.style2{
+    background-color: #fff;
+  }
+}
+
+div.alert.success {
+  display: block;
+  padding: 5px;
+  margin-bottom: 20px;
+  color: white;
+  background-color: green;
+}
+
 .site {
   width: 95vw;
   height: 95vh;
@@ -150,6 +167,8 @@ a.btnCreateNewNote{
 
           background-color: #d5e6d6;
           border: 1px solid black;
+          padding: 5px;
+          margin-bottom: 5px;
 
           .listDateStatus{
             grid-area: listDateStatus;
@@ -173,6 +192,7 @@ a.btnCreateNewNote{
 
             textarea.description{
               width: 100%;
+              padding: 5px;
             }
 
           }
@@ -234,6 +254,23 @@ a.btnCreateNewNote{
       }
       &__importance{
         grid-area: importance;
+
+        span{
+          display: inline-block;
+          text-align: center;
+          background: lightgrey;
+          width: 20px;
+          margin-right: 20px;
+          border: 1px solid black;
+          cursor: pointer;
+        }
+        .yellow{
+          background-color: yellow;
+        }
+        .dropImportance{
+          display: none;
+        }
+
       }
       &__labeldate{
         grid-area: labeldate;

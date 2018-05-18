@@ -26,6 +26,21 @@ html {
   font: normal 16px/1.5 Arial, sans-serif;
 }
 
+body {
+  background-color: #ccc;
+}
+body.style2 {
+  background-color: #fff;
+}
+
+div.alert.success {
+  display: block;
+  padding: 5px;
+  margin-bottom: 20px;
+  color: white;
+  background-color: green;
+}
+
 .site {
   width: 95vw;
   height: 95vh;
@@ -121,6 +136,8 @@ a.btnCreateNewNote {
   grid-auto-rows: 150px;
   background-color: #d5e6d6;
   border: 1px solid black;
+  padding: 5px;
+  margin-bottom: 5px;
 }
 .site .home .item--main-content .note .listDateStatus {
   grid-area: listDateStatus;
@@ -135,6 +152,7 @@ a.btnCreateNewNote {
 }
 .site .home .item--main-content .note .listTitleDescriptionImportance textarea.description {
   width: 100%;
+  padding: 5px;
 }
 .site .home .item--main-content .note .listActionButton {
   grid-area: listActionButton;
@@ -170,6 +188,21 @@ a.btnCreateNewNote {
 }
 .site .detail .note__importance {
   grid-area: importance;
+}
+.site .detail .note__importance span {
+  display: inline-block;
+  text-align: center;
+  background: lightgrey;
+  width: 20px;
+  margin-right: 20px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.site .detail .note__importance .yellow {
+  background-color: yellow;
+}
+.site .detail .note__importance .dropImportance {
+  display: none;
 }
 .site .detail .note__labeldate {
   grid-area: labeldate;

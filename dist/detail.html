@@ -15,17 +15,19 @@
 <!-- Flex und Grid Layout must use -->
 <div class="site">
     <div class="detail">
-
         <div class="note">
 
-            <label class="note__labeltitle" for="title">Titel</label>
+            <label class="note__labeltitle" for="jstitle">Titel</label>
             <input type="text" class="note__title" id="jsTitle">
 
-            <label class="note__labeldescription" for="description">Beschreibung</label>
+            <label class="note__labeldescription" for="jsdescription">Beschreibung</label>
             <textarea class="note__description" id="jsDescription" name="description" cols="30" rows="6" placeholder="hier die Beschreibung eingeben"></textarea>
 
-            <label class="note__labelimportance" for="dropImportance">Wichtigkeit</label>
+            <label class="note__labelimportance" for="jsdropImportance">Wichtigkeit</label>
             <div class="note__importance">
+                <div class="importance">
+                    <span id="1">1</span><span id="2">2</span><span id="3">3</span><span id="4">4</span><span id="5">5</span>
+                </div>
                 <select name="dropImportance" class="dropImportance" id="jsdropImportance">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -46,7 +48,7 @@
             <button class="note__cancel" id="jsCancel">Cancel</button>
 
 
-        </>
+        </div>
 
         <footer>
             <p>&copy 2018, Bruno Staub</p>

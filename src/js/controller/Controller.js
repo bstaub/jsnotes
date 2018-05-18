@@ -1,4 +1,6 @@
 import {Storage} from "../client-service/Storage";
+import {ViewHelper} from "../view/ViewHelper";
+
 
 export class Controller{
 
@@ -7,22 +9,34 @@ export class Controller{
     }
 
     registerAllEventListener(dom){
-            dom.speichern.addEventListener('click', () => {
-                console.log('button speichern, clicked!');
+            if(dom.speichern){
+                dom.speichern.addEventListener('click', () => {
+                    console.log('button speichern, clicked!');
 
-                let checkIfEmpty = this.checkIfNoEmptyFields(dom);
+                    let checkIfEmpty = this.checkIfNoEmptyFields(dom);
 
-                if(checkIfEmpty){
-                    const storage = new Storage('notesKey1');
-                    storage.saveNotesToLocalStorage(dom);
-                }
-            });
+                    if(checkIfEmpty){
+                        const storage = new Storage('notesKey');
+                        storage.saveNotesToLocalStorage(dom);
+                        ViewHelper.showAlert3Seconds('Eintrag erfolgreich eingetragen','alert success');
+                    }
+                });
+            }
 
-            dom.cancel.addEventListener('click', () => {
-                console.log('button cancel, clicked!');
+            if(dom.cancel){
+                dom.cancel.addEventListener('click', () => {
+                    console.log('button cancel, clicked!');
 
-                this.clearAllImputs(dom);
-            });
+                    this.clearAllImputs(dom);
+                });
+            }
+
+    }
+
+    getAllNotesFromLocalStorage(){
+        console.log('2getAllNotesFromLocalStorage');
+        const storage = new Storage('notesKey');
+        return storage.getAllNotesFromLocalStorage();
     }
 
     clearAllImputs(dom){
@@ -30,6 +44,7 @@ export class Controller{
         dom.description.value = "";
         dom.importance.value = "";
         dom.datepicker.value = "";
+        ViewHelper.wichtigkeitClearAll(dom.stars);
     }
 
     checkIfNoEmptyFields(dom){

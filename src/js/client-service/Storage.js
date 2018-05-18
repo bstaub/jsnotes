@@ -11,19 +11,22 @@ export class Storage{
             description: description.value,
             importance: importance.value,
             datepicker: datepicker.value,
+            statusActive: true,
         }
-
-        const notes = [];
-        notes.push(note);
-
 
         if(this.checkIfLocalStorageEmpty()){
-            this.setItemToLocalStorage(notes);
+            const firstnote = [];
+            firstnote.push(note);
+            this.setItemToLocalStorage(firstnote);
         }
         else{
-            this.appendOneNoteToLocalStorage(notes);
+            this.appendOneNoteToLocalStorage(note);
         }
 
+    }
+
+    saveStyleToLocalStorage(style){
+        this.setItemToLocalStorage(style);
     }
 
     appendOneNoteToLocalStorage(notes){
@@ -37,10 +40,12 @@ export class Storage{
     }
 
     getAllNotesFromLocalStorage(){
+        console.log('3getAllNotesFromLocalStorage');
         return this.getItemFromLocalStorage();
     }
 
     getItemFromLocalStorage(){
+        console.log('4getItemFromLocalStorage');
         return JSON.parse(localStorage.getItem(this.NOTES_KEY));
     }
 
