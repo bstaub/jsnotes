@@ -1,3 +1,5 @@
+
+
 import {ViewNew} from "./view/ViewNew";
 import {Controller} from "./controller/Controller";
 import {ViewList} from "./view/ViewList";

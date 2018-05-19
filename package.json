@@ -4,7 +4,9 @@
   "description": "simple notes application for for getting your stuff done",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack -w"
+    "dev": "rm -rf dist/ && webpack --watch",
+    "prod": "rm -rf dist/ && export NODE_ENV=production && webpack",
+    "browsersync": "browser-sync start --server '.' --files '.'"
   },
   "repository": {
     "type": "git",
@@ -19,9 +21,20 @@
   "homepage": "https://github.com/bstaub/jsnotes#readme",
   "dependencies": {},
   "devDependencies": {
+    "autoprefixer": "^8.5.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.7.0",
+    "browsersync": "0.0.1-security",
+    "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
+    "mini-css-extract-plugin": "^0.4.0",
+    "node-sass": "^4.9.0",
+    "optimize-css-assets-webpack-plugin": "^4.0.1",
+    "postcss-loader": "^2.1.5",
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.21.0",
+    "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.8.1",
     "webpack-cli": "^2.1.3"
   }

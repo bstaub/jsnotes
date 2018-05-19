@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Bruno Staub">
+    <meta name="description" content="Notiz Applikation mit Javascrpt, Projekt1">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jsnotes</title>
+    <link rel="stylesheet" href="dist/frontend/custom.css">
+</head>
+<body>
+
+<!-- Flex und Grid Layout must use -->
+<div class="site">
+    <div class="detail">
+        <div class="note">
+
+            <label class="note__labeltitle" for="jstitle">Titel</label>
+            <input type="text" class="note__title" id="jsTitle">
+
+            <label class="note__labeldescription" for="jsdescription">Beschreibung</label>
+            <textarea class="note__description" id="jsDescription" name="description" cols="30" rows="6" placeholder="hier die Beschreibung eingeben"></textarea>
+
+            <label class="note__labelimportance" for="jsdropImportance">Wichtigkeit</label>
+            <div class="note__importance">
+                <div class="importance">
+                    <span id="1">1</span><span id="2">2</span><span id="3">3</span><span id="4">4</span><span id="5">5</span>
+                </div>
+                <select name="dropImportance" class="dropImportance" id="jsdropImportance">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+
+            <div for="datepicker" class="note__labeldate">Datum</div>
+            <input class="note__datepicker" type="date" id="jsDatepicker">
+
+
+            <button class="note__speichern" id="jsSpeichern">Speichern</button>
+
+
+            <button class="note__cancel" id="jsCancel">Cancel</button>
+
+
+        </div>
+
+        <footer>
+            <p>&copy 2018, Bruno Staub</p>
+        </footer>
+    </div>
+</div>
+
+
+<script src="dist/frontend/bundle.js"></script>
+</body>
+</html>
