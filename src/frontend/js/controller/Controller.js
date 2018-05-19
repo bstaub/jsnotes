@@ -11,21 +11,30 @@ export class Controller{
     registerAllEventListener(dom){
             if(dom.speichern){
                 dom.speichern.addEventListener('click', () => {
-                    console.log('button speichern, clicked!');
+                    console.log('speichern, clicked!');
 
                     let checkIfEmpty = this.checkIfNoEmptyFields(dom);
-
                     if(checkIfEmpty){
                         const storage = new Storage('notesKey');
                         storage.saveNotesToLocalStorage(dom);
                         ViewHelper.showAlert3Seconds('Eintrag erfolgreich eingetragen','alert success');
+
+                        // füge jeder Notiz eine eindeutige ID hinzu
+                        if(this.getIDFromLocalStorage() === null){
+                            this.saveIDToLocalStorage(1);
+                        }else{
+                            let id = this.getIDFromLocalStorage();
+                            id++;
+                            this.saveIDToLocalStorage(id);
+                        }
                     }
+
                 });
             }
 
             if(dom.cancel){
                 dom.cancel.addEventListener('click', () => {
-                    console.log('button cancel, clicked!');
+                    console.log('cancel, clicked!');
 
                     this.clearAllImputs(dom);
                 });
@@ -51,6 +60,16 @@ export class Controller{
         if(dom.title.value != "" && dom.description.value != "" && dom.importance.value != "" && dom.datepicker.value != ""){
             return true;
         }
+    }
+
+    saveIDToLocalStorage(id){
+        const storage = new Storage('noteKeyLastID');
+        storage.saveNoteIDToLocalStorage(id);
+    }
+
+    getIDFromLocalStorage(){
+        const storage = new Storage('noteKeyLastID');
+        return storage.getNoteIDFromLocalStorage();
     }
 
 

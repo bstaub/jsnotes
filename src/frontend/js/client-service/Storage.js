@@ -1,7 +1,7 @@
 export class Storage{
 
     constructor(notes) {
-        this.NOTES_KEY = notes;
+        this.SESSION_STORE_KEY = notes;
     }
 
     saveNotesToLocalStorage({title, description, importance, datepicker}){
@@ -11,7 +11,7 @@ export class Storage{
             description: description.value,
             importance: importance.value,
             datepicker: datepicker.value,
-            statusActive: true,
+            statusActive: false,
         }
 
         if(this.checkIfLocalStorageEmpty()){
@@ -29,10 +29,22 @@ export class Storage{
         this.setItemToLocalStorage(style);
     }
 
+    getStyleFromLocalStorage(){
+        return this.getItemFromLocalStorage();
+    }
+
+    saveNoteIDToLocalStorage(id){
+        this.setItemToLocalStorage(id);
+    }
+
+    getNoteIDFromLocalStorage(){
+        return this.getItemFromLocalStorage();
+    }
+
     appendOneNoteToLocalStorage(notes){
         const stored = this.getItemFromLocalStorage();
         stored.push(notes);
-        localStorage.setItem(this.NOTES_KEY, JSON.stringify(stored));
+        localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(stored));
     }
 
     checkIfLocalStorageEmpty(){
@@ -46,11 +58,11 @@ export class Storage{
 
     getItemFromLocalStorage(){
         console.log('4getItemFromLocalStorage');
-        return JSON.parse(localStorage.getItem(this.NOTES_KEY));
+        return JSON.parse(localStorage.getItem(this.SESSION_STORE_KEY));
     }
 
-    setItemToLocalStorage(notes){
-        localStorage.setItem(this.NOTES_KEY, JSON.stringify(notes));
+    setItemToLocalStorage(items){
+        localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
     }
 
 }

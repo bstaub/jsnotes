@@ -8,6 +8,7 @@ export class ViewList{
         const DOM = {
             dropStyleSwitcher: document.querySelector("#dropStyleSwitcher"),
             dynamicList: document.querySelector(".item--main-content"),
+
         };
 
         ViewHelper.styleSwitcher(DOM);
@@ -53,7 +54,8 @@ export class ViewList{
                         <textarea class="description" name="description" cols="30" rows="6">${note.description}</textarea>
                     </div>
                     <div class="listActionButton">
-                        <button>Edit ${i+1}</button>
+                        <button id="listEdit">Edit ${i+1}</button>
+                        <button id="listDelete">Delete</button>
                     </div>
                 </div>`;
             });
