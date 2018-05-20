@@ -1,11 +1,14 @@
 export class Storage{
 
-    constructor(storageKey) {
+    constructor(storageKey, noteObj) {
         this.SESSION_STORE_KEY = storageKey;
+        this.noteObj = noteObj;
     }
 
-    saveNotesToLocalStorage({title, description, importance, datepicker}){
+    saveNotesToLocalStorage(){
+    /*saveNotesToLocalStorage({title, description, importance, datepicker}){ */
 
+        /*
         const note = {
             title: title.value,
             description: description.value,
@@ -13,14 +16,15 @@ export class Storage{
             datepicker: datepicker.value,
             statusActive: false,
         }
+        */
 
         if(this.checkIfLocalStorageEmpty()){
             const firstnote = [];
-            firstnote.push(note);
+            firstnote.push(this.noteObj);
             this.setItemToLocalStorage(firstnote);
         }
         else{
-            this.appendOneNoteToLocalStorage(note);
+            this.appendOneNoteToLocalStorage(this.noteObj);
         }
 
     }

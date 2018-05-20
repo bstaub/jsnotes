@@ -54,8 +54,8 @@ export class ViewList{
                         <textarea class="description" name="description" cols="30" rows="6">${note.description}</textarea>
                     </div>
                     <div class="listActionButton">
-                        <button id="listEdit">Edit ${i+1}</button>
-                        <button id="listDelete">Delete</button>
+                        <button id="listEdit" data-id="${note.id}">Edit</button>
+                        <button id="listDelete" data-id="${note.id}">Delete</button>
                     </div>
                 </div>`;
             });

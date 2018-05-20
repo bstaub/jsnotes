@@ -1,5 +1,6 @@
 import {Storage} from "../client-service/Storage";
 import {ViewHelper} from "../view/ViewHelper";
+import {Note} from "../model/Note";
 
 
 export class Controller{
@@ -16,8 +17,23 @@ export class Controller{
                     let checkIfEmpty = this.checkIfNoEmptyFields(dom);
                     if(checkIfEmpty){
 
-                        const storage = new Storage('notesKey');
-                        storage.saveNotesToLocalStorage(dom);
+                        const noteDto = this.buildNewNoteEntry(dom);
+                        /*
+                        const { title, description, importance, datepicker } = dom;
+                        const status = false;
+                        const noteObj = new Note(
+                                                this.getNewUniqueNoteID(),
+                                                title.value,
+                                                description.value,
+                                                importance.value,
+                                                datepicker.value,
+                                                status,
+                                                );
+                        */
+
+                        const storage = new Storage('notesKey', noteDto);
+                        //storage.saveNotesToLocalStorage(dom);
+                        storage.saveNotesToLocalStorage();
                         ViewHelper.showAlert3Seconds('Eintrag erfolgreich eingetragen','alert success');
 
                     }
@@ -73,8 +89,20 @@ export class Controller{
             let id = this.getIDFromLocalStorage();
             id++;
             this.saveIDToLocalStorage(id);
-            return this.getIDFromLocalStorage;
+            return this.getIDFromLocalStorage();
         }
+    }
+
+    buildNewNoteEntry({title, description, importance, datepicker}){
+        const status = false;
+           return new Note(
+                this.getNewUniqueNoteID(),
+                title.value,
+                description.value,
+                importance.value,
+                datepicker.value,
+                status,
+            );
     }
 
 

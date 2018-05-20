@@ -1,15 +1,17 @@
 export class Note {
     constructor(
+        id,
         title,
         description,
         importance,
         datepicker,
-        statusActive,
+        isactive,
     ){
+        this.id = id;
         this.title = title;
         this.description = description;
         this.importance = importance;
         this.datepicker = datepicker;
-        this.statusActive = statusActive;
+        this.isactive = isactive;
     }
 }
