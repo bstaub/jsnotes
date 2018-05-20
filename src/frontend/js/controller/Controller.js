@@ -15,18 +15,11 @@ export class Controller{
 
                     let checkIfEmpty = this.checkIfNoEmptyFields(dom);
                     if(checkIfEmpty){
+
                         const storage = new Storage('notesKey');
                         storage.saveNotesToLocalStorage(dom);
                         ViewHelper.showAlert3Seconds('Eintrag erfolgreich eingetragen','alert success');
 
-                        // füge jeder Notiz eine eindeutige ID hinzu
-                        if(this.getIDFromLocalStorage() === null){
-                            this.saveIDToLocalStorage(1);
-                        }else{
-                            let id = this.getIDFromLocalStorage();
-                            id++;
-                            this.saveIDToLocalStorage(id);
-                        }
                     }
 
                 });
@@ -70,6 +63,18 @@ export class Controller{
     getIDFromLocalStorage(){
         const storage = new Storage('noteKeyLastID');
         return storage.getNoteIDFromLocalStorage();
+    }
+
+    getNewUniqueNoteID(){
+        if(this.getIDFromLocalStorage() === null){
+            this.saveIDToLocalStorage(1);
+            return 1;
+        }else{
+            let id = this.getIDFromLocalStorage();
+            id++;
+            this.saveIDToLocalStorage(id);
+            return this.getIDFromLocalStorage;
+        }
     }
 
 

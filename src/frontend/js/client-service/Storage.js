@@ -1,7 +1,7 @@
 export class Storage{
 
-    constructor(notes) {
-        this.SESSION_STORE_KEY = notes;
+    constructor(storageKey) {
+        this.SESSION_STORE_KEY = storageKey;
     }
 
     saveNotesToLocalStorage({title, description, importance, datepicker}){
