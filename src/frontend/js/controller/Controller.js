@@ -18,22 +18,8 @@ export class Controller{
                     if(checkIfEmpty){
 
                         const noteDto = this.buildNewNoteEntry(dom);
-                        /*
-                        const { title, description, importance, datepicker } = dom;
-                        const status = false;
-                        const noteObj = new Note(
-                                                this.getNewUniqueNoteID(),
-                                                title.value,
-                                                description.value,
-                                                importance.value,
-                                                datepicker.value,
-                                                status,
-                                                );
-                        */
-
                         const storage = new Storage('notesKey', noteDto);
-                        //storage.saveNotesToLocalStorage(dom);
-                        storage.saveNotesToLocalStorage();
+                        storage.saveNoteToLocalStorage();
                         ViewHelper.showAlert3Seconds('Eintrag erfolgreich eingetragen','alert success');
 
                     }

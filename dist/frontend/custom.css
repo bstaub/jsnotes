@@ -1,1 +1,206 @@
-*,:after,:before{margin:0;padding:0;box-sizing:border-box}html{font:normal 16px/1.5 Arial,sans-serif}body{background-color:#ccc}body.style2{background-color:#fff}div.alert.success{display:block;padding:5px;margin-bottom:20px;color:#fff;background-color:green}.site{width:95vw;height:95vh;margin:20px auto}.flexCenterCenter,a.btnCreateNewNote{display:-ms-flexbox;display:flex;-ms-flex-pack:center;justify-content:center;-ms-flex-align:center;align-items:center}a.btnCreateNewNote,button,select.dropStyleSwitcher{width:100px;height:30px;border:1px solid #000;box-shadow:1px 2px 3px 0 #000;margin-right:4px;outline-offset:-5px;outline-color:orange}a.btnCreateNewNote{text-decoration:none;font-size:11px}.site .home{display:grid;grid-template-columns:3fr 1fr 1fr 1fr;grid-template-rows:40px 40px auto 40px;grid-template-areas:"a a a a" "b b b c" "d d d d" "e e e e";grid-gap:20px}.site .home .item--navigation{grid-area:a}.site .home .item--navigation .flexNav1{display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between;padding-bottom:15px}.site .home .item--navigation .flexNav1 a.btnCreateNewNote,.site .home .item--navigation .flexNav1 select.dropStyleSwitcher{background-color:#d3d3d3}.site .home .item--nav-filters{grid-area:b}.site .home .item--nav-filters button#btnShowFinished,.site .home .item--nav-filters button#btnSortByCreateddate,.site .home .item--nav-filters button#btnSortByFinishdate,.site .home .item--nav-filters button#btnSortByImportance{background-color:#d3d3d3}.site .home .item--nav-finished{grid-area:c;display:-ms-flexbox;display:flex;-ms-flex-pack:end;justify-content:flex-end}.site .home .item--nav-finished button#btnShowFinished{background-color:#d3d3d3}.site .home .item--main-content{grid-area:d}.site .home .item--main-content .note{display:grid;grid-template-columns:2fr 10fr 1fr;grid-template-areas:"f g h";grid-auto-flow:row;grid-auto-rows:150px;background-color:#d5e6d6;border:1px solid #000;padding:5px;margin-bottom:5px}.site .home .item--main-content .note .listDateStatus{grid-area:f}.site .home .item--main-content .note .listTitleDescriptionImportance{grid-area:g;padding:20px}.site .home .item--main-content .note .listTitleDescriptionImportance .flexTitleImportance{display:-ms-flexbox;display:flex;-ms-flex-pack:justify;justify-content:space-between}.site .home .item--main-content .note .listTitleDescriptionImportance textarea.description{width:100%;padding:5px}.site .home .item--main-content .note .listActionButton{grid-area:h}.site .home .item footer{grid-area:e}.site .detail .note{display:grid;grid-template-columns:3fr 10fr 2fr;grid-template-rows:30px 250px 30px 30px 30px 30px 40px;grid-template-areas:"i j j" "k l ." "m n n" "o p p" "q q q" ". . r" "e e e";grid-gap:20px}.site .detail .note__labeltitel{grid-area:i}.site .detail .note__titel{grid-area:j}.site .detail .note__labeldescription{grid-area:k}.site .detail .note__description{grid-area:l}.site .detail .note__labelimportance{grid-area:m}.site .detail .note__importance{grid-area:n}.site .detail .note__importance span{display:inline-block;text-align:center;background:#d3d3d3;width:20px;margin-right:20px;border:1px solid #000;cursor:pointer}.site .detail .note__importance .yellow{background-color:#ff0}.site .detail .note__importance .dropImportance{display:none}.site .detail .note__labeldate{grid-area:o}.site .detail .note__datepicker{grid-area:p}.site .detail .note__speichern{grid-area:q;width:100%}.site .detail .note__cancel{grid-area:r;justify-self:end}.site .detail footer{grid-area:e}
+/******************************
+* Custom CSS by Bruno Staub
+* Created: 05.05.2018
+* Creator: Bruno Staub
+* Last updated: 05.05.2018
+*
+* Used Frameworks / Extensions
+* https://handlebarsjs.com/
+* Node Backend
+******************************/
+/**************
+* Browser Reset
+***************/
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+
+/**************
+* Base Styles
+***************/
+html {
+  font: normal 16px/1.5 Arial, sans-serif; }
+
+body {
+  background-color: #ccc; }
+  body.style2 {
+    background-color: #fff; }
+    body.style2 button {
+      background-color: yellow; }
+
+div.alert.success {
+  display: block;
+  padding: 5px;
+  margin-bottom: 20px;
+  color: white;
+  background-color: green; }
+
+.site {
+  width: 95vw;
+  height: 95vh;
+  margin: 20px auto; }
+
+.flexCenterCenter, a.btnCreateNewNote {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+/**************
+* Components
+***************/
+button, select.dropStyleSwitcher {
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  -webkit-box-shadow: 1px 2px 3px 0px black;
+          box-shadow: 1px 2px 3px 0px black;
+  margin-right: 4px;
+  outline-offset: -5px;
+  outline-color: orange; }
+
+a.btnCreateNewNote {
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  -webkit-box-shadow: 1px 2px 3px 0px black;
+          box-shadow: 1px 2px 3px 0px black;
+  margin-right: 4px;
+  outline-offset: -5px;
+  outline-color: orange;
+  text-decoration: none;
+  font-size: 11px; }
+
+/**************
+* Site - Home
+***************/
+.site .home {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  grid-template-rows: 40px 40px auto 40px;
+  grid-template-areas: "nav1 nav1 nav1 nav1" "filter filter filter nav2" "content content content content" "footer footer footer footer";
+  grid-gap: 20px; }
+  .site .home .item--navigation {
+    grid-area: nav1; }
+    .site .home .item--navigation .flexNav1 {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      padding-bottom: 15px; }
+      .site .home .item--navigation .flexNav1 a.btnCreateNewNote {
+        background-color: lightgrey; }
+      .site .home .item--navigation .flexNav1 select.dropStyleSwitcher {
+        background-color: lightgrey; }
+  .site .home .item--nav-filters {
+    grid-area: filter; }
+    .site .home .item--nav-filters button#btnSortByFinishdate {
+      background-color: lightgrey; }
+    .site .home .item--nav-filters button#btnSortByCreateddate {
+      background-color: lightgrey; }
+    .site .home .item--nav-filters button#btnSortByImportance {
+      background-color: lightgrey; }
+    .site .home .item--nav-filters button#btnShowFinished {
+      background-color: lightgrey; }
+  .site .home .item--nav-finished {
+    grid-area: nav2;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end; }
+    .site .home .item--nav-finished button#btnShowFinished {
+      background-color: lightgrey; }
+  .site .home .item--main-content {
+    grid-area: content; }
+    .site .home .item--main-content .note {
+      display: grid;
+      grid-template-columns: 2fr 10fr 1fr;
+      grid-template-areas: "listDateStatus listTitleDescriptionImportance listActionButton";
+      grid-auto-flow: row;
+      grid-auto-rows: 150px;
+      background-color: #d5e6d6;
+      border: 1px solid black;
+      padding: 5px;
+      margin-bottom: 5px; }
+      .site .home .item--main-content .note .listDateStatus {
+        grid-area: listDateStatus; }
+      .site .home .item--main-content .note .listTitleDescriptionImportance {
+        grid-area: listTitleDescriptionImportance;
+        padding: 20px; }
+        .site .home .item--main-content .note .listTitleDescriptionImportance .flexTitleImportance {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: justify;
+              -ms-flex-pack: justify;
+                  justify-content: space-between; }
+        .site .home .item--main-content .note .listTitleDescriptionImportance textarea.description {
+          width: 100%;
+          padding: 5px; }
+      .site .home .item--main-content .note .listActionButton {
+        grid-area: listActionButton; }
+  .site .home .item footer {
+    grid-area: footer; }
+
+/**************
+* Site - Detail
+***************/
+.site .detail .note {
+  display: grid;
+  grid-template-columns: 3fr 10fr 2fr;
+  grid-template-rows: 30px 250px 30px 30px 30px 30px 40px;
+  grid-template-areas: "labeltitle title title" "labeldescription description ." "labelimportance importance importance" "labeldate datepicker datepicker" "speichern speichern speichern" ". . cancel" "footer footer footer";
+  grid-gap: 20px; }
+  .site .detail .note__labeltitel {
+    grid-area: labeltitle; }
+  .site .detail .note__titel {
+    grid-area: title; }
+  .site .detail .note__labeldescription {
+    grid-area: labeldescription; }
+  .site .detail .note__description {
+    grid-area: description; }
+  .site .detail .note__labelimportance {
+    grid-area: labelimportance; }
+  .site .detail .note__importance {
+    grid-area: importance; }
+    .site .detail .note__importance span {
+      display: inline-block;
+      text-align: center;
+      background: lightgrey;
+      width: 20px;
+      margin-right: 20px;
+      border: 1px solid black;
+      cursor: pointer; }
+    .site .detail .note__importance .yellow {
+      background-color: yellow; }
+    .site .detail .note__importance .dropImportance {
+      display: none; }
+  .site .detail .note__labeldate {
+    grid-area: labeldate; }
+  .site .detail .note__datepicker {
+    grid-area: datepicker; }
+  .site .detail .note__speichern {
+    grid-area: speichern;
+    width: 100%; }
+  .site .detail .note__cancel {
+    grid-area: cancel;
+    justify-self: end; }
+
+.site .detail footer {
+  grid-area: footer; }
+
+
+/*# sourceMappingURL=custom.css.map*/

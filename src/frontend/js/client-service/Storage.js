@@ -5,18 +5,7 @@ export class Storage{
         this.noteObj = noteObj;
     }
 
-    saveNotesToLocalStorage(){
-    /*saveNotesToLocalStorage({title, description, importance, datepicker}){ */
-
-        /*
-        const note = {
-            title: title.value,
-            description: description.value,
-            importance: importance.value,
-            datepicker: datepicker.value,
-            statusActive: false,
-        }
-        */
+    saveNoteToLocalStorage(){
 
         if(this.checkIfLocalStorageEmpty()){
             const firstnote = [];
@@ -67,6 +56,10 @@ export class Storage{
 
     setItemToLocalStorage(items){
         localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
+    }
+
+    removeKeyFromLocalStorage(){
+        localStorage.removeItem(this.SESSION_STORE_KEY);
     }
 
 }
