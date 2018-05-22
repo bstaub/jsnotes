@@ -72,4 +72,41 @@ export class ViewHelper{
             div.innerHTML = '';
         }, 3000);
     }
+
+
+    static selectimportance(id){
+        switch (id) {
+            case 1:
+                return '<span id="1" class="yellow"></span><span id="2"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
+                break;
+            case 2:
+                return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
+                break;
+            case 3:
+                return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4"></span><span id="5"></span>';
+                break;
+            case 4:
+                return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5"></span>';
+                break;
+            case 5:
+                return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5" class="yellow"></span>';
+                break;
+        }
+    }
+
+
+
+    static markStars (id,lastStar) {
+        const totalstars = document.querySelectorAll(`[data-id="${id}"] span`);
+        //const totalstars = document.querySelectorAll(`[data-id="8"] span`);
+        //[data-id="8"] span
+        totalstars.forEach((item) => {
+            if(item.getAttribute('id')<=lastStar){
+                item.classList.add('yellow');
+            }else{
+                item.classList.remove('yellow');
+            }
+        });
+    }
+
 }

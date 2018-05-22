@@ -38,7 +38,6 @@ export class Controller{
     }
 
     getAllNotesFromLocalStorage(){
-        console.log('2getAllNotesFromLocalStorage');
         const storage = new Storage('notesKey');
         return storage.getAllNotesFromLocalStorage();
     }
@@ -80,14 +79,14 @@ export class Controller{
     }
 
     buildNewNoteEntry({title, description, importance, datepicker}){
-        const status = false;
+        const isFinished = false;
            return new Note(
                 this.getNewUniqueNoteID(),
                 title.value,
                 description.value,
                 importance.value,
                 datepicker.value,
-                status,
+                isFinished,
             );
     }
 

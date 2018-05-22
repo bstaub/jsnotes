@@ -15,6 +15,7 @@ npm i
 - browsersync 0.0.1-security
 - node 8.9.4
 - npm 5.6.0 updated to 6.0.1
+- npm install font-awesome --save-dev
 
 ## APIs
 

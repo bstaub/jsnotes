@@ -5,13 +5,13 @@ export class Note {
         description,
         importance,
         datepicker,
-        isactive,
+        isFinished,
     ){
         this.id = id;
         this.title = title;
         this.description = description;
         this.importance = importance;
         this.datepicker = datepicker;
-        this.isactive = isactive;
+        this.isFinished = isFinished;
     }
 }

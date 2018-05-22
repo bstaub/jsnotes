@@ -74,7 +74,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);
-module.exports = __webpack_require__(9);
+module.exports = __webpack_require__(11);
 
 
 /***/ }),
@@ -91,6 +91,8 @@ var _Controller = __webpack_require__(5);
 var _ControllerList = __webpack_require__(7);
 
 var _ViewList = __webpack_require__(8);
+
+__webpack_require__(9);
 
 function start() {
 
@@ -269,6 +271,41 @@ var ViewHelper = exports.ViewHelper = function () {
                 div.innerHTML = '';
             }, 3000);
         }
+    }, {
+        key: "selectimportance",
+        value: function selectimportance(id) {
+            switch (id) {
+                case 1:
+                    return '<span id="1" class="yellow"></span><span id="2"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
+                    break;
+                case 2:
+                    return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
+                    break;
+                case 3:
+                    return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4"></span><span id="5"></span>';
+                    break;
+                case 4:
+                    return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5"></span>';
+                    break;
+                case 5:
+                    return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5" class="yellow"></span>';
+                    break;
+            }
+        }
+    }, {
+        key: "markStars",
+        value: function markStars(id, lastStar) {
+            var totalstars = document.querySelectorAll("[data-id=\"" + id + "\"] span");
+            //const totalstars = document.querySelectorAll(`[data-id="8"] span`);
+            //[data-id="8"] span
+            totalstars.forEach(function (item) {
+                if (item.getAttribute('id') <= lastStar) {
+                    item.classList.add('yellow');
+                } else {
+                    item.classList.remove('yellow');
+                }
+            });
+        }
     }]);
 
     return ViewHelper;
@@ -298,7 +335,7 @@ var Storage = exports.Storage = function () {
     }
 
     _createClass(Storage, [{
-        key: 'saveNoteToLocalStorage',
+        key: "saveNoteToLocalStorage",
         value: function saveNoteToLocalStorage() {
 
             if (this.checkIfLocalStorageEmpty()) {
@@ -310,56 +347,54 @@ var Storage = exports.Storage = function () {
             }
         }
     }, {
-        key: 'saveStyleToLocalStorage',
+        key: "saveStyleToLocalStorage",
         value: function saveStyleToLocalStorage(style) {
             this.setItemToLocalStorage(style);
         }
     }, {
-        key: 'getStyleFromLocalStorage',
+        key: "getStyleFromLocalStorage",
         value: function getStyleFromLocalStorage() {
             return this.getItemFromLocalStorage();
         }
     }, {
-        key: 'saveNoteIDToLocalStorage',
+        key: "saveNoteIDToLocalStorage",
         value: function saveNoteIDToLocalStorage(id) {
             this.setItemToLocalStorage(id);
         }
     }, {
-        key: 'getNoteIDFromLocalStorage',
+        key: "getNoteIDFromLocalStorage",
         value: function getNoteIDFromLocalStorage() {
             return this.getItemFromLocalStorage();
         }
     }, {
-        key: 'appendOneNoteToLocalStorage',
+        key: "appendOneNoteToLocalStorage",
         value: function appendOneNoteToLocalStorage(notes) {
             var stored = this.getItemFromLocalStorage();
             stored.push(notes);
             localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(stored));
         }
     }, {
-        key: 'checkIfLocalStorageEmpty',
+        key: "checkIfLocalStorageEmpty",
         value: function checkIfLocalStorageEmpty() {
             return this.getItemFromLocalStorage() === null;
         }
     }, {
-        key: 'getAllNotesFromLocalStorage',
+        key: "getAllNotesFromLocalStorage",
         value: function getAllNotesFromLocalStorage() {
-            console.log('3getAllNotesFromLocalStorage');
             return this.getItemFromLocalStorage();
         }
     }, {
-        key: 'getItemFromLocalStorage',
+        key: "getItemFromLocalStorage",
         value: function getItemFromLocalStorage() {
-            console.log('4getItemFromLocalStorage');
             return JSON.parse(localStorage.getItem(this.SESSION_STORE_KEY));
         }
     }, {
-        key: 'setItemToLocalStorage',
+        key: "setItemToLocalStorage",
         value: function setItemToLocalStorage(items) {
             localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
         }
     }, {
-        key: 'removeKeyFromLocalStorage',
+        key: "removeKeyFromLocalStorage",
         value: function removeKeyFromLocalStorage() {
             localStorage.removeItem(this.SESSION_STORE_KEY);
         }
@@ -431,7 +466,6 @@ var Controller = exports.Controller = function () {
     }, {
         key: "getAllNotesFromLocalStorage",
         value: function getAllNotesFromLocalStorage() {
-            console.log('2getAllNotesFromLocalStorage');
             var storage = new _Storage.Storage('notesKey');
             return storage.getAllNotesFromLocalStorage();
         }
@@ -484,8 +518,8 @@ var Controller = exports.Controller = function () {
                 importance = _ref.importance,
                 datepicker = _ref.datepicker;
 
-            var status = false;
-            return new _Note.Note(this.getNewUniqueNoteID(), title.value, description.value, importance.value, datepicker.value, status);
+            var isFinished = false;
+            return new _Note.Note(this.getNewUniqueNoteID(), title.value, description.value, importance.value, datepicker.value, isFinished);
         }
     }]);
 
@@ -505,7 +539,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Note = exports.Note = function Note(id, title, description, importance, datepicker, isactive) {
+var Note = exports.Note = function Note(id, title, description, importance, datepicker, isFinished) {
     _classCallCheck(this, Note);
 
     this.id = id;
@@ -513,7 +547,7 @@ var Note = exports.Note = function Note(id, title, description, importance, date
     this.description = description;
     this.importance = importance;
     this.datepicker = datepicker;
-    this.isactive = isactive;
+    this.isFinished = isFinished;
 };
 
 /***/ }),
@@ -548,11 +582,9 @@ var ControllerList = exports.ControllerList = function () {
         value: function registerAllEventListener(dom) {
             if (dom.dynamicList) {
                 dom.dynamicList.addEventListener('click', function (e) {
-                    //console.log('dynamic list clicked');
-                    console.log(e);
+                    console.log("dynamiclist eventobjekt: ", e);
 
                     if (e.target.id === "listDelete") {
-                        console.log('ListDelete Clicked!');
 
                         //Remove Note from Lokalstorage
                         var controller = new _Controller.Controller();
@@ -561,7 +593,6 @@ var ControllerList = exports.ControllerList = function () {
                         var filteredNotes = allnotes.filter(function (item) {
                             return item.id != e.target.getAttribute("data-id");
                         });
-                        console.log("filter", filteredNotes);
 
                         var storage = new _Storage.Storage('notesKey');
                         storage.removeKeyFromLocalStorage();
@@ -572,8 +603,81 @@ var ControllerList = exports.ControllerList = function () {
                     }
 
                     if (e.target.id === "listEdit") {
-                        console.log('ListEdit Clicked!');
-                        console.log(e.target.getAttribute("data-id"));
+
+                        //Enable Textarea Field --> disabled="disabled
+                        var id = e.target.getAttribute("data-id");
+                        document.querySelector("[data-description-id=\"" + id + "\"]").removeAttribute("disabled");
+
+                        var _controller = new _Controller.Controller();
+                        var _allnotes = _controller.getAllNotesFromLocalStorage();
+
+                        var filteredNote = _allnotes.filter(function (item) {
+                            return item.id == id;
+                        });
+
+                        if (e.target.innerHTML == 'Edit') {
+                            e.target.innerHTML = 'Save';
+                            document.querySelector("[data-description-id=\"" + id + "\"]").classList.add('redborder');
+                        } else if (e.target.innerHTML == 'Save') {
+                            e.target.innerHTML = 'Edit';
+                            document.querySelector("[data-description-id=\"" + id + "\"]").classList.remove('redborder');
+                        }
+
+                        //console.log("traverse: ",e.target.parentElement.parentElement.getElementsByClassName('listTitleDescriptionImportance')[0].getElementsByClassName('description')[0].value);
+                        //console.log("filteredNote[0].description: ",filteredNote[0].description);
+                        //console.log("zuweisung: ",document.querySelector(`[data-description-id="${id}"]`).value);
+                        //filteredNote[0].description = "Testing, dies geht!!!";
+                        filteredNote[0].description = document.querySelector("[data-description-id=\"" + id + "\"]").value; //nicht .innerHMTL!!!!
+
+                        var position_startindex = _allnotes.findIndex(function (item) {
+                            return item.id == id;
+                        });
+
+                        _allnotes.splice(position_startindex, 1, filteredNote[0]);
+
+                        var _storage = new _Storage.Storage('notesKey');
+                        _storage.removeKeyFromLocalStorage();
+                        _storage.setItemToLocalStorage(_allnotes);
+                    }
+
+                    if (e.target.id === "checkBoxisFinished") {
+
+                        var _controller2 = new _Controller.Controller();
+                        var _allnotes2 = _controller2.getAllNotesFromLocalStorage();
+
+                        var _filteredNote = _allnotes2.filter(function (item) {
+                            return item.id == e.target.getAttribute("data-id");
+                        });
+
+                        //Toggle Finished Status
+                        _filteredNote[0].isFinished ? _filteredNote[0].isFinished = false : _filteredNote[0].isFinished = true;
+
+                        var _position_startindex = _allnotes2.findIndex(function (item) {
+                            return item.id == e.target.getAttribute("data-id");
+                        });
+
+                        //https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+                        _allnotes2.splice(_position_startindex, 1, _filteredNote[0]);
+
+                        var _storage2 = new _Storage.Storage('notesKey');
+                        _storage2.removeKeyFromLocalStorage();
+                        _storage2.setItemToLocalStorage(_allnotes2);
+                    }
+
+                    if (e.target.id == "1") {
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                    }
+                    if (e.target.id == "2") {
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                    }
+                    if (e.target.id == "3") {
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                    }
+                    if (e.target.id == "4") {
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                    }
+                    if (e.target.id == "5") {
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
                     }
                 });
             }
@@ -628,18 +732,18 @@ var ViewList = exports.ViewList = function () {
         value: function generateListView(_ref) {
             var dynamicList = _ref.dynamicList;
 
-            console.log('1generateListView');
             var controller = new _Controller.Controller();
             var allnotes = controller.getAllNotesFromLocalStorage();
 
-            console.log(allnotes);
+            console.log("allnotes: ", allnotes);
 
             var div = document.createElement('div');
             //div.classList.add('note');
 
+
             if (allnotes) {
                 var notes = allnotes.map(function (note, i) {
-                    return "<div class=\"note\">\n                    <div class=\"listDateStatus\">\n                        <p>" + note.datepicker + "</p>\n                        <p><input id=\"checkBox\" type=\"checkbox\"> Finished</p>\n                    </div>\n                    <div class=\"listTitleDescriptionImportance\">\n                        <div class=\"flexTitleImportance\">\n                            <div class=\"title\">\n                                <p>" + note.title + "</p>\n                            </div>\n                            <div class=\"importance\">\n                                <select name=\"dropImportance\" class=\"dropImportance\">\n                                    <option value=\"1\">1</option>\n                                    <option value=\"2\">2</option>\n                                    <option value=\"3\">3</option>\n                                    <option value=\"4\">4</option>\n                                    <option value=\"5\">5</option>\n                                </select>\n                            </div>\n                        </div>\n                        <textarea class=\"description\" name=\"description\" cols=\"30\" rows=\"6\">" + note.description + "</textarea>\n                    </div>\n                    <div class=\"listActionButton\">\n                        <button id=\"listEdit\" data-id=\"" + note.id + "\">Edit</button>\n                        <button id=\"listDelete\" data-id=\"" + note.id + "\">Delete</button>\n                    </div>\n                </div>";
+                    return "<div class=\"note\">\n                    <div class=\"listDateStatus\">\n                        <p>" + note.datepicker + "</p>\n                        <p><input id=\"checkBoxisFinished\" type=\"checkbox\" data-id=\"" + note.id + "\" " + (note.isFinished ? 'checked' : '') + "> Finished</p>\n                    </div>\n                    <div class=\"listTitleDescriptionImportance\">\n                        <div class=\"flexTitleImportance\">\n                            <div class=\"title\">\n                                <p>" + note.title + "</p>\n                            </div>\n                            <div class=\"note__importance\">\n                                <div class=\"importance\" data-id=\"" + note.id + "\">\n                                    " + _ViewHelper.ViewHelper.selectimportance(parseInt(note.importance)) + "\n                                </div>\n                            </div>\n                        </div>\n                        <textarea class=\"description\" name=\"description\" cols=\"30\" rows=\"6\" data-description-id=\"" + note.id + "\" disabled=\"disabled\">" + note.description + "</textarea>\n                    </div>\n                    <div class=\"listActionButton\">\n                        <button id=\"listEdit\" data-id=\"" + note.id + "\">Edit</button>\n                        <button id=\"listDelete\" data-id=\"" + note.id + "\">Delete</button>\n                    </div>\n                </div>";
                 });
             }
 
@@ -656,6 +760,13 @@ var ViewList = exports.ViewList = function () {
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+/* 10 */,
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin

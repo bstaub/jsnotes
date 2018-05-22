@@ -4,6 +4,7 @@ import {ViewNew} from "./view/ViewNew";
 import {Controller} from "./controller/Controller";
 import {ControllerList} from "./controller/ControllerList";
 import {ViewList} from "./view/ViewList";
+import "font-awesome/scss/font-awesome.scss";
 
 
 function start(){
