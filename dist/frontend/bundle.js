@@ -296,10 +296,9 @@ var ViewHelper = exports.ViewHelper = function () {
         key: "markStars",
         value: function markStars(id, lastStar) {
             var totalstars = document.querySelectorAll("[data-id=\"" + id + "\"] span");
-            //const totalstars = document.querySelectorAll(`[data-id="8"] span`);
-            //[data-id="8"] span
             totalstars.forEach(function (item) {
-                if (item.getAttribute('id') <= lastStar) {
+                if (item.id <= lastStar) {
+                    //getAttribute('id')
                     item.classList.add('yellow');
                 } else {
                     item.classList.remove('yellow');
@@ -582,7 +581,7 @@ var ControllerList = exports.ControllerList = function () {
         value: function registerAllEventListener(dom) {
             if (dom.dynamicList) {
                 dom.dynamicList.addEventListener('click', function (e) {
-                    console.log("dynamiclist eventobjekt: ", e);
+                    //console.log("dynamiclist eventobjekt: ",e);
 
                     if (e.target.id === "listDelete") {
 
@@ -591,7 +590,7 @@ var ControllerList = exports.ControllerList = function () {
                         var allnotes = controller.getAllNotesFromLocalStorage();
 
                         var filteredNotes = allnotes.filter(function (item) {
-                            return item.id != e.target.getAttribute("data-id");
+                            return item.id != e.target.dataset.id;
                         });
 
                         var storage = new _Storage.Storage('notesKey');
@@ -605,7 +604,7 @@ var ControllerList = exports.ControllerList = function () {
                     if (e.target.id === "listEdit") {
 
                         //Enable Textarea Field --> disabled="disabled
-                        var id = e.target.getAttribute("data-id");
+                        var id = e.target.dataset.id;
                         document.querySelector("[data-description-id=\"" + id + "\"]").removeAttribute("disabled");
 
                         var _controller = new _Controller.Controller();
@@ -646,15 +645,15 @@ var ControllerList = exports.ControllerList = function () {
                         var _allnotes2 = _controller2.getAllNotesFromLocalStorage();
 
                         var _filteredNote = _allnotes2.filter(function (item) {
-                            return item.id == e.target.getAttribute("data-id");
+                            return item.id == e.target.dataset.id;
                         });
 
                         //Toggle Finished Status
                         _filteredNote[0].isFinished ? _filteredNote[0].isFinished = false : _filteredNote[0].isFinished = true;
 
                         var _position_startindex = _allnotes2.findIndex(function (item) {
-                            return item.id == e.target.getAttribute("data-id");
-                        });
+                            return item.id == e.target.dataset.id;
+                        }); //old way e.target.getAttribute("data-id")
 
                         //https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
                         _allnotes2.splice(_position_startindex, 1, _filteredNote[0]);
@@ -665,22 +664,50 @@ var ControllerList = exports.ControllerList = function () {
                     }
 
                     if (e.target.id == "1") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+                        ControllerList.saveStarList(e);
                     }
                     if (e.target.id == "2") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+                        ControllerList.saveStarList(e);
                     }
                     if (e.target.id == "3") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+                        ControllerList.saveStarList(e);
                     }
                     if (e.target.id == "4") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+                        ControllerList.saveStarList(e);
                     }
                     if (e.target.id == "5") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"), e.target.id);
+                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+                        ControllerList.saveStarList(e);
                     }
                 });
             }
+        }
+    }], [{
+        key: "saveStarList",
+        value: function saveStarList(e) {
+            var controller = new _Controller.Controller();
+            var allnotes = controller.getAllNotesFromLocalStorage();
+
+            var filteredNote = allnotes.filter(function (item) {
+                return item.id == e.target.parentElement.dataset.id;
+            });
+
+            filteredNote[0].importance = e.target.id;
+
+            var position_startindex = allnotes.findIndex(function (item) {
+                return item.id == e.target.parentElement.dataset.id;
+            });
+
+            //https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+            allnotes.splice(position_startindex, 1, filteredNote[0]);
+
+            var storage = new _Storage.Storage('notesKey');
+            storage.removeKeyFromLocalStorage();
+            storage.setItemToLocalStorage(allnotes);
         }
     }]);
 
@@ -735,7 +762,7 @@ var ViewList = exports.ViewList = function () {
             var controller = new _Controller.Controller();
             var allnotes = controller.getAllNotesFromLocalStorage();
 
-            console.log("allnotes: ", allnotes);
+            //console.log("allnotes: ",allnotes);
 
             var div = document.createElement('div');
             //div.classList.add('note');

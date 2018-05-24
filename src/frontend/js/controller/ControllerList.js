@@ -4,11 +4,10 @@ import {Controller} from "./Controller";
 
 
 export class ControllerList{
-
     registerAllEventListener(dom){
         if(dom.dynamicList){
             dom.dynamicList.addEventListener('click', (e) => {
-                console.log("dynamiclist eventobjekt: ",e);
+                //console.log("dynamiclist eventobjekt: ",e);
 
                 if(e.target.id === "listDelete"){
 
@@ -17,7 +16,7 @@ export class ControllerList{
                     const allnotes = controller.getAllNotesFromLocalStorage();
 
                     const filteredNotes = allnotes.filter((item) => {
-                        return item.id != e.target.getAttribute("data-id");
+                        return item.id != e.target.dataset.id;
                     });
 
                     const storage = new Storage('notesKey');
@@ -33,7 +32,7 @@ export class ControllerList{
                 if(e.target.id === "listEdit"){
 
                     //Enable Textarea Field --> disabled="disabled
-                    const id = e.target.getAttribute("data-id");
+                    const id = e.target.dataset.id;
                     document.querySelector(`[data-description-id="${id}"]`).removeAttribute("disabled");
 
                     const controller = new Controller();
@@ -76,13 +75,13 @@ export class ControllerList{
 
 
                     const filteredNote = allnotes.filter((item) => {
-                        return item.id == e.target.getAttribute("data-id");
+                        return item.id == e.target.dataset.id;
                     });
 
                     //Toggle Finished Status
                     filteredNote[0].isFinished ? filteredNote[0].isFinished = false : filteredNote[0].isFinished = true;
 
-                    const position_startindex = allnotes.findIndex(item => item.id == e.target.getAttribute("data-id"));
+                    const position_startindex = allnotes.findIndex(item => item.id == e.target.dataset.id); //old way e.target.getAttribute("data-id")
 
                     //https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
                     allnotes.splice(position_startindex,1,filteredNote[0]);
@@ -94,25 +93,52 @@ export class ControllerList{
                 }
 
                 if(e.target.id == "1"){
-                    ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"),e.target.id);
+                    ViewHelper.markStars(e.target.parentElement.dataset.id,e.target.id);
+                    ControllerList.saveStarList(e);
                 }
                 if(e.target.id == "2"){
-                    ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"),e.target.id);
+                    ViewHelper.markStars(e.target.parentElement.dataset.id,e.target.id);
+                    ControllerList.saveStarList(e);
                 }
                 if(e.target.id == "3"){
-                    ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"),e.target.id)
+                    ViewHelper.markStars(e.target.parentElement.dataset.id,e.target.id);
+                    ControllerList.saveStarList(e);
                 }
                 if(e.target.id == "4"){
-                    ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"),e.target.id)
+                    ViewHelper.markStars(e.target.parentElement.dataset.id,e.target.id);
+                    ControllerList.saveStarList(e);
                 }
                 if(e.target.id == "5"){
-                    ViewHelper.markStars(e.target.parentElement.getAttribute("data-id"),e.target.id)
+                    ViewHelper.markStars(e.target.parentElement.dataset.id,e.target.id);
+                    ControllerList.saveStarList(e);
                 }
+
 
             });
         }
 
 
+    }
+
+    static saveStarList(e){
+        const controller = new Controller();
+        const allnotes = controller.getAllNotesFromLocalStorage();
+
+
+        const filteredNote = allnotes.filter((item) => {
+            return item.id == e.target.parentElement.dataset.id;
+        });
+
+        filteredNote[0].importance = e.target.id;
+
+        const position_startindex = allnotes.findIndex(item => item.id == e.target.parentElement.dataset.id);
+
+        //https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+        allnotes.splice(position_startindex,1,filteredNote[0]);
+
+        const storage = new Storage('notesKey');
+        storage.removeKeyFromLocalStorage();
+        storage.setItemToLocalStorage(allnotes);
     }
 
 

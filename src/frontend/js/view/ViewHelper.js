@@ -98,10 +98,8 @@ export class ViewHelper{
 
     static markStars (id,lastStar) {
         const totalstars = document.querySelectorAll(`[data-id="${id}"] span`);
-        //const totalstars = document.querySelectorAll(`[data-id="8"] span`);
-        //[data-id="8"] span
         totalstars.forEach((item) => {
-            if(item.getAttribute('id')<=lastStar){
+            if(item.id<=lastStar){  //getAttribute('id')
                 item.classList.add('yellow');
             }else{
                 item.classList.remove('yellow');

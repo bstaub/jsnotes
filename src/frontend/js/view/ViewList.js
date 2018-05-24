@@ -23,7 +23,7 @@ export class ViewList{
         const controller = new Controller();
         const allnotes = controller.getAllNotesFromLocalStorage();
 
-        console.log("allnotes: ",allnotes);
+        //console.log("allnotes: ",allnotes);
 
         const div = document.createElement('div');
         //div.classList.add('note');
