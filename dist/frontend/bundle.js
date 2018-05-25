@@ -569,6 +569,8 @@ var _ViewHelper = __webpack_require__(3);
 
 var _Controller = __webpack_require__(5);
 
+var _ViewList = __webpack_require__(8);
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var ControllerList = exports.ControllerList = function () {
@@ -579,6 +581,8 @@ var ControllerList = exports.ControllerList = function () {
     _createClass(ControllerList, [{
         key: "registerAllEventListener",
         value: function registerAllEventListener(dom) {
+            var _this = this;
+
             if (dom.dynamicList) {
                 dom.dynamicList.addEventListener('click', function (e) {
                     //console.log("dynamiclist eventobjekt: ",e);
@@ -586,8 +590,7 @@ var ControllerList = exports.ControllerList = function () {
                     if (e.target.id === "listDelete") {
 
                         //Remove Note from Lokalstorage
-                        var controller = new _Controller.Controller();
-                        var allnotes = controller.getAllNotesFromLocalStorage();
+                        var allnotes = _this.getAllNotesFromLocalStorage();
 
                         var filteredNotes = allnotes.filter(function (item) {
                             return item.id != e.target.dataset.id;
@@ -607,8 +610,7 @@ var ControllerList = exports.ControllerList = function () {
                         var id = e.target.dataset.id;
                         document.querySelector("[data-description-id=\"" + id + "\"]").removeAttribute("disabled");
 
-                        var _controller = new _Controller.Controller();
-                        var _allnotes = _controller.getAllNotesFromLocalStorage();
+                        var _allnotes = _this.getAllNotesFromLocalStorage();
 
                         var filteredNote = _allnotes.filter(function (item) {
                             return item.id == id;
@@ -641,8 +643,7 @@ var ControllerList = exports.ControllerList = function () {
 
                     if (e.target.id === "checkBoxisFinished") {
 
-                        var _controller2 = new _Controller.Controller();
-                        var _allnotes2 = _controller2.getAllNotesFromLocalStorage();
+                        var _allnotes2 = _this.getAllNotesFromLocalStorage();
 
                         var _filteredNote = _allnotes2.filter(function (item) {
                             return item.id == e.target.dataset.id;
@@ -685,10 +686,82 @@ var ControllerList = exports.ControllerList = function () {
                     }
                 });
             }
+
+            if (dom.btnSortByFinishdate) {
+                dom.btnSortByFinishdate.addEventListener('click', function () {
+                    console.log('btnSortByFinishdate');
+                });
+            }
+
+            if (dom.btnSortByCreateddate) {
+                dom.btnSortByCreateddate.addEventListener('click', function () {
+                    console.log('btnSortByCreateddate');
+                });
+            }
+
+            if (dom.btnSortByImportance) {
+                dom.btnSortByImportance.addEventListener('click', function () {
+                    console.log('btnSortByImportance');
+
+                    var allnotes = _this.getAllNotesFromLocalStorage();
+
+                    console.log('Show all importance numbers: ', allnotes.map(function (item) {
+                        return '<p>' + item.importance + '</p>';
+                    }));
+
+                    var filteredNote5 = allnotes.filter(function (item) {
+                        return item.importance == 5;
+                    });
+                    var filteredNote4 = allnotes.filter(function (item) {
+                        return item.importance == 4;
+                    });
+                    var filteredNote3 = allnotes.filter(function (item) {
+                        return item.importance == 3;
+                    });
+                    var filteredNote2 = allnotes.filter(function (item) {
+                        return item.importance == 2;
+                    });
+                    var filteredNote1 = allnotes.filter(function (item) {
+                        return item.importance == 1;
+                    });
+
+                    var allnotesSortByImportance = [];
+                    allnotesSortByImportance.push(filteredNote5);
+                    allnotesSortByImportance.push(filteredNote4);
+                    allnotesSortByImportance.push(filteredNote3);
+                    allnotesSortByImportance.push(filteredNote2);
+                    allnotesSortByImportance.push(filteredNote1);
+                    console.log(allnotesSortByImportance);
+                });
+            }
+
+            if (dom.btnShowFinished) {
+                dom.btnShowFinished.addEventListener('click', function () {
+                    console.log('btnShowFinished');
+
+                    var allnotes = _this.getAllNotesFromLocalStorage();
+
+                    var filteredNote = allnotes.filter(function (item) {
+                        return item.isFinished == true;
+                    });
+
+                    //const viewList = new ViewList();
+                    //viewList.generateListView(this.)
+
+                });
+            }
+        }
+    }, {
+        key: "getAllNotesFromLocalStorage",
+        value: function getAllNotesFromLocalStorage() {
+            var controller = new _Controller.Controller();
+            var allnotes = controller.getAllNotesFromLocalStorage();
+            return allnotes;
         }
     }], [{
         key: "saveStarList",
         value: function saveStarList(e) {
+
             var controller = new _Controller.Controller();
             var allnotes = controller.getAllNotesFromLocalStorage();
 
@@ -743,7 +816,12 @@ var ViewList = exports.ViewList = function () {
         key: "queryAllDomObjects",
         value: function queryAllDomObjects() {
             var DOM = {
+                //Create new Note is just an a link!
                 dropStyleSwitcher: document.querySelector("#dropStyleSwitcher"),
+                btnSortByFinishdate: document.querySelector("#btnSortByFinishdate"),
+                btnSortByCreateddate: document.querySelector("#btnSortByCreateddate"),
+                btnSortByImportance: document.querySelector("#btnSortByImportance"),
+                btnShowFinished: document.querySelector("#btnShowFinished"),
                 dynamicList: document.querySelector(".item--main-content")
 
             };
@@ -764,9 +842,6 @@ var ViewList = exports.ViewList = function () {
 
             //console.log("allnotes: ",allnotes);
 
-            var div = document.createElement('div');
-            //div.classList.add('note');
-
 
             if (allnotes) {
                 var notes = allnotes.map(function (note, i) {
@@ -774,12 +849,14 @@ var ViewList = exports.ViewList = function () {
                 });
             }
 
-            div.innerHTML = notes.join(""); //remove comma from list
-
             if (dynamicList) {
-                dynamicList.appendChild(div);
+                dynamicList.innerHTML = notes.join(""); //remove comma from list
             }
         }
+
+        //viewlistgenerateListView(this.queryAllDomObjects());
+
+
     }]);
 
     return ViewList;

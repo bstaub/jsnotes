@@ -1,6 +1,7 @@
 import {Storage} from "../client-service/Storage";
 import {ViewHelper} from "../view/ViewHelper";
 import {Controller} from "./Controller";
+import {ViewList} from "../view/ViewList";
 
 
 export class ControllerList{
@@ -12,8 +13,8 @@ export class ControllerList{
                 if(e.target.id === "listDelete"){
 
                     //Remove Note from Lokalstorage
-                    const controller = new Controller();
-                    const allnotes = controller.getAllNotesFromLocalStorage();
+                    const allnotes = this.getAllNotesFromLocalStorage();
+
 
                     const filteredNotes = allnotes.filter((item) => {
                         return item.id != e.target.dataset.id;
@@ -35,9 +36,7 @@ export class ControllerList{
                     const id = e.target.dataset.id;
                     document.querySelector(`[data-description-id="${id}"]`).removeAttribute("disabled");
 
-                    const controller = new Controller();
-                    const allnotes = controller.getAllNotesFromLocalStorage();
-
+                    const allnotes = this.getAllNotesFromLocalStorage();
 
                     const filteredNote = allnotes.filter((item) => {
                         return item.id == id;
@@ -70,9 +69,7 @@ export class ControllerList{
 
                 if(e.target.id === "checkBoxisFinished"){
 
-                    const controller = new Controller();
-                    const allnotes = controller.getAllNotesFromLocalStorage();
-
+                    const allnotes = this.getAllNotesFromLocalStorage();
 
                     const filteredNote = allnotes.filter((item) => {
                         return item.id == e.target.dataset.id;
@@ -117,13 +114,91 @@ export class ControllerList{
             });
         }
 
+        if(dom.btnSortByFinishdate){
+            dom.btnSortByFinishdate.addEventListener('click', () => {
+                console.log('btnSortByFinishdate');
+            });
+        }
+
+        if(dom.btnSortByCreateddate){
+            dom.btnSortByCreateddate.addEventListener('click', () => {
+                console.log('btnSortByCreateddate');
+            });
+        }
+
+        if(dom.btnSortByImportance){
+            dom.btnSortByImportance.addEventListener('click', () => {
+                console.log('btnSortByImportance');
+
+                const allnotes = this.getAllNotesFromLocalStorage();
+
+                console.log('Show all importance numbers: ',allnotes.map((item) => {
+                    return '<p>'+item.importance+'</p>';
+                }));
+
+                const filteredNote5 = allnotes.filter((item) => {
+                    return item.importance == 5;
+                });
+                const filteredNote4 = allnotes.filter((item) => {
+                    return item.importance == 4;
+                });
+                const filteredNote3 = allnotes.filter((item) => {
+                    return item.importance == 3;
+                });
+                const filteredNote2 = allnotes.filter((item) => {
+                    return item.importance == 2;
+                });
+                const filteredNote1 = allnotes.filter((item) => {
+                    return item.importance == 1;
+                });
+
+                const allnotesSortByImportance = [];
+                allnotesSortByImportance.push(filteredNote5);
+                allnotesSortByImportance.push(filteredNote4);
+                allnotesSortByImportance.push(filteredNote3);
+                allnotesSortByImportance.push(filteredNote2);
+                allnotesSortByImportance.push(filteredNote1);
+                console.log(allnotesSortByImportance);
+
+
+            });
+        }
+
+        if(dom.btnShowFinished){
+            dom.btnShowFinished.addEventListener('click', () => {
+                console.log('btnShowFinished');
+
+                const allnotes = this.getAllNotesFromLocalStorage();
+
+                const filteredNote = allnotes.filter((item) => {
+                    return item.isFinished == true;
+                });
+
+                //const viewList = new ViewList();
+                //viewList.generateListView(this.)
+
+
+            });
+        }
+
+
+
 
     }
 
-    static saveStarList(e){
+
+    getAllNotesFromLocalStorage(){
         const controller = new Controller();
         const allnotes = controller.getAllNotesFromLocalStorage();
+        return allnotes;
 
+    }
+
+
+    static saveStarList(e){
+
+        const controller = new Controller();
+        const allnotes = controller.getAllNotesFromLocalStorage();
 
         const filteredNote = allnotes.filter((item) => {
             return item.id == e.target.parentElement.dataset.id;

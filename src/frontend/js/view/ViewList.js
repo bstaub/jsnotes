@@ -6,7 +6,12 @@ export class ViewList{
 
     queryAllDomObjects(){
         const DOM = {
+            //Create new Note is just an a link!
             dropStyleSwitcher: document.querySelector("#dropStyleSwitcher"),
+            btnSortByFinishdate: document.querySelector("#btnSortByFinishdate"),
+            btnSortByCreateddate: document.querySelector("#btnSortByCreateddate"),
+            btnSortByImportance: document.querySelector("#btnSortByImportance"),
+            btnShowFinished: document.querySelector("#btnShowFinished"),
             dynamicList: document.querySelector(".item--main-content"),
 
         };
@@ -24,9 +29,6 @@ export class ViewList{
         const allnotes = controller.getAllNotesFromLocalStorage();
 
         //console.log("allnotes: ",allnotes);
-
-        const div = document.createElement('div');
-        //div.classList.add('note');
 
 
         if(allnotes){
@@ -57,13 +59,15 @@ export class ViewList{
             });
         }
 
-        div.innerHTML = notes.join(""); //remove comma from list
 
         if(dynamicList){
-            dynamicList.appendChild(div);
+            dynamicList.innerHTML = notes.join("");  //remove comma from list
         }
 
     }
+
+
+    //viewlistgenerateListView(this.queryAllDomObjects());
 
 
 
