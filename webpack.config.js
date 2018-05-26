@@ -4,7 +4,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 //braucht es bis jetzt nur um das Plugin jQuery zu laden...
-var webpack = require("webpack");
+const webpack = require("webpack");
 
 
 const devMode = process.env.NODE_ENV !== 'production';
@@ -25,6 +25,10 @@ var config = {
     //
     devtool: devMode ? 'source-map' : 'none',  // benoetigt fuer bestimmte plugins
     mode: devMode ? 'none' : 'production',
+
+    //resolve: { //this resolve block ist just for Handlebars Helper Functions
+    //  fallback: path.join(__dirname, "src/frontend/js/template/helpers"),
+    //},
 
     module: {
         rules: [
@@ -72,6 +76,10 @@ var config = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.(handlebars|hbs)$/, loader: "handlebars-loader",
+
             },
             {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?mimetype=image/svg+xml'},
             {test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader?mimetype=application/font-woff"},

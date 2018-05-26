@@ -1,3 +1,4 @@
+const listTemplate = require("../template/listTemplate.hbs");  //Handlebars requires jQuery also in webpack base config!
 import {ViewHelper} from "./ViewHelper";
 import {Controller} from "../controller/Controller";
 
@@ -28,9 +29,30 @@ export class ViewList{
         const controller = new Controller();
         const allnotes = controller.getAllNotesFromLocalStorage();
 
-        //console.log("allnotes: ",allnotes);
+        //Example Data to pass in handlebars (hbs) Template
+        /*
+        const notes = {
+            "notes": [
+                {
+                    "name": "Test1",
+                    "title": "Test1Title",
+                },
+                {
+                    "name": "Test2",
+                    "title": "Test2Title",
+                },
+            ]
+        }
+        */
+
+        dynamicList.innerHTML = listTemplate(allnotes);  //webpack precompile the template code, i use this, because i don't have a 'notes' key in the root json structure!
 
 
+        //if(dynamicList){
+        //    dynamicList.innerHTML = listTemplate(allnotes);  //webpack precompile the template code
+        //}
+
+        /*
         if(allnotes){
             var notes = allnotes.map((note,i) => {
                  return `<div class="note ${note.isFinished ? 'finished':''}">
@@ -63,16 +85,11 @@ export class ViewList{
         if(dynamicList){
             dynamicList.innerHTML = notes.join("");  //remove comma from list
         }
+        */
 
     }
 
 
-    //viewlistgenerateListView(this.queryAllDomObjects());
-
-
-
-
-
-
+    ////viewlistgenerateListView(this.queryAllDomObjects());
 
 }

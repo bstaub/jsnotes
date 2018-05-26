@@ -16,6 +16,8 @@ npm i
 - node 8.9.4
 - npm 5.6.0 updated to 6.0.1
 - npm install font-awesome --save-dev
+- npm install jquery
+- npm install handlebars handlebars-loader path --save-dev 
 
 ## APIs
 
