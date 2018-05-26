@@ -77,7 +77,6 @@ export class ControllerList{
 
                     //Toggle Finished Status
                     filteredNote[0].isFinished ? filteredNote[0].isFinished = false : filteredNote[0].isFinished = true;
-
                     const position_startindex = allnotes.findIndex(item => item.id == e.target.dataset.id); //old way e.target.getAttribute("data-id")
 
                     //https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
@@ -130,6 +129,7 @@ export class ControllerList{
             dom.btnSortByImportance.addEventListener('click', () => {
                 console.log('btnSortByImportance');
 
+                /*
                 const allnotes = this.getAllNotesFromLocalStorage();
 
                 console.log('Show all importance numbers: ',allnotes.map((item) => {
@@ -159,24 +159,69 @@ export class ControllerList{
                 allnotesSortByImportance.push(filteredNote2);
                 allnotesSortByImportance.push(filteredNote1);
                 console.log(allnotesSortByImportance);
+                */
+
+
+                //ToDo: Testing sort function!
+
+                const allnotes = this.getAllNotesFromLocalStorage();
+                console.log('vorher allnotes: ',allnotes);
+
+                //const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
+                //console.log(notesSortedByisFinished);
+
+                //const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
+                //console.log('nachher allnotes: ',notesSortedByisFinished);
+
+                const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description'));  //geht!!!
+                console.log('nachher allnotes: ',notesSortedByisFinished);
+                //People.sort(dynamicSort("Name"));
+
+
+
+
+                $(function() {
+                    //var $all_notes = $('.note');
+                    //$('.note').sort(note_sort).appendTo('.item--main-content');
+                    //$('.note').sort(note_sort);
+
+                    //callback for search..
+                    //function note_sort(a, b) {
+                        //return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
+                        //return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
+                        //console.log($(a));
+                        //console.log($(a.innerHTML));
+                    //}
+                });
 
 
             });
         }
 
         if(dom.btnShowFinished){
-            dom.btnShowFinished.addEventListener('click', () => {
-                console.log('btnShowFinished');
+            dom.btnShowFinished.addEventListener('click', (e) => {
 
+                /*
                 const allnotes = this.getAllNotesFromLocalStorage();
 
                 const filteredNote = allnotes.filter((item) => {
                     return item.isFinished == true;
                 });
+                */
+
+                //ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
+
+                if(e.target.innerHTML == 'Show finished'){
+                    e.target.innerHTML = 'Show all';
+                    $('.item--main-content .note:not(.finished)').hide();
+
+                }else if(e.target.innerHTML == 'Show all'){
+                    e.target.innerHTML = 'Show finished';
+                    $('.item--main-content .note:not(.finished)').show();
+                }
 
                 //const viewList = new ViewList();
                 //viewList.generateListView(this.)
-
 
             });
         }

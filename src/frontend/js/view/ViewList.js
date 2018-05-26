@@ -33,7 +33,7 @@ export class ViewList{
 
         if(allnotes){
             var notes = allnotes.map((note,i) => {
-                 return `<div class="note">
+                 return `<div class="note ${note.isFinished ? 'finished':''}">
                     <div class="listDateStatus">
                         <p>${note.datepicker}</p>
                         <p><input id="checkBoxisFinished" type="checkbox" data-id="${note.id}" ${note.isFinished ? 'checked':''}> Finished</p>

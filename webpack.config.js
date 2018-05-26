@@ -3,6 +3,9 @@ const AutoPrefixer = require('autoprefixer');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
+//braucht es bis jetzt nur um das Plugin jQuery zu laden...
+var webpack = require("webpack");
+
 
 const devMode = process.env.NODE_ENV !== 'production';
 
@@ -92,6 +95,11 @@ var config = {
 
     plugins: [
         new MiniCssExtractPlugin({ filename: 'custom.css' }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        }),
+
     ]
 
 }
@@ -105,7 +113,7 @@ var config = {
 var frontendConfig = Object.assign({}, config, {
     // name: 'a',
     //entry: './src/js/index.js',
-    entry: ['./src/frontend/js/index.js','./src/frontend/scss/custom.scss'],
+    entry: ['babel-polyfill','./src/frontend/js/index.js','./src/frontend/scss/custom.scss'],
     output: {
         filename: 'bundle.js',
         path: __dirname +'/dist/frontend'
