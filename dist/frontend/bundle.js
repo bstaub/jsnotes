@@ -9090,7 +9090,9 @@ window.onload = function () {
   if (storage.getItemFromLocalStorage()) {
     var styleName = storage.getItemFromLocalStorage();
     homebody.classList.add(styleName);
-    _ViewHelper2.default.changeDropdownByValue(styleswicher, styleName);
+    if (styleswicher) {
+      _ViewHelper2.default.changeDropdownByValue(styleswicher, styleName);
+    }
   };
 };
 

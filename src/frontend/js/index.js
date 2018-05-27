@@ -14,7 +14,10 @@ window.onload = function(){
     if(storage.getItemFromLocalStorage()){
         let styleName = storage.getItemFromLocalStorage();
         homebody.classList.add(styleName);
-        ViewHelper.changeDropdownByValue(styleswicher,styleName);
+        if(styleswicher){
+            ViewHelper.changeDropdownByValue(styleswicher,styleName);
+        }
+
     };
 
 }
