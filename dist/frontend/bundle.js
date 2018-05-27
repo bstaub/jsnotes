@@ -9808,38 +9808,40 @@ var ControllerList = function () {
 
       if (dom.btnSortByImportance) {
         dom.btnSortByImportance.addEventListener('click', function () {
-          /*
-                  const allnotes = this.getAllNotesFromLocalStorage();
-                   console.log('Show all importance numbers: ',allnotes.map((item) => {
-                      return '<p>'+item.importance+'</p>';
-                  }));
-                   const filteredNote5 = allnotes.filter((item) => {
-                      return item.importance == 5;
-                  });
-                  const filteredNote4 = allnotes.filter((item) => {
-                      return item.importance == 4;
-                  });
-                  const filteredNote3 = allnotes.filter((item) => {
-                      return item.importance == 3;
-                  });
-                  const filteredNote2 = allnotes.filter((item) => {
-                      return item.importance == 2;
-                  });
-                  const filteredNote1 = allnotes.filter((item) => {
-                      return item.importance == 1;
-                  });
-                   const allnotesSortByImportance = [];
-                  allnotesSortByImportance.push(filteredNote5);
-                  allnotesSortByImportance.push(filteredNote4);
-                  allnotesSortByImportance.push(filteredNote3);
-                  allnotesSortByImportance.push(filteredNote2);
-                  allnotesSortByImportance.push(filteredNote1);
-                  console.log(allnotesSortByImportance);
-                  */
+
+          $(function () {
+            //code muss innerhalb jQuery Ready Function stehen!!
+            //console.log( "ready!" );
+            //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+            //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
+            //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
+
+            function sortNotesByImportanceDESC() {
+              $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
+            }
+
+            function sortImportanceDESC(a, b) {
+
+              var importance1 = $(a).find('.importance[data-importance]').data('importance');
+              var importance2 = $(b).find('.importance[data-importance]').data('importance');
+
+              return importance1 < importance2;
+            }
+
+            function sortImportanceASC(a, b) {
+
+              var importance1 = $(a).find('.importance[data-importance]').data('importance');
+              var importance2 = $(b).find('.importance[data-importance]').data('importance');
+
+              return importance1 > importance2;
+            }
+
+            sortNotesByImportanceDESC();
+          });
 
           // ToDo: Testing sort function!
 
-          var allnotes = _this.getAllNotesFromLocalStorage();
+          //const allnotes = this.getAllNotesFromLocalStorage();
           // console.log('vorher allnotes: ', allnotes);
 
           // const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
@@ -9848,24 +9850,25 @@ var ControllerList = function () {
           // const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
           // console.log('nachher allnotes: ',notesSortedByisFinished);
 
-          var notesSortedByisFinished = allnotes.sort(_ViewHelper2.default.dynamicSort('description')); // geht!!!
+          //const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
           // console.log('nachher allnotes: ', notesSortedByisFinished);
           // People.sort(dynamicSort("Name"));
 
 
-          $(function () {
-            // var $all_notes = $('.note');
-            // $('.note').sort(note_sort).appendTo('.item--main-content');
-            // $('.note').sort(note_sort);
+          //$(() => {
+          // var $all_notes = $('.note');
+          // $('.note').sort(note_sort).appendTo('.item--main-content');
+          // $('.note').sort(note_sort);
 
-            // callback for search..
-            // function note_sort(a, b) {
-            // return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
-            // return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
-            // console.log($(a));
-            // console.log($(a.innerHTML));
-            // }
-          });
+          // callback for search..
+          // function note_sort(a, b) {
+          // return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
+          // return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
+          // console.log($(a));
+          // console.log($(a.innerHTML));
+          // }
+          //});
+
         });
       }
 
@@ -20397,6 +20400,8 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + alias2(alias3((depth0 != null ? depth0.title : depth0), depth0))
     + "</p>\n                </div>\n                <div class=\"note__importance\">\n                    <div class=\"importance\" data-id=\""
     + alias2(alias3((depth0 != null ? depth0.id : depth0), depth0))
+    + "\" data-importance=\""
+    + alias2(alias3((depth0 != null ? depth0.importance : depth0), depth0))
     + "\">\n                        "
     + ((stack1 = __default(__webpack_require__(361)).call(alias1,(depth0 != null ? depth0.importance : depth0),{"name":"helpers/selectImportance","hash":{},"data":data})) != null ? stack1 : "")
     + "\n                    </div>\n                </div>\n            </div>\n            <textarea class=\"description\" name=\"description\" cols=\"30\" rows=\"6\" data-description-id=\""

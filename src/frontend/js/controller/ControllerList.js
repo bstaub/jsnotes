@@ -115,42 +115,44 @@ export default class ControllerList {
 
     if (dom.btnSortByImportance) {
       dom.btnSortByImportance.addEventListener('click', () => {
-        /*
-                const allnotes = this.getAllNotesFromLocalStorage();
 
-                console.log('Show all importance numbers: ',allnotes.map((item) => {
-                    return '<p>'+item.importance+'</p>';
-                }));
 
-                const filteredNote5 = allnotes.filter((item) => {
-                    return item.importance == 5;
-                });
-                const filteredNote4 = allnotes.filter((item) => {
-                    return item.importance == 4;
-                });
-                const filteredNote3 = allnotes.filter((item) => {
-                    return item.importance == 3;
-                });
-                const filteredNote2 = allnotes.filter((item) => {
-                    return item.importance == 2;
-                });
-                const filteredNote1 = allnotes.filter((item) => {
-                    return item.importance == 1;
-                });
+          $(function() {
+              //code muss innerhalb jQuery Ready Function stehen!!
+              //console.log( "ready!" );
+              //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+              //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
+              //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
 
-                const allnotesSortByImportance = [];
-                allnotesSortByImportance.push(filteredNote5);
-                allnotesSortByImportance.push(filteredNote4);
-                allnotesSortByImportance.push(filteredNote3);
-                allnotesSortByImportance.push(filteredNote2);
-                allnotesSortByImportance.push(filteredNote1);
-                console.log(allnotesSortByImportance);
-                */
+              function sortNotesByImportanceDESC(){
+                  $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
+              }
+
+              function sortImportanceDESC(a, b) {
+
+                  const importance1  = $(a).find('.importance[data-importance]').data('importance');
+                  const importance2 = $(b).find('.importance[data-importance]').data('importance');
+
+
+                  return importance1 < importance2;
+              }
+
+              function sortImportanceASC(a, b) {
+
+                  const importance1  = $(a).find('.importance[data-importance]').data('importance');
+                  const importance2 = $(b).find('.importance[data-importance]').data('importance');
+
+
+                  return importance1 > importance2;
+              }
+
+              sortNotesByImportanceDESC();
+          });
 
 
         // ToDo: Testing sort function!
 
-        const allnotes = this.getAllNotesFromLocalStorage();
+        //const allnotes = this.getAllNotesFromLocalStorage();
         // console.log('vorher allnotes: ', allnotes);
 
         // const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
@@ -159,12 +161,12 @@ export default class ControllerList {
         // const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
         // console.log('nachher allnotes: ',notesSortedByisFinished);
 
-        const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
+        //const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
         // console.log('nachher allnotes: ', notesSortedByisFinished);
         // People.sort(dynamicSort("Name"));
 
 
-        $(() => {
+        //$(() => {
           // var $all_notes = $('.note');
           // $('.note').sort(note_sort).appendTo('.item--main-content');
           // $('.note').sort(note_sort);
@@ -176,7 +178,13 @@ export default class ControllerList {
           // console.log($(a));
           // console.log($(a.innerHTML));
           // }
-        });
+        //});
+
+
+
+
+
+
       });
     }
 
