@@ -1,63 +1,60 @@
-export class Storage{
+/* global localStorage */
 
-    constructor(storageKey, noteObj) {
-        this.SESSION_STORE_KEY = storageKey;
-        this.noteObj = noteObj;
+export default class Storage {
+  constructor(storageKey, noteObj) {
+    this.SESSION_STORE_KEY = storageKey;
+    this.noteObj = noteObj;
+  }
+
+  saveNoteToLocalStorage() {
+    if (this.checkIfLocalStorageEmpty()) {
+      const firstnote = [];
+      firstnote.push(this.noteObj);
+      this.setItemToLocalStorage(firstnote);
+    } else {
+      this.appendOneNoteToLocalStorage(this.noteObj);
     }
+  }
 
-    saveNoteToLocalStorage(){
+  saveStyleToLocalStorage(style) {
+    this.setItemToLocalStorage(style);
+  }
 
-        if(this.checkIfLocalStorageEmpty()){
-            const firstnote = [];
-            firstnote.push(this.noteObj);
-            this.setItemToLocalStorage(firstnote);
-        }
-        else{
-            this.appendOneNoteToLocalStorage(this.noteObj);
-        }
+  getStyleFromLocalStorage() {
+    return this.getItemFromLocalStorage();
+  }
 
-    }
+  saveNoteIDToLocalStorage(id) {
+    this.setItemToLocalStorage(id);
+  }
 
-    saveStyleToLocalStorage(style){
-        this.setItemToLocalStorage(style);
-    }
+  getNoteIDFromLocalStorage() {
+    return this.getItemFromLocalStorage();
+  }
 
-    getStyleFromLocalStorage(){
-        return this.getItemFromLocalStorage();
-    }
+  appendOneNoteToLocalStorage(notes) {
+    const stored = this.getItemFromLocalStorage();
+    stored.push(notes);
+    localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(stored));
+  }
 
-    saveNoteIDToLocalStorage(id){
-        this.setItemToLocalStorage(id);
-    }
+  checkIfLocalStorageEmpty() {
+    return this.getItemFromLocalStorage() === null;
+  }
 
-    getNoteIDFromLocalStorage(){
-        return this.getItemFromLocalStorage();
-    }
+  getAllNotesFromLocalStorage() {
+    return this.getItemFromLocalStorage();
+  }
 
-    appendOneNoteToLocalStorage(notes){
-        const stored = this.getItemFromLocalStorage();
-        stored.push(notes);
-        localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(stored));
-    }
+  getItemFromLocalStorage() {
+    return JSON.parse(localStorage.getItem(this.SESSION_STORE_KEY));
+  }
 
-    checkIfLocalStorageEmpty(){
-        return this.getItemFromLocalStorage() === null;
-    }
+  setItemToLocalStorage(items) {
+    localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
+  }
 
-    getAllNotesFromLocalStorage(){
-        return this.getItemFromLocalStorage();
-    }
-
-    getItemFromLocalStorage(){
-        return JSON.parse(localStorage.getItem(this.SESSION_STORE_KEY));
-    }
-
-    setItemToLocalStorage(items){
-        localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
-    }
-
-    removeKeyFromLocalStorage(){
-        localStorage.removeItem(this.SESSION_STORE_KEY);
-    }
-
+  removeKeyFromLocalStorage() {
+    localStorage.removeItem(this.SESSION_STORE_KEY);
+  }
 }

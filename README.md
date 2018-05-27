@@ -17,7 +17,19 @@ npm i
 - npm 5.6.0 updated to 6.0.1
 - npm install font-awesome --save-dev
 - npm install jquery
-- npm install handlebars handlebars-loader path --save-dev 
+- npm install handlebars handlebars-loader --save-dev
+
+
+
+## Configure eslint in WebStorm
+
+- npm i eslint -D
+- configure eslint: https://medium.com/dailyjs/adding-eslint-to-your-project-7bd4feca35a8
+- npm run lint -- --init
+- https://stackoverflow.com/questions/38087660/eslintrc-throws-errors-when-extending-airbnb-config?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+- Settings ➝ Languages & Frameworks ➝ Code Quality Tools ➝ Eslint 
+- Preferences / Editor / Code Style / JavaScript -> Tab size: 2  (default 4)
+- npm run lint
 
 ## APIs
 

@@ -2358,9 +2358,9 @@ html {
 
 body {
   background-color: #ccc; }
-  body.style2 {
+  body.Style2 {
     background-color: #fff; }
-    body.style2 button {
+    body.Style2 button {
       background-color: yellow; }
 
 div.alert.success {

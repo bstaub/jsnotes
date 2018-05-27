@@ -9054,37 +9054,64 @@ module.exports = function (regExp, replace) {
 "use strict";
 
 
-var _ViewNew = __webpack_require__(329);
+__webpack_require__(329);
 
-var _Controller = __webpack_require__(332);
+var _ViewNew = __webpack_require__(331);
 
-var _ControllerList = __webpack_require__(334);
+var _ViewNew2 = _interopRequireDefault(_ViewNew);
 
-var _ViewList = __webpack_require__(336);
+var _Controller = __webpack_require__(334);
 
-__webpack_require__(360);
+var _Controller2 = _interopRequireDefault(_Controller);
+
+var _ControllerList = __webpack_require__(336);
+
+var _ControllerList2 = _interopRequireDefault(_ControllerList);
+
+var _ViewList = __webpack_require__(338);
+
+var _ViewList2 = _interopRequireDefault(_ViewList);
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+var _ViewHelper = __webpack_require__(332);
+
+var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+window.onload = function () {
+  var homebody = document.getElementsByTagName('body')[0];
+  var styleswicher = document.getElementById('dropStyleSwitcher');
+
+  var storage = new _Storage2.default('styleKey');
+  if (storage.getItemFromLocalStorage()) {
+    var styleName = storage.getItemFromLocalStorage();
+    homebody.classList.add(styleName);
+    _ViewHelper2.default.changeDropdownByValue(styleswicher, styleName);
+  };
+};
 
 function start() {
+  var domnew = _ViewNew2.default.queryAllDomObjects();
+  var domlist = _ViewList2.default.queryAllDomObjects();
 
-    var viewnew = new _ViewNew.ViewNew();
-    var domnew = viewnew.queryAllDomObjects();
+  if (domlist) {
+    var viewlist = new _ViewList2.default();
+    viewlist.generateListView(domlist);
+  }
 
-    var viewlist = new _ViewList.ViewList();
-    var domlist = viewlist.queryAllDomObjects();
+  var controller = new _Controller2.default();
+  if (domnew) {
+    controller.registerAllEventListener(domnew);
+  }
 
-    if (domlist) {
-        viewlist.generateListView(domlist);
-    }
-
-    var controller = new _Controller.Controller();
-    if (domnew) {
-        controller.registerAllEventListener(domnew);
-    }
-
-    var controllerlist = new _ControllerList.ControllerList();
-    if (domlist) {
-        controllerlist.registerAllEventListener(domlist);
-    }
+  var controllerlist = new _ControllerList2.default();
+  if (domlist) {
+    controllerlist.registerAllEventListener(domlist);
+  }
 }
 
 start();
@@ -9093,291 +9120,10 @@ start();
 /* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ViewNew = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ViewHelper = __webpack_require__(330);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ViewNew = exports.ViewNew = function () {
-    function ViewNew() {
-        _classCallCheck(this, ViewNew);
-    }
-
-    _createClass(ViewNew, [{
-        key: "start",
-        value: function start() {
-            console.log('view is connected');
-        }
-    }, {
-        key: "queryAllDomObjects",
-        value: function queryAllDomObjects() {
-            var DOM = {
-                title: document.querySelector("#jsTitle"),
-                description: document.querySelector("#jsDescription"),
-                importance: document.querySelector('#jsdropImportance'),
-                stars: document.querySelectorAll('.importance span'),
-                datepicker: document.querySelector('#jsDatepicker'),
-                speichern: document.querySelector("#jsSpeichern"),
-                cancel: document.querySelector("#jsCancel")
-            };
-
-            _ViewHelper.ViewHelper.wichtigkeit(DOM);
-
-            if (_ViewHelper.ViewHelper.checkDomNoNullValueExist(DOM)) {
-                return DOM;
-            }
-        }
-    }]);
-
-    return ViewNew;
-}();
+// extracted by mini-css-extract-plugin
 
 /***/ }),
-/* 330 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ViewHelper = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Storage = __webpack_require__(331);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ViewHelper = exports.ViewHelper = function () {
-    function ViewHelper() {
-        _classCallCheck(this, ViewHelper);
-
-        console.log(StaticMethodCall.staticMethod());
-    }
-
-    _createClass(ViewHelper, null, [{
-        key: "staticMethod",
-        value: function staticMethod() {
-            return 'static method has been called.';
-        }
-    }, {
-        key: "checkDomNoNullValueExist",
-        value: function checkDomNoNullValueExist(dom) {
-            if (Object.values(dom).indexOf(null) == -1) {
-                return true;
-            }
-        }
-    }, {
-        key: "wichtigkeitClearAll",
-        value: function wichtigkeitClearAll(stars) {
-            stars.forEach(function (greyicon) {
-                greyicon.classList.remove("yellow");
-            });
-        }
-    }, {
-        key: "wichtigkeit",
-        value: function wichtigkeit(_ref) {
-            var stars = _ref.stars,
-                importance = _ref.importance;
-
-            if (stars && importance) {
-                stars.forEach(function (item, index) {
-                    item.addEventListener('click', function (e) {
-                        ViewHelper.wichtigkeitClearAll(stars);
-                        importance.options.selectedIndex = index;
-                        e.target.classList.toggle("yellow");
-                        for (var i = 0; i < index; i++) {
-                            stars[i].classList.add("yellow");
-                        }
-                    });
-                });
-            }
-        }
-    }, {
-        key: "styleSwitcher",
-        value: function styleSwitcher() {
-            var dropStyleSwitcher = document.getElementById('dropStyleSwitcher');
-            var homebody = document.getElementsByTagName('body')[0];
-            if (dropStyleSwitcher) {
-                dropStyleSwitcher.addEventListener('change', function () {
-                    //((dropStyleSwitcher.value).toString() === "styleWhite") ? homebody.classList.add("style2") : homebody.classList.remove("style2");
-
-                    var storage = new _Storage.Storage('styleKey');
-
-                    if (dropStyleSwitcher.value.toString() === 'styleWhite') {
-                        homebody.classList.add('style2');
-                        storage.saveStyleToLocalStorage('style2');
-                    } else {
-                        homebody.classList.remove('style2');
-                        storage.saveStyleToLocalStorage('default');
-                    }
-                });
-            }
-        }
-    }, {
-        key: "showAlert3Seconds",
-        value: function showAlert3Seconds(message, alert) {
-            //Create DOM Element for Alert Message
-            var div = document.createElement('div');
-            var note = document.querySelector('.note');
-            div.className = alert;
-            var alertSuccess = document.createTextNode(message);
-            div.appendChild(alertSuccess);
-            document.querySelector('.detail').insertBefore(div, note); //https://www.mediaevent.de/javascript/insertbefore.html
-            div.style.display = 'block'; //show div again
-            setTimeout(function () {
-                div.style.display = 'none';
-                div.innerHTML = '';
-            }, 3000);
-        }
-    }, {
-        key: "selectimportance",
-        value: function selectimportance(id) {
-            switch (id) {
-                case 1:
-                    return '<span id="1" class="yellow"></span><span id="2"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
-                    break;
-                case 2:
-                    return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
-                    break;
-                case 3:
-                    return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4"></span><span id="5"></span>';
-                    break;
-                case 4:
-                    return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5"></span>';
-                    break;
-                case 5:
-                    return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5" class="yellow"></span>';
-                    break;
-            }
-        }
-    }, {
-        key: "markStars",
-        value: function markStars(id, lastStar) {
-            var totalstars = document.querySelectorAll("[data-id=\"" + id + "\"] span");
-            totalstars.forEach(function (item) {
-                if (item.id <= lastStar) {
-                    //getAttribute('id')
-                    item.classList.add('yellow');
-                } else {
-                    item.classList.remove('yellow');
-                }
-            });
-        }
-    }, {
-        key: "sortItemsByisFinished",
-        value: function sortItemsByisFinished(obj_arr) {
-            //zuoberst kommen die nicht erledigten notes zurück!!
-            return obj_arr.sort(function (a, b) {
-                //return statement nicht vergessen!!!
-                if (!a.isFinished && b.isFinished) {
-                    return -1;
-                } else if (!b.isFinished && a.isFinished) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-        }
-    }, {
-        key: "sortItemsByImportance",
-        value: function sortItemsByImportance(obj_arr) {
-            return obj_arr.sort(function (a, b) {
-                //sortiert mit Nummern noch nicht richtig!!!
-
-                //console.log('a: ',a, a.importance);
-                //console.log('b: ',b, b.importance);
-                if (!a.importance && b.importance) {
-                    return -1;
-                } else if (!b.importance && a.importance) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-        }
-
-        /*
-        static sortItemsByObjKey(obj_arr,key){  //braucht obj_key!
-            return obj_arr.sort((a, b) => {   //key ist sehr warscheinlich kein object, daher geht dies nicht!
-                 console.log('a: ',a, key);
-                console.log('b: ',b, key);
-                 if(!a.key && b.key){
-                    return -1;
-                }else if (!b.key && a.key){
-                    return 1;
-                }else{
-                    return 0;
-                }
-            });
-        }
-        */
-
-    }, {
-        key: "sortItemsByObjKey",
-        value: function sortItemsByObjKey(obj_arr, key) {
-            //umbau, damit es keine object keys mehr braucht == ist nicht mehr strict ===
-            return obj_arr.sort(function (a, b) {
-                //key ist sehr warscheinlich kein object, daher geht dies nicht!
-
-                console.log('a: ', a, Object.keys(obj_arr), a.isFinished, a.key, key);
-                console.log('b: ', b, Object.values(obj_arr), b.isFinished, b.key, key);
-
-                if (a.key != key && b.key == key) {
-                    return -1;
-                } else if (b.key != key && a.key == key) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-        }
-
-        //https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-
-    }, {
-        key: "compare",
-        value: function compare(a, b) {
-            if (a.last_nom < b.last_nom) return -1;
-            if (a.last_nom > b.last_nom) return 1;
-            return 0;
-        }
-        //objs.sort(compare);
-
-
-    }, {
-        key: "dynamicSort",
-        value: function dynamicSort(property) {
-            var sortOrder = 1;
-            if (property[0] === "-") {
-                sortOrder = -1;
-                property = property.substr(1);
-            }
-            return function (a, b) {
-                var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-                return result * sortOrder;
-            };
-        }
-        //People.sort(dynamicSort("Name"));
-
-
-    }]);
-
-    return ViewHelper;
-}();
-
-/***/ }),
+/* 330 */,
 /* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9385,89 +9131,47 @@ var ViewHelper = exports.ViewHelper = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
+
+var _ViewHelper = __webpack_require__(332);
+
+var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Storage = exports.Storage = function () {
-    function Storage(storageKey, noteObj) {
-        _classCallCheck(this, Storage);
+var ViewNew = function () {
+  function ViewNew() {
+    _classCallCheck(this, ViewNew);
+  }
 
-        this.SESSION_STORE_KEY = storageKey;
-        this.noteObj = noteObj;
+  _createClass(ViewNew, null, [{
+    key: 'queryAllDomObjects',
+    value: function queryAllDomObjects() {
+      var DOM = {
+        title: document.querySelector('#jsTitle'),
+        description: document.querySelector('#jsDescription'),
+        importance: document.querySelector('#jsdropImportance'),
+        stars: document.querySelectorAll('.importance span'),
+        datepicker: document.querySelector('#jsDatepicker'),
+        speichern: document.querySelector('#jsSpeichern'),
+        cancel: document.querySelector('#jsCancel')
+      };
+
+      _ViewHelper2.default.wichtigkeit(DOM);
+
+      return DOM;
     }
+  }]);
 
-    _createClass(Storage, [{
-        key: "saveNoteToLocalStorage",
-        value: function saveNoteToLocalStorage() {
-
-            if (this.checkIfLocalStorageEmpty()) {
-                var firstnote = [];
-                firstnote.push(this.noteObj);
-                this.setItemToLocalStorage(firstnote);
-            } else {
-                this.appendOneNoteToLocalStorage(this.noteObj);
-            }
-        }
-    }, {
-        key: "saveStyleToLocalStorage",
-        value: function saveStyleToLocalStorage(style) {
-            this.setItemToLocalStorage(style);
-        }
-    }, {
-        key: "getStyleFromLocalStorage",
-        value: function getStyleFromLocalStorage() {
-            return this.getItemFromLocalStorage();
-        }
-    }, {
-        key: "saveNoteIDToLocalStorage",
-        value: function saveNoteIDToLocalStorage(id) {
-            this.setItemToLocalStorage(id);
-        }
-    }, {
-        key: "getNoteIDFromLocalStorage",
-        value: function getNoteIDFromLocalStorage() {
-            return this.getItemFromLocalStorage();
-        }
-    }, {
-        key: "appendOneNoteToLocalStorage",
-        value: function appendOneNoteToLocalStorage(notes) {
-            var stored = this.getItemFromLocalStorage();
-            stored.push(notes);
-            localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(stored));
-        }
-    }, {
-        key: "checkIfLocalStorageEmpty",
-        value: function checkIfLocalStorageEmpty() {
-            return this.getItemFromLocalStorage() === null;
-        }
-    }, {
-        key: "getAllNotesFromLocalStorage",
-        value: function getAllNotesFromLocalStorage() {
-            return this.getItemFromLocalStorage();
-        }
-    }, {
-        key: "getItemFromLocalStorage",
-        value: function getItemFromLocalStorage() {
-            return JSON.parse(localStorage.getItem(this.SESSION_STORE_KEY));
-        }
-    }, {
-        key: "setItemToLocalStorage",
-        value: function setItemToLocalStorage(items) {
-            localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
-        }
-    }, {
-        key: "removeKeyFromLocalStorage",
-        value: function removeKeyFromLocalStorage() {
-            localStorage.removeItem(this.SESSION_STORE_KEY);
-        }
-    }]);
-
-    return Storage;
+  return ViewNew;
 }();
+
+exports.default = ViewNew;
 
 /***/ }),
 /* 332 */
@@ -9477,120 +9181,239 @@ var Storage = exports.Storage = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.Controller = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
 
-var _Storage = __webpack_require__(331);
 
-var _ViewHelper = __webpack_require__(330);
+var _Storage = __webpack_require__(333);
 
-var _Note = __webpack_require__(333);
+var _Storage2 = _interopRequireDefault(_Storage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Controller = exports.Controller = function () {
-    function Controller() {
-        _classCallCheck(this, Controller);
+var ViewHelper = function () {
+  function ViewHelper() {
+    _classCallCheck(this, ViewHelper);
+  }
+
+  _createClass(ViewHelper, null, [{
+    key: 'checkDomNoNullValueExist',
+    value: function checkDomNoNullValueExist(dom) {
+      if (Object.values(dom).indexOf(null) == -1) {
+        return true;
+      }
+    }
+  }, {
+    key: 'changeDropdownByValue',
+    value: function changeDropdownByValue(selector, value) {
+      var opts = selector.options.length;
+      for (var i = 0; i < opts; i++) {
+        if (selector.options[i].value == value) {
+          selector.options[i].selected = true;
+          break;
+        }
+      }
+    }
+  }, {
+    key: 'wichtigkeitClearAll',
+    value: function wichtigkeitClearAll(stars) {
+      stars.forEach(function (greyicon) {
+        greyicon.classList.remove('yellow');
+      });
+    }
+  }, {
+    key: 'wichtigkeit',
+    value: function wichtigkeit(_ref) {
+      var stars = _ref.stars,
+          importance = _ref.importance;
+
+      if (stars && importance) {
+        stars.forEach(function (item, index) {
+          item.addEventListener('click', function (e) {
+            ViewHelper.wichtigkeitClearAll(stars);
+            importance.options.selectedIndex = index;
+            e.target.classList.toggle('yellow');
+            for (var i = 0; i < index; i++) {
+              stars[i].classList.add('yellow');
+            }
+          });
+        });
+      }
+    }
+  }, {
+    key: 'styleSwitcher',
+    value: function styleSwitcher() {
+      var dropStyleSwitcher = document.getElementById('dropStyleSwitcher');
+      var homebody = document.getElementsByTagName('body')[0];
+      if (dropStyleSwitcher) {
+        dropStyleSwitcher.addEventListener('change', function () {
+          var storage = new _Storage2.default('styleKey');
+
+          if (dropStyleSwitcher.value.toString() === 'Style2') {
+            homebody.classList.add('Style2');
+            storage.saveStyleToLocalStorage('Style2');
+          } else {
+            homebody.classList.remove('Style2');
+            storage.saveStyleToLocalStorage('Style1');
+          }
+        });
+      }
+    }
+  }, {
+    key: 'showAlert3Seconds',
+    value: function showAlert3Seconds(message, alert) {
+      // Create DOM Element for Alert Message
+      var div = document.createElement('div');
+      var note = document.querySelector('.note');
+      div.className = alert;
+      var alertSuccess = document.createTextNode(message);
+      div.appendChild(alertSuccess);
+      document.querySelector('.detail').insertBefore(div, note); // https://www.mediaevent.de/javascript/insertbefore.html
+      div.style.display = 'block'; // show div again
+      setTimeout(function () {
+        div.style.display = 'none';
+        div.innerHTML = '';
+      }, 3000);
+    }
+  }, {
+    key: 'selectimportance',
+    value: function selectimportance(id) {
+      switch (id) {
+        case 1:
+          return '<span id="1" class="yellow"></span><span id="2"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
+          break;
+        case 2:
+          return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
+          break;
+        case 3:
+          return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4"></span><span id="5"></span>';
+          break;
+        case 4:
+          return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5"></span>';
+          break;
+        case 5:
+          return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5" class="yellow"></span>';
+          break;
+      }
+    }
+  }, {
+    key: 'markStars',
+    value: function markStars(id, lastStar) {
+      var totalstars = document.querySelectorAll('[data-id="' + id + '"] span');
+      totalstars.forEach(function (item) {
+        if (item.id <= lastStar) {
+          // getAttribute('id')
+          item.classList.add('yellow');
+        } else {
+          item.classList.remove('yellow');
+        }
+      });
+    }
+  }, {
+    key: 'sortItemsByisFinished',
+    value: function sortItemsByisFinished(objArr) {
+      // zuoberst kommen die nicht erledigten notes zurück!!
+      return objArr.sort(function (a, b) {
+        // return statement nicht vergessen!!!
+        if (!a.isFinished && b.isFinished) {
+          return -1;
+        } else if (!b.isFinished && a.isFinished) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+  }, {
+    key: 'sortItemsByImportance',
+    value: function sortItemsByImportance(objArr) {
+      return objArr.sort(function (a, b) {
+        // sortiert mit Nummern noch nicht richtig!!!
+        // console.log('a: ',a, a.importance);
+        // console.log('b: ',b, b.importance);
+        if (!a.importance && b.importance) {
+          return -1;
+        } else if (!b.importance && a.importance) {
+          return 1;
+        }
+        return 0;
+      });
     }
 
-    _createClass(Controller, [{
-        key: "start",
-        value: function start() {
-            console.log('controller is connected');
-        }
-    }, {
-        key: "registerAllEventListener",
-        value: function registerAllEventListener(dom) {
-            var _this = this;
+    /*
+      static sortItemsByObjKey(objArr,key){  //braucht obj_key!
+          return objArr.sort((a, b) => {   //key ist sehr warscheinlich kein object, daher geht dies nicht!
+               console.log('a: ',a, key);
+              console.log('b: ',b, key);
+               if(!a.key && b.key){
+                  return -1;
+              }else if (!b.key && a.key){
+                  return 1;
+              }else{
+                  return 0;
+              }
+          });
+      }
+      */
 
-            if (dom.speichern) {
-                dom.speichern.addEventListener('click', function () {
-                    console.log('speichern, clicked!');
+  }, {
+    key: 'sortItemsByObjKey',
+    value: function sortItemsByObjKey(objArr, key) {
+      // umbau, damit es keine object keys mehr braucht == ist nicht mehr strict ===
+      return objArr.sort(function (a, b) {
+        // key ist sehr warscheinlich kein object, daher geht dies nicht!
+        // console.log('a: ', a, Object.keys(objArr), a.isFinished, a.key, key);
+        // console.log('b: ', b, Object.values(objArr), b.isFinished, b.key, key);
 
-                    var checkIfEmpty = _this.checkIfNoEmptyFields(dom);
-                    if (checkIfEmpty) {
+        if (a.key != key && b.key == key) {
+          return -1;
+        } else if (b.key != key && a.key == key) {
+          return 1;
+        }
+        return 0;
+      });
+    }
 
-                        var noteDto = _this.buildNewNoteEntry(dom);
-                        var storage = new _Storage.Storage('notesKey', noteDto);
-                        storage.saveNoteToLocalStorage();
-                        _ViewHelper.ViewHelper.showAlert3Seconds('Eintrag erfolgreich eingetragen', 'alert success');
-                    }
-                });
-            }
+    // https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
-            if (dom.cancel) {
-                dom.cancel.addEventListener('click', function () {
-                    console.log('cancel, clicked!');
+  }, {
+    key: 'compare',
+    value: function compare(a, b) {
+      if (a.last_nom < b.last_nom) {
+        return -1;
+      }
+      if (a.last_nom > b.last_nom) {
+        return 1;
+      }
+      return 0;
+    }
+    // objs.sort(compare);
 
-                    _this.clearAllImputs(dom);
-                });
-            }
-        }
-    }, {
-        key: "getAllNotesFromLocalStorage",
-        value: function getAllNotesFromLocalStorage() {
-            var storage = new _Storage.Storage('notesKey');
-            return storage.getAllNotesFromLocalStorage();
-        }
-    }, {
-        key: "clearAllImputs",
-        value: function clearAllImputs(dom) {
-            dom.title.value = "";
-            dom.description.value = "";
-            dom.importance.value = "";
-            dom.datepicker.value = "";
-            _ViewHelper.ViewHelper.wichtigkeitClearAll(dom.stars);
-        }
-    }, {
-        key: "checkIfNoEmptyFields",
-        value: function checkIfNoEmptyFields(dom) {
-            if (dom.title.value != "" && dom.description.value != "" && dom.importance.value != "" && dom.datepicker.value != "") {
-                return true;
-            }
-        }
-    }, {
-        key: "saveIDToLocalStorage",
-        value: function saveIDToLocalStorage(id) {
-            var storage = new _Storage.Storage('noteKeyLastID');
-            storage.saveNoteIDToLocalStorage(id);
-        }
-    }, {
-        key: "getIDFromLocalStorage",
-        value: function getIDFromLocalStorage() {
-            var storage = new _Storage.Storage('noteKeyLastID');
-            return storage.getNoteIDFromLocalStorage();
-        }
-    }, {
-        key: "getNewUniqueNoteID",
-        value: function getNewUniqueNoteID() {
-            if (this.getIDFromLocalStorage() === null) {
-                this.saveIDToLocalStorage(1);
-                return 1;
-            } else {
-                var id = this.getIDFromLocalStorage();
-                id++;
-                this.saveIDToLocalStorage(id);
-                return this.getIDFromLocalStorage();
-            }
-        }
-    }, {
-        key: "buildNewNoteEntry",
-        value: function buildNewNoteEntry(_ref) {
-            var title = _ref.title,
-                description = _ref.description,
-                importance = _ref.importance,
-                datepicker = _ref.datepicker;
 
-            var isFinished = false;
-            return new _Note.Note(this.getNewUniqueNoteID(), title.value, description.value, importance.value, datepicker.value, isFinished);
-        }
-    }]);
+  }, {
+    key: 'dynamicSort',
+    value: function dynamicSort(property) {
+      var sortOrder = 1;
+      if (property[0] === '-') {
+        sortOrder = -1;
+        property = property.substr(1);
+      }
+      return function (a, b) {
+        var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+        return result * sortOrder;
+      };
+    }
+    // People.sort(dynamicSort("Name"));
 
-    return Controller;
+  }]);
+
+  return ViewHelper;
 }();
+
+exports.default = ViewHelper;
 
 /***/ }),
 /* 333 */
@@ -9600,300 +9423,514 @@ var Controller = exports.Controller = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Note = exports.Note = function Note(id, title, description, importance, datepicker, isFinished) {
-    _classCallCheck(this, Note);
+/* global localStorage */
 
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.importance = importance;
-    this.datepicker = datepicker;
-    this.isFinished = isFinished;
-};
+var Storage = function () {
+  function Storage(storageKey, noteObj) {
+    _classCallCheck(this, Storage);
+
+    this.SESSION_STORE_KEY = storageKey;
+    this.noteObj = noteObj;
+  }
+
+  _createClass(Storage, [{
+    key: "saveNoteToLocalStorage",
+    value: function saveNoteToLocalStorage() {
+      if (this.checkIfLocalStorageEmpty()) {
+        var firstnote = [];
+        firstnote.push(this.noteObj);
+        this.setItemToLocalStorage(firstnote);
+      } else {
+        this.appendOneNoteToLocalStorage(this.noteObj);
+      }
+    }
+  }, {
+    key: "saveStyleToLocalStorage",
+    value: function saveStyleToLocalStorage(style) {
+      this.setItemToLocalStorage(style);
+    }
+  }, {
+    key: "getStyleFromLocalStorage",
+    value: function getStyleFromLocalStorage() {
+      return this.getItemFromLocalStorage();
+    }
+  }, {
+    key: "saveNoteIDToLocalStorage",
+    value: function saveNoteIDToLocalStorage(id) {
+      this.setItemToLocalStorage(id);
+    }
+  }, {
+    key: "getNoteIDFromLocalStorage",
+    value: function getNoteIDFromLocalStorage() {
+      return this.getItemFromLocalStorage();
+    }
+  }, {
+    key: "appendOneNoteToLocalStorage",
+    value: function appendOneNoteToLocalStorage(notes) {
+      var stored = this.getItemFromLocalStorage();
+      stored.push(notes);
+      localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(stored));
+    }
+  }, {
+    key: "checkIfLocalStorageEmpty",
+    value: function checkIfLocalStorageEmpty() {
+      return this.getItemFromLocalStorage() === null;
+    }
+  }, {
+    key: "getAllNotesFromLocalStorage",
+    value: function getAllNotesFromLocalStorage() {
+      return this.getItemFromLocalStorage();
+    }
+  }, {
+    key: "getItemFromLocalStorage",
+    value: function getItemFromLocalStorage() {
+      return JSON.parse(localStorage.getItem(this.SESSION_STORE_KEY));
+    }
+  }, {
+    key: "setItemToLocalStorage",
+    value: function setItemToLocalStorage(items) {
+      localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
+    }
+  }, {
+    key: "removeKeyFromLocalStorage",
+    value: function removeKeyFromLocalStorage() {
+      localStorage.removeItem(this.SESSION_STORE_KEY);
+    }
+  }]);
+
+  return Storage;
+}();
+
+exports.default = Storage;
 
 /***/ }),
 /* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {
+
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.ControllerList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Storage = __webpack_require__(331);
+var _Storage = __webpack_require__(333);
 
-var _ViewHelper = __webpack_require__(330);
+var _Storage2 = _interopRequireDefault(_Storage);
 
-var _Controller = __webpack_require__(332);
+var _ViewHelper = __webpack_require__(332);
 
-var _ViewList = __webpack_require__(336);
+var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
+
+var _Note = __webpack_require__(335);
+
+var _Note2 = _interopRequireDefault(_Note);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ControllerList = exports.ControllerList = function () {
-    function ControllerList() {
-        _classCallCheck(this, ControllerList);
+var Controller = function () {
+  function Controller() {
+    _classCallCheck(this, Controller);
+  }
+
+  _createClass(Controller, [{
+    key: 'registerAllEventListener',
+    value: function registerAllEventListener(dom) {
+      var _this = this;
+
+      if (dom.speichern) {
+        dom.speichern.addEventListener('click', function () {
+          var checkIfEmpty = _this.checkIfNoEmptyFields(dom);
+          if (checkIfEmpty) {
+            var noteDto = _this.buildNewNoteEntry(dom);
+            var storage = new _Storage2.default('notesKey', noteDto);
+            storage.saveNoteToLocalStorage();
+            _ViewHelper2.default.showAlert3Seconds('Eintrag erfolgreich eingetragen', 'alert success');
+          }
+        });
+      }
+
+      if (dom.cancel) {
+        dom.cancel.addEventListener('click', function () {
+          _this.clearAllImputs(dom);
+        });
+      }
     }
+  }, {
+    key: 'getAllNotesFromLocalStorage',
+    value: function getAllNotesFromLocalStorage() {
+      var storage = new _Storage2.default('notesKey');
+      return storage.getAllNotesFromLocalStorage();
+    }
+  }, {
+    key: 'clearAllImputs',
+    value: function clearAllImputs(dom) {
+      dom.title.value = '';
+      dom.description.value = '';
+      dom.importance.value = '';
+      dom.datepicker.value = '';
+      _ViewHelper2.default.wichtigkeitClearAll(dom.stars);
+    }
+  }, {
+    key: 'checkIfNoEmptyFields',
+    value: function checkIfNoEmptyFields(dom) {
+      if (dom.title.value !== '' && dom.description.value !== '' && dom.importance.value !== '' && dom.datepicker.value !== '') {
+        return true;
+      }
+    }
+  }, {
+    key: 'saveIDToLocalStorage',
+    value: function saveIDToLocalStorage(id) {
+      var storage = new _Storage2.default('noteKeyLastID');
+      storage.saveNoteIDToLocalStorage(id);
+    }
+  }, {
+    key: 'getIDFromLocalStorage',
+    value: function getIDFromLocalStorage() {
+      var storage = new _Storage2.default('noteKeyLastID');
+      return storage.getNoteIDFromLocalStorage();
+    }
+  }, {
+    key: 'getNewUniqueNoteID',
+    value: function getNewUniqueNoteID() {
+      if (this.getIDFromLocalStorage() === null) {
+        this.saveIDToLocalStorage(1);
+        return 1;
+      }
+      var id = this.getIDFromLocalStorage();
+      id++;
+      this.saveIDToLocalStorage(id);
+      return this.getIDFromLocalStorage();
+    }
+  }, {
+    key: 'buildNewNoteEntry',
+    value: function buildNewNoteEntry(_ref) {
+      var title = _ref.title,
+          description = _ref.description,
+          importance = _ref.importance,
+          datepicker = _ref.datepicker;
 
-    _createClass(ControllerList, [{
-        key: "registerAllEventListener",
-        value: function registerAllEventListener(dom) {
-            var _this = this;
+      var isFinished = false;
+      return new _Note2.default(this.getNewUniqueNoteID(), title.value, description.value, importance.value, datepicker.value, isFinished);
+    }
+  }]);
 
-            if (dom.dynamicList) {
-                dom.dynamicList.addEventListener('click', function (e) {
-                    //console.log("dynamiclist eventobjekt: ",e);
-
-                    if (e.target.id === "listDelete") {
-
-                        //Remove Note from Lokalstorage
-                        var allnotes = _this.getAllNotesFromLocalStorage();
-
-                        var filteredNotes = allnotes.filter(function (item) {
-                            return item.id != e.target.dataset.id;
-                        });
-
-                        var storage = new _Storage.Storage('notesKey');
-                        storage.removeKeyFromLocalStorage();
-                        storage.setItemToLocalStorage(filteredNotes);
-
-                        //Remove Note From GUI
-                        e.target.parentElement.parentElement.remove();
-                    }
-
-                    if (e.target.id === "listEdit") {
-
-                        //Enable Textarea Field --> disabled="disabled
-                        var id = e.target.dataset.id;
-                        document.querySelector("[data-description-id=\"" + id + "\"]").removeAttribute("disabled");
-
-                        var _allnotes = _this.getAllNotesFromLocalStorage();
-
-                        var filteredNote = _allnotes.filter(function (item) {
-                            return item.id == id;
-                        });
-
-                        if (e.target.innerHTML == 'Edit') {
-                            e.target.innerHTML = 'Save';
-                            document.querySelector("[data-description-id=\"" + id + "\"]").classList.add('redborder');
-                        } else if (e.target.innerHTML == 'Save') {
-                            e.target.innerHTML = 'Edit';
-                            document.querySelector("[data-description-id=\"" + id + "\"]").classList.remove('redborder');
-                        }
-
-                        //console.log("traverse: ",e.target.parentElement.parentElement.getElementsByClassName('listTitleDescriptionImportance')[0].getElementsByClassName('description')[0].value);
-                        //console.log("filteredNote[0].description: ",filteredNote[0].description);
-                        //console.log("zuweisung: ",document.querySelector(`[data-description-id="${id}"]`).value);
-                        //filteredNote[0].description = "Testing, dies geht!!!";
-                        filteredNote[0].description = document.querySelector("[data-description-id=\"" + id + "\"]").value; //nicht .innerHMTL!!!!
-
-                        var position_startindex = _allnotes.findIndex(function (item) {
-                            return item.id == id;
-                        });
-
-                        _allnotes.splice(position_startindex, 1, filteredNote[0]);
-
-                        var _storage = new _Storage.Storage('notesKey');
-                        _storage.removeKeyFromLocalStorage();
-                        _storage.setItemToLocalStorage(_allnotes);
-                    }
-
-                    if (e.target.id === "checkBoxisFinished") {
-
-                        var _allnotes2 = _this.getAllNotesFromLocalStorage();
-
-                        var _filteredNote = _allnotes2.filter(function (item) {
-                            return item.id == e.target.dataset.id;
-                        });
-
-                        //Toggle Finished Status
-                        _filteredNote[0].isFinished ? _filteredNote[0].isFinished = false : _filteredNote[0].isFinished = true;
-                        var _position_startindex = _allnotes2.findIndex(function (item) {
-                            return item.id == e.target.dataset.id;
-                        }); //old way e.target.getAttribute("data-id")
-
-                        //https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-                        _allnotes2.splice(_position_startindex, 1, _filteredNote[0]);
-
-                        var _storage2 = new _Storage.Storage('notesKey');
-                        _storage2.removeKeyFromLocalStorage();
-                        _storage2.setItemToLocalStorage(_allnotes2);
-                    }
-
-                    if (e.target.id == "1") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-                        ControllerList.saveStarList(e);
-                    }
-                    if (e.target.id == "2") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-                        ControllerList.saveStarList(e);
-                    }
-                    if (e.target.id == "3") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-                        ControllerList.saveStarList(e);
-                    }
-                    if (e.target.id == "4") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-                        ControllerList.saveStarList(e);
-                    }
-                    if (e.target.id == "5") {
-                        _ViewHelper.ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-                        ControllerList.saveStarList(e);
-                    }
-                });
-            }
-
-            if (dom.btnSortByFinishdate) {
-                dom.btnSortByFinishdate.addEventListener('click', function () {
-                    console.log('btnSortByFinishdate');
-                });
-            }
-
-            if (dom.btnSortByCreateddate) {
-                dom.btnSortByCreateddate.addEventListener('click', function () {
-                    console.log('btnSortByCreateddate');
-                });
-            }
-
-            if (dom.btnSortByImportance) {
-                dom.btnSortByImportance.addEventListener('click', function () {
-                    console.log('btnSortByImportance');
-
-                    /*
-                    const allnotes = this.getAllNotesFromLocalStorage();
-                     console.log('Show all importance numbers: ',allnotes.map((item) => {
-                        return '<p>'+item.importance+'</p>';
-                    }));
-                     const filteredNote5 = allnotes.filter((item) => {
-                        return item.importance == 5;
-                    });
-                    const filteredNote4 = allnotes.filter((item) => {
-                        return item.importance == 4;
-                    });
-                    const filteredNote3 = allnotes.filter((item) => {
-                        return item.importance == 3;
-                    });
-                    const filteredNote2 = allnotes.filter((item) => {
-                        return item.importance == 2;
-                    });
-                    const filteredNote1 = allnotes.filter((item) => {
-                        return item.importance == 1;
-                    });
-                     const allnotesSortByImportance = [];
-                    allnotesSortByImportance.push(filteredNote5);
-                    allnotesSortByImportance.push(filteredNote4);
-                    allnotesSortByImportance.push(filteredNote3);
-                    allnotesSortByImportance.push(filteredNote2);
-                    allnotesSortByImportance.push(filteredNote1);
-                    console.log(allnotesSortByImportance);
-                    */
-
-                    //ToDo: Testing sort function!
-
-                    var allnotes = _this.getAllNotesFromLocalStorage();
-                    console.log('vorher allnotes: ', allnotes);
-
-                    //const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
-                    //console.log(notesSortedByisFinished);
-
-                    //const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
-                    //console.log('nachher allnotes: ',notesSortedByisFinished);
-
-                    var notesSortedByisFinished = allnotes.sort(_ViewHelper.ViewHelper.dynamicSort('description')); //geht!!!
-                    console.log('nachher allnotes: ', notesSortedByisFinished);
-                    //People.sort(dynamicSort("Name"));
-
-
-                    $(function () {
-                        //var $all_notes = $('.note');
-                        //$('.note').sort(note_sort).appendTo('.item--main-content');
-                        //$('.note').sort(note_sort);
-
-                        //callback for search..
-                        //function note_sort(a, b) {
-                        //return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
-                        //return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
-                        //console.log($(a));
-                        //console.log($(a.innerHTML));
-                        //}
-                    });
-                });
-            }
-
-            if (dom.btnShowFinished) {
-                dom.btnShowFinished.addEventListener('click', function (e) {
-
-                    /*
-                    const allnotes = this.getAllNotesFromLocalStorage();
-                     const filteredNote = allnotes.filter((item) => {
-                        return item.isFinished == true;
-                    });
-                    */
-
-                    //ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
-
-                    if (e.target.innerHTML == 'Show finished') {
-                        e.target.innerHTML = 'Show all';
-                        $('.item--main-content .note:not(.finished)').hide();
-                    } else if (e.target.innerHTML == 'Show all') {
-                        e.target.innerHTML = 'Show finished';
-                        $('.item--main-content .note:not(.finished)').show();
-                    }
-
-                    //const viewList = new ViewList();
-                    //viewList.generateListView(this.)
-                });
-            }
-        }
-    }, {
-        key: "getAllNotesFromLocalStorage",
-        value: function getAllNotesFromLocalStorage() {
-            var controller = new _Controller.Controller();
-            var allnotes = controller.getAllNotesFromLocalStorage();
-            return allnotes;
-        }
-    }], [{
-        key: "saveStarList",
-        value: function saveStarList(e) {
-
-            var controller = new _Controller.Controller();
-            var allnotes = controller.getAllNotesFromLocalStorage();
-
-            var filteredNote = allnotes.filter(function (item) {
-                return item.id == e.target.parentElement.dataset.id;
-            });
-
-            filteredNote[0].importance = e.target.id;
-
-            var position_startindex = allnotes.findIndex(function (item) {
-                return item.id == e.target.parentElement.dataset.id;
-            });
-
-            //https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-            allnotes.splice(position_startindex, 1, filteredNote[0]);
-
-            var storage = new _Storage.Storage('notesKey');
-            storage.removeKeyFromLocalStorage();
-            storage.setItemToLocalStorage(allnotes);
-        }
-    }]);
-
-    return ControllerList;
+  return Controller;
 }();
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(335)))
+
+exports.default = Controller;
 
 /***/ }),
 /* 335 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Note = function Note(id, title, description, importance, datepicker, isFinished) {
+  _classCallCheck(this, Note);
+
+  this.id = id;
+  this.title = title;
+  this.description = description;
+  this.importance = importance;
+  this.datepicker = datepicker;
+  this.isFinished = isFinished;
+};
+
+exports.default = Note;
+
+/***/ }),
+/* 336 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+var _ViewHelper = __webpack_require__(332);
+
+var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
+
+var _Controller = __webpack_require__(334);
+
+var _Controller2 = _interopRequireDefault(_Controller);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ControllerList = function () {
+  function ControllerList() {
+    _classCallCheck(this, ControllerList);
+  }
+
+  _createClass(ControllerList, [{
+    key: 'registerAllEventListener',
+    value: function registerAllEventListener(dom) {
+      var _this = this;
+
+      if (dom.dynamicList) {
+        dom.dynamicList.addEventListener('click', function (e) {
+          // console.log("dynamiclist eventobjekt: ",e);
+
+          if (e.target.id === 'listDelete') {
+            // Remove Note from Lokalstorage
+            var allnotes = _this.getAllNotesFromLocalStorage();
+
+            var filteredNotes = allnotes.filter(function (item) {
+              return item.id != e.target.dataset.id;
+            });
+
+            var storage = new _Storage2.default('notesKey');
+            storage.removeKeyFromLocalStorage();
+            storage.setItemToLocalStorage(filteredNotes);
+
+            // Remove Note From GUI
+            e.target.parentElement.parentElement.remove();
+          }
+
+          if (e.target.id === 'listEdit') {
+            // Enable Textarea Field --> disabled="disabled
+            var id = e.target.dataset.id;
+            document.querySelector('[data-description-id="' + id + '"]').removeAttribute('disabled');
+
+            var _allnotes = _this.getAllNotesFromLocalStorage();
+
+            var filteredNote = _allnotes.filter(function (item) {
+              return item.id == id;
+            }); /* darf nicht strikt === sein! */
+
+            if (e.target.innerHTML == 'Edit') {
+              e.target.innerHTML = 'Save';
+              document.querySelector('[data-description-id="' + id + '"]').classList.add('redborder');
+            } else if (e.target.innerHTML == 'Save') {
+              e.target.innerHTML = 'Edit';
+              document.querySelector('[data-description-id="' + id + '"]').classList.remove('redborder');
+            }
+
+            // console.log("traverse: ",e.target.parentElement.parentElement.getElementsByClassName('listTitleDescriptionImportance')[0].getElementsByClassName('description')[0].value);
+            // console.log("filteredNote[0].description: ",filteredNote[0].description);
+            // console.log("zuweisung: ",document.querySelector(`[data-description-id="${id}"]`).value);
+            // filteredNote[0].description = "Testing, dies geht!!!";
+            filteredNote[0].description = document.querySelector('[data-description-id="' + id + '"]').value; // nicht .innerHMTL!!!!
+
+            var positionStartindex = _allnotes.findIndex(function (item) {
+              return item.id == id;
+            });
+
+            _allnotes.splice(positionStartindex, 1, filteredNote[0]);
+
+            var _storage = new _Storage2.default('notesKey');
+            _storage.removeKeyFromLocalStorage();
+            _storage.setItemToLocalStorage(_allnotes);
+          }
+
+          if (e.target.id === 'checkBoxisFinished') {
+            var _allnotes2 = _this.getAllNotesFromLocalStorage();
+
+            var _filteredNote = _allnotes2.filter(function (item) {
+              return item.id == e.target.dataset.id;
+            });
+
+            // Toggle Finished Status
+            _filteredNote[0].isFinished ? _filteredNote[0].isFinished = false : _filteredNote[0].isFinished = true;
+            var _positionStartindex = _allnotes2.findIndex(function (item) {
+              return item.id == e.target.dataset.id;
+            }); // old way e.target.getAttribute("data-id")
+
+            // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+            _allnotes2.splice(_positionStartindex, 1, _filteredNote[0]);
+
+            var _storage2 = new _Storage2.default('notesKey');
+            _storage2.removeKeyFromLocalStorage();
+            _storage2.setItemToLocalStorage(_allnotes2);
+          }
+
+          if (e.target.id === '1') {
+            _ViewHelper2.default.markStars(e.target.parentElement.dataset.id, e.target.id);
+            ControllerList.saveStarList(e);
+          }
+          if (e.target.id === '2') {
+            _ViewHelper2.default.markStars(e.target.parentElement.dataset.id, e.target.id);
+            ControllerList.saveStarList(e);
+          }
+          if (e.target.id === '3') {
+            _ViewHelper2.default.markStars(e.target.parentElement.dataset.id, e.target.id);
+            ControllerList.saveStarList(e);
+          }
+          if (e.target.id === '4') {
+            _ViewHelper2.default.markStars(e.target.parentElement.dataset.id, e.target.id);
+            ControllerList.saveStarList(e);
+          }
+          if (e.target.id === '5') {
+            _ViewHelper2.default.markStars(e.target.parentElement.dataset.id, e.target.id);
+            ControllerList.saveStarList(e);
+          }
+        });
+      }
+
+      if (dom.btnSortByFinishdate) {
+        dom.btnSortByFinishdate.addEventListener('click', function () {});
+      }
+
+      if (dom.btnSortByCreateddate) {
+        dom.btnSortByCreateddate.addEventListener('click', function () {});
+      }
+
+      if (dom.btnSortByImportance) {
+        dom.btnSortByImportance.addEventListener('click', function () {
+          /*
+                  const allnotes = this.getAllNotesFromLocalStorage();
+                   console.log('Show all importance numbers: ',allnotes.map((item) => {
+                      return '<p>'+item.importance+'</p>';
+                  }));
+                   const filteredNote5 = allnotes.filter((item) => {
+                      return item.importance == 5;
+                  });
+                  const filteredNote4 = allnotes.filter((item) => {
+                      return item.importance == 4;
+                  });
+                  const filteredNote3 = allnotes.filter((item) => {
+                      return item.importance == 3;
+                  });
+                  const filteredNote2 = allnotes.filter((item) => {
+                      return item.importance == 2;
+                  });
+                  const filteredNote1 = allnotes.filter((item) => {
+                      return item.importance == 1;
+                  });
+                   const allnotesSortByImportance = [];
+                  allnotesSortByImportance.push(filteredNote5);
+                  allnotesSortByImportance.push(filteredNote4);
+                  allnotesSortByImportance.push(filteredNote3);
+                  allnotesSortByImportance.push(filteredNote2);
+                  allnotesSortByImportance.push(filteredNote1);
+                  console.log(allnotesSortByImportance);
+                  */
+
+          // ToDo: Testing sort function!
+
+          var allnotes = _this.getAllNotesFromLocalStorage();
+          // console.log('vorher allnotes: ', allnotes);
+
+          // const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
+          // console.log(notesSortedByisFinished);
+
+          // const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
+          // console.log('nachher allnotes: ',notesSortedByisFinished);
+
+          var notesSortedByisFinished = allnotes.sort(_ViewHelper2.default.dynamicSort('description')); // geht!!!
+          // console.log('nachher allnotes: ', notesSortedByisFinished);
+          // People.sort(dynamicSort("Name"));
+
+
+          $(function () {
+            // var $all_notes = $('.note');
+            // $('.note').sort(note_sort).appendTo('.item--main-content');
+            // $('.note').sort(note_sort);
+
+            // callback for search..
+            // function note_sort(a, b) {
+            // return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
+            // return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
+            // console.log($(a));
+            // console.log($(a.innerHTML));
+            // }
+          });
+        });
+      }
+
+      if (dom.btnShowFinished) {
+        dom.btnShowFinished.addEventListener('click', function (e) {
+          /*
+                  const allnotes = this.getAllNotesFromLocalStorage();
+                   const filteredNote = allnotes.filter((item) => {
+                      return item.isFinished == true;
+                  });
+                  */
+
+          // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
+
+          if (e.target.innerHTML == 'Show finished') {
+            e.target.innerHTML = 'Show all';
+            $('.item--main-content .note:not(.finished)').hide();
+          } else if (e.target.innerHTML == 'Show all') {
+            e.target.innerHTML = 'Show finished';
+            $('.item--main-content .note:not(.finished)').show();
+          }
+
+          // const viewList = new ViewList();
+          // viewList.generateListView(this.)
+        });
+      }
+    }
+  }, {
+    key: 'getAllNotesFromLocalStorage',
+    value: function getAllNotesFromLocalStorage() {
+      var controller = new _Controller2.default();
+      var allnotes = controller.getAllNotesFromLocalStorage();
+      return allnotes;
+    }
+  }], [{
+    key: 'saveStarList',
+    value: function saveStarList(e) {
+      var controller = new _Controller2.default();
+      var allnotes = controller.getAllNotesFromLocalStorage();
+
+      var filteredNote = allnotes.filter(function (item) {
+        return item.id == e.target.parentElement.dataset.id;
+      });
+
+      filteredNote[0].importance = e.target.id;
+
+      var positionStartindex = allnotes.findIndex(function (item) {
+        return item.id == e.target.parentElement.dataset.id;
+      });
+
+      // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+      allnotes.splice(positionStartindex, 1, filteredNote[0]);
+
+      var storage = new _Storage2.default('notesKey');
+      storage.removeKeyFromLocalStorage();
+      storage.setItemToLocalStorage(allnotes);
+    }
+  }]);
+
+  return ControllerList;
+}();
+
+exports.default = ControllerList;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(337)))
+
+/***/ }),
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20264,147 +20301,102 @@ return jQuery;
 
 
 /***/ }),
-/* 336 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-exports.ViewList = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
 
-var _ViewHelper = __webpack_require__(330);
 
-var _Controller = __webpack_require__(332);
+var _ViewHelper = __webpack_require__(332);
+
+var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
+
+var _Controller = __webpack_require__(334);
+
+var _Controller2 = _interopRequireDefault(_Controller);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var listTemplate = __webpack_require__(337); //Handlebars requires jQuery also in webpack base config!
+// Modern Way Solution with TemplateString Teamplate
+//import listTemplateWithTemplateString from '../template/listTemplateWithTemplateString';
 
-var ViewList = exports.ViewList = function () {
-    function ViewList() {
-        _classCallCheck(this, ViewList);
+// Handlebars requires jQuery also in webpack base config! (must use in this project)
+var listTemplate = __webpack_require__(339);
+
+var ViewList = function () {
+  function ViewList() {
+    _classCallCheck(this, ViewList);
+  }
+
+  _createClass(ViewList, [{
+    key: 'generateListView',
+    value: function generateListView(_ref) {
+      var dynamicList = _ref.dynamicList;
+
+      var controller = new _Controller2.default();
+      var allnotes = controller.getAllNotesFromLocalStorage();
+
+      if (dynamicList) {
+        //listTemplateWithTemplateString(dynamicList,allnotes);
+        dynamicList.innerHTML = listTemplate(allnotes); // webpack precompile the template code, i use this, because i don't have a 'notes' key in the root json structure!
+      }
     }
+  }], [{
+    key: 'queryAllDomObjects',
+    value: function queryAllDomObjects() {
+      var DOM = {
+        // Create new Note is just an a link!
+        dropStyleSwitcher: document.querySelector('#dropStyleSwitcher'),
+        btnSortByFinishdate: document.querySelector('#btnSortByFinishdate'),
+        btnSortByCreateddate: document.querySelector('#btnSortByCreateddate'),
+        btnSortByImportance: document.querySelector('#btnSortByImportance'),
+        btnShowFinished: document.querySelector('#btnShowFinished'),
+        dynamicList: document.querySelector('.item--main-content')
 
-    _createClass(ViewList, [{
-        key: "queryAllDomObjects",
-        value: function queryAllDomObjects() {
-            var DOM = {
-                //Create new Note is just an a link!
-                dropStyleSwitcher: document.querySelector("#dropStyleSwitcher"),
-                btnSortByFinishdate: document.querySelector("#btnSortByFinishdate"),
-                btnSortByCreateddate: document.querySelector("#btnSortByCreateddate"),
-                btnSortByImportance: document.querySelector("#btnSortByImportance"),
-                btnShowFinished: document.querySelector("#btnShowFinished"),
-                dynamicList: document.querySelector(".item--main-content")
+      };
 
-            };
+      _ViewHelper2.default.styleSwitcher(DOM);
+      return DOM;
+    }
+  }]);
 
-            _ViewHelper.ViewHelper.styleSwitcher(DOM);
-
-            if (_ViewHelper.ViewHelper.checkDomNoNullValueExist(DOM)) {
-                return DOM;
-            }
-        }
-    }, {
-        key: "generateListView",
-        value: function generateListView(_ref) {
-            var dynamicList = _ref.dynamicList;
-
-            var controller = new _Controller.Controller();
-            var allnotes = controller.getAllNotesFromLocalStorage();
-
-            //Example Data to pass in handlebars (hbs) Template
-            /*
-            const notes = {
-                "notes": [
-                    {
-                        "name": "Test1",
-                        "title": "Test1Title",
-                    },
-                    {
-                        "name": "Test2",
-                        "title": "Test2Title",
-                    },
-                ]
-            }
-            */
-
-            dynamicList.innerHTML = listTemplate(allnotes); //webpack precompile the template code, i use this, because i don't have a 'notes' key in the root json structure!
-
-
-            //if(dynamicList){
-            //    dynamicList.innerHTML = listTemplate(allnotes);  //webpack precompile the template code
-            //}
-
-            /*
-            if(allnotes){
-                var notes = allnotes.map((note,i) => {
-                     return `<div class="note ${note.isFinished ? 'finished':''}">
-                        <div class="listDateStatus">
-                            <p>${note.datepicker}</p>
-                            <p><input id="checkBoxisFinished" type="checkbox" data-id="${note.id}" ${note.isFinished ? 'checked':''}> Finished</p>
-                        </div>
-                        <div class="listTitleDescriptionImportance">
-                            <div class="flexTitleImportance">
-                                <div class="title">
-                                    <p>${note.title}</p>
-                                </div>
-                                <div class="note__importance">
-                                    <div class="importance" data-id="${note.id}">
-                                        ${ViewHelper.selectimportance(parseInt(note.importance))}
-                                    </div>
-                                </div>
-                            </div>
-                            <textarea class="description" name="description" cols="30" rows="6" data-description-id="${note.id}" disabled="disabled">${note.description}</textarea>
-                        </div>
-                        <div class="listActionButton">
-                            <button id="listEdit" data-id="${note.id}">Edit</button>
-                            <button id="listDelete" data-id="${note.id}">Delete</button>
-                        </div>
-                    </div>`;
-                });
-            }
-              if(dynamicList){
-                dynamicList.innerHTML = notes.join("");  //remove comma from list
-            }
-            */
-        }
-
-        ////viewlistgenerateListView(this.queryAllDomObjects());
-
-    }]);
-
-    return ViewList;
+  return ViewList;
 }();
 
+exports.default = ViewList;
+
 /***/ }),
-/* 337 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(338);
+var Handlebars = __webpack_require__(340);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression, alias3=container.lambda;
 
   return "\n    <div class=\"note "
-    + alias2(__default(__webpack_require__(357)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinished","hash":{},"data":data}))
+    + alias2(__default(__webpack_require__(359)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinished","hash":{},"data":data}))
     + "\">\n        <div class=\"listDateStatus\">\n            <p>"
     + alias2(alias3((depth0 != null ? depth0.datepicker : depth0), depth0))
     + "</p>\n            <p><input id=\"checkBoxisFinished\" type=\"checkbox\" data-id=\""
     + alias2(alias3((depth0 != null ? depth0.id : depth0), depth0))
     + "\" "
-    + alias2(__default(__webpack_require__(358)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinishedChecked","hash":{},"data":data}))
+    + alias2(__default(__webpack_require__(360)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinishedChecked","hash":{},"data":data}))
     + "> Finished</p>\n        </div>\n        <div class=\"listTitleDescriptionImportance\">\n            <div class=\"flexTitleImportance\">\n                <div class=\"title\">\n                    <p>"
     + alias2(alias3((depth0 != null ? depth0.title : depth0), depth0))
     + "</p>\n                </div>\n                <div class=\"note__importance\">\n                    <div class=\"importance\" data-id=\""
     + alias2(alias3((depth0 != null ? depth0.id : depth0), depth0))
     + "\">\n                        "
-    + ((stack1 = __default(__webpack_require__(359)).call(alias1,(depth0 != null ? depth0.importance : depth0),{"name":"helpers/selectImportance","hash":{},"data":data})) != null ? stack1 : "")
+    + ((stack1 = __default(__webpack_require__(361)).call(alias1,(depth0 != null ? depth0.importance : depth0),{"name":"helpers/selectImportance","hash":{},"data":data})) != null ? stack1 : "")
     + "\n                    </div>\n                </div>\n            </div>\n            <textarea class=\"description\" name=\"description\" cols=\"30\" rows=\"6\" data-description-id=\""
     + alias2(alias3((depth0 != null ? depth0.id : depth0), depth0))
     + "\" disabled=\"disabled\">"
@@ -20421,16 +20413,16 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 },"useData":true});
 
 /***/ }),
-/* 338 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
-module.exports = __webpack_require__(339)['default'];
+module.exports = __webpack_require__(341)['default'];
 
 
 /***/ }),
-/* 339 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20445,30 +20437,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _handlebarsBase = __webpack_require__(340);
+var _handlebarsBase = __webpack_require__(342);
 
 var base = _interopRequireWildcard(_handlebarsBase);
 
 // Each of these augment the Handlebars object. No need to setup here.
 // (This is done to easily share code between commonjs and browse envs)
 
-var _handlebarsSafeString = __webpack_require__(354);
+var _handlebarsSafeString = __webpack_require__(356);
 
 var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 
-var _handlebarsException = __webpack_require__(342);
+var _handlebarsException = __webpack_require__(344);
 
 var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
 
-var _handlebarsUtils = __webpack_require__(341);
+var _handlebarsUtils = __webpack_require__(343);
 
 var Utils = _interopRequireWildcard(_handlebarsUtils);
 
-var _handlebarsRuntime = __webpack_require__(355);
+var _handlebarsRuntime = __webpack_require__(357);
 
 var runtime = _interopRequireWildcard(_handlebarsRuntime);
 
-var _handlebarsNoConflict = __webpack_require__(356);
+var _handlebarsNoConflict = __webpack_require__(358);
 
 var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 
@@ -20503,7 +20495,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 340 */
+/* 342 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20515,17 +20507,17 @@ exports.HandlebarsEnvironment = HandlebarsEnvironment;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = __webpack_require__(341);
+var _utils = __webpack_require__(343);
 
-var _exception = __webpack_require__(342);
+var _exception = __webpack_require__(344);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _helpers = __webpack_require__(343);
+var _helpers = __webpack_require__(345);
 
-var _decorators = __webpack_require__(351);
+var _decorators = __webpack_require__(353);
 
-var _logger = __webpack_require__(353);
+var _logger = __webpack_require__(355);
 
 var _logger2 = _interopRequireDefault(_logger);
 
@@ -20614,7 +20606,7 @@ exports.logger = _logger2['default'];
 
 
 /***/ }),
-/* 341 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20745,7 +20737,7 @@ function appendContextPath(contextPath, id) {
 
 
 /***/ }),
-/* 342 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20806,7 +20798,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 343 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20818,31 +20810,31 @@ exports.registerDefaultHelpers = registerDefaultHelpers;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _helpersBlockHelperMissing = __webpack_require__(344);
+var _helpersBlockHelperMissing = __webpack_require__(346);
 
 var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 
-var _helpersEach = __webpack_require__(345);
+var _helpersEach = __webpack_require__(347);
 
 var _helpersEach2 = _interopRequireDefault(_helpersEach);
 
-var _helpersHelperMissing = __webpack_require__(346);
+var _helpersHelperMissing = __webpack_require__(348);
 
 var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 
-var _helpersIf = __webpack_require__(347);
+var _helpersIf = __webpack_require__(349);
 
 var _helpersIf2 = _interopRequireDefault(_helpersIf);
 
-var _helpersLog = __webpack_require__(348);
+var _helpersLog = __webpack_require__(350);
 
 var _helpersLog2 = _interopRequireDefault(_helpersLog);
 
-var _helpersLookup = __webpack_require__(349);
+var _helpersLookup = __webpack_require__(351);
 
 var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 
-var _helpersWith = __webpack_require__(350);
+var _helpersWith = __webpack_require__(352);
 
 var _helpersWith2 = _interopRequireDefault(_helpersWith);
 
@@ -20859,7 +20851,7 @@ function registerDefaultHelpers(instance) {
 
 
 /***/ }),
-/* 344 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20867,7 +20859,7 @@ function registerDefaultHelpers(instance) {
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(341);
+var _utils = __webpack_require__(343);
 
 exports['default'] = function (instance) {
   instance.registerHelper('blockHelperMissing', function (context, options) {
@@ -20905,7 +20897,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 345 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20916,9 +20908,9 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = __webpack_require__(341);
+var _utils = __webpack_require__(343);
 
-var _exception = __webpack_require__(342);
+var _exception = __webpack_require__(344);
 
 var _exception2 = _interopRequireDefault(_exception);
 
@@ -21006,7 +20998,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 346 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21017,7 +21009,7 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _exception = __webpack_require__(342);
+var _exception = __webpack_require__(344);
 
 var _exception2 = _interopRequireDefault(_exception);
 
@@ -21038,7 +21030,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 347 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21046,7 +21038,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(341);
+var _utils = __webpack_require__(343);
 
 exports['default'] = function (instance) {
   instance.registerHelper('if', function (conditional, options) {
@@ -21074,7 +21066,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 348 */
+/* 350 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21107,7 +21099,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 349 */
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21126,7 +21118,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 350 */
+/* 352 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21134,7 +21126,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(341);
+var _utils = __webpack_require__(343);
 
 exports['default'] = function (instance) {
   instance.registerHelper('with', function (context, options) {
@@ -21166,7 +21158,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 351 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21178,7 +21170,7 @@ exports.registerDefaultDecorators = registerDefaultDecorators;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _decoratorsInline = __webpack_require__(352);
+var _decoratorsInline = __webpack_require__(354);
 
 var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 
@@ -21189,7 +21181,7 @@ function registerDefaultDecorators(instance) {
 
 
 /***/ }),
-/* 352 */
+/* 354 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21197,7 +21189,7 @@ function registerDefaultDecorators(instance) {
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(341);
+var _utils = __webpack_require__(343);
 
 exports['default'] = function (instance) {
   instance.registerDecorator('inline', function (fn, props, container, options) {
@@ -21225,7 +21217,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 353 */
+/* 355 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21233,7 +21225,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(341);
+var _utils = __webpack_require__(343);
 
 var logger = {
   methodMap: ['debug', 'info', 'warn', 'error'],
@@ -21279,7 +21271,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 354 */
+/* 356 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21301,7 +21293,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 355 */
+/* 357 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21322,15 +21314,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _utils = __webpack_require__(341);
+var _utils = __webpack_require__(343);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _exception = __webpack_require__(342);
+var _exception = __webpack_require__(344);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _base = __webpack_require__(340);
+var _base = __webpack_require__(342);
 
 function checkRevision(compilerInfo) {
   var compilerRevision = compilerInfo && compilerInfo[0] || 1,
@@ -21615,7 +21607,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 
 
 /***/ }),
-/* 356 */
+/* 358 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21643,62 +21635,55 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
 
 /***/ }),
-/* 357 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (isFinished) {
-    return isFinished ? 'finished' : '';
-};
-
-/***/ }),
-/* 358 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function (isFinished) {
-    return isFinished ? 'checked' : '';
-};
-
-/***/ }),
 /* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-module.exports = function (importance) {
-    switch (parseInt(importance)) {
-        case 1:
-            return '<span id="1" class="yellow"></span><span id="2"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
-            break;
-        case 2:
-            return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
-            break;
-        case 3:
-            return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4"></span><span id="5"></span>';
-            break;
-        case 4:
-            return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5"></span>';
-            break;
-        case 5:
-            return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5" class="yellow"></span>';
-            break;
-    }
+module.exports = function isFinished(checkbool) {
+  return checkbool ? 'finished' : '';
 };
 
 /***/ }),
 /* 360 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// extracted by mini-css-extract-plugin
+"use strict";
+
+
+module.exports = function (isFinished) {
+  return isFinished ? 'checked' : '';
+};
 
 /***/ }),
-/* 361 */,
+/* 361 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function (importance) {
+  switch (parseInt(importance)) {
+    case 1:
+      return '<span id="1" class="yellow"></span><span id="2"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
+      break;
+    case 2:
+      return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3"></span><span id="4"></span><span id="5"></span>';
+      break;
+    case 3:
+      return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4"></span><span id="5"></span>';
+      break;
+    case 4:
+      return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5"></span>';
+      break;
+    case 5:
+      return '<span id="1" class="yellow"></span><span id="2" class="yellow"></span><span id="3" class="yellow"></span><span id="4" class="yellow"></span><span id="5" class="yellow"></span>';
+      break;
+  }
+};
+
+/***/ }),
 /* 362 */
 /***/ (function(module, exports, __webpack_require__) {
 

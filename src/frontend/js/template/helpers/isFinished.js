@@ -1,3 +1,3 @@
-module.exports = function(isFinished) {
-    return isFinished ? 'finished':''
+module.exports = function isFinished(checkbool) {
+  return checkbool ? 'finished' : '';
 };
