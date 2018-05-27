@@ -24,7 +24,8 @@
     "babel-polyfill": "^6.26.0",
     "font-awesome": "^4.7.0",
     "handlebars": "^4.0.11",
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "moment": "^2.22.1"
   },
   "devDependencies": {
     "autoprefixer": "^8.5.0",

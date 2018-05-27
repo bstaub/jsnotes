@@ -5,6 +5,7 @@ export default class Note {
     description,
     importance,
     datepicker,
+    createdDate,
     isFinished,
   ) {
     this.id = id;
@@ -12,6 +13,7 @@ export default class Note {
     this.description = description;
     this.importance = importance;
     this.datepicker = datepicker;
+    this.createdDate = createdDate;
     this.isFinished = isFinished;
   }
 }

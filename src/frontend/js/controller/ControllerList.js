@@ -13,7 +13,6 @@ export default class ControllerList {
         // console.log("dynamiclist eventobjekt: ",e);
 
         if (e.target.id === 'listDelete') {
-          // Remove Note from Lokalstorage
           const allnotes = this.getAllNotesFromLocalStorage();
 
 
@@ -46,10 +45,9 @@ export default class ControllerList {
             document.querySelector(`[data-description-id="${id}"]`).classList.remove('redborder');
           }
 
+          // Test DOM Traversing ugly stuff..
           // console.log("traverse: ",e.target.parentElement.parentElement.getElementsByClassName('listTitleDescriptionImportance')[0].getElementsByClassName('description')[0].value);
-          // console.log("filteredNote[0].description: ",filteredNote[0].description);
-          // console.log("zuweisung: ",document.querySelector(`[data-description-id="${id}"]`).value);
-          // filteredNote[0].description = "Testing, dies geht!!!";
+
           filteredNote[0].description = document.querySelector(`[data-description-id="${id}"]`).value; // nicht .innerHMTL!!!!
 
           const positionStartindex = allnotes.findIndex(item => item.id == id);
@@ -79,25 +77,22 @@ export default class ControllerList {
         }
 
         if (e.target.id === '1') {
-          ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-          ControllerList.saveStarList(e);
+          ControllerList.markstars(e);
         }
         if (e.target.id === '2') {
-          ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-          ControllerList.saveStarList(e);
+          ControllerList.markstars(e);
         }
         if (e.target.id === '3') {
-          ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-          ControllerList.saveStarList(e);
+          ControllerList.markstars(e);
         }
         if (e.target.id === '4') {
-          ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-          ControllerList.saveStarList(e);
+          ControllerList.markstars(e);
         }
         if (e.target.id === '5') {
-          ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-          ControllerList.saveStarList(e);
+          ControllerList.markstars(e);
         }
+
+
       });
     }
 
@@ -110,6 +105,22 @@ export default class ControllerList {
     if (dom.btnSortByCreateddate) {
       dom.btnSortByCreateddate.addEventListener('click', () => {
 
+          $(function() { //must use in ready function!
+
+              function sortNotesByCreatedDateASC(){
+                  $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
+              }
+
+              function sortCreatedDateASC(a, b) {
+                  const created1  = $(a).attr('data-created');
+                  const created2 = $(b).data('created');
+
+                  return created1 > created2;
+              }
+
+              sortNotesByCreatedDateASC();
+          });
+
       });
     }
 
@@ -118,8 +129,6 @@ export default class ControllerList {
 
 
           $(function() {
-              //code muss innerhalb jQuery Ready Function stehen!!
-              //console.log( "ready!" );
               //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
               //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
               //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
@@ -150,7 +159,7 @@ export default class ControllerList {
           });
 
 
-        // ToDo: Testing sort function!
+        // ToDo: Testing sort function without jQuery!
 
         //const allnotes = this.getAllNotesFromLocalStorage();
         // console.log('vorher allnotes: ', allnotes);
@@ -166,37 +175,18 @@ export default class ControllerList {
         // People.sort(dynamicSort("Name"));
 
 
-        //$(() => {
-          // var $all_notes = $('.note');
-          // $('.note').sort(note_sort).appendTo('.item--main-content');
-          // $('.note').sort(note_sort);
-
-          // callback for search..
-          // function note_sort(a, b) {
-          // return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
-          // return ($(b).data('position')) < ($(a).data('position')) ? 1 : -1;
-          // console.log($(a));
-          // console.log($(a.innerHTML));
-          // }
-        //});
-
-
-
-
-
-
       });
     }
 
     if (dom.btnShowFinished) {
       dom.btnShowFinished.addEventListener('click', (e) => {
         /*
-                const allnotes = this.getAllNotesFromLocalStorage();
+            const allnotes = this.getAllNotesFromLocalStorage();
 
-                const filteredNote = allnotes.filter((item) => {
-                    return item.isFinished == true;
-                });
-                */
+            const filteredNote = allnotes.filter((item) => {
+                return item.isFinished == true;
+            });
+        */
 
         // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
 
@@ -215,10 +205,17 @@ export default class ControllerList {
   }
 
 
+
   getAllNotesFromLocalStorage() {
     const controller = new Controller();
     const allnotes = controller.getAllNotesFromLocalStorage();
     return allnotes;
+  }
+
+
+  static markstars(e){
+      ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+      ControllerList.saveStarList(e);
   }
 
 
