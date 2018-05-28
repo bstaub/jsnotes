@@ -99,13 +99,33 @@ export default class ControllerList {
     if (dom.btnSortByFinishdate) {
       dom.btnSortByFinishdate.addEventListener('click', () => {
 
+          $(function() { //must use in ready function!
+
+              function sortNotesByFinishedDateASC(){
+                  $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
+              }
+
+              function sortFinishedDateASC(a, b) {
+                  const finished1  = $(a).find('p[data-finished]').data('finished');
+                  const finished2 = $(b).find('p[data-finished]').data('finished');
+
+                  console.log("1",new Date(finished1));
+                  console.log("2",new Date(finished2));
+
+
+                  return new Date(finished1) > new Date(finished2);
+              }
+
+              sortNotesByFinishedDateASC();
+          });
+
       });
     }
 
     if (dom.btnSortByCreateddate) {
       dom.btnSortByCreateddate.addEventListener('click', () => {
 
-          $(function() { //must use in ready function!
+          $(function() {
 
               function sortNotesByCreatedDateASC(){
                   $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');

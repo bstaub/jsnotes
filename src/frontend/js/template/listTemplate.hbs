@@ -2,7 +2,7 @@
 
     <div class="note {{[helpers/isFinished] isFinished}}" data-created="{{createdDate}}">
         <div class="listDateStatus">
-            <p>{{datepicker}}</p>
+            <p data-finished="{{datepicker}}">{{datepicker}}</p>
             <p><input id="checkBoxisFinished" type="checkbox" data-id="{{id}}" {{[helpers/isFinishedChecked] isFinished}}> Finished</p>
         </div>
         <div class="listTitleDescriptionImportance">
