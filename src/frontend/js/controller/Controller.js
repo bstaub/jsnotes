@@ -1,7 +1,6 @@
 import Storage from '../client-service/Storage';
 import ViewHelper from '../view/ViewHelper';
 import Note from '../model/Note';
-const moment = require('moment');
 
 
 export default class Controller {
@@ -74,37 +73,10 @@ export default class Controller {
       title.value,
       description.value,
       importance.value,
-      this.setFormatDateDMYhs(datepicker.value),
-      this.getCreatedDate(),
+      Storage.setFormatDateDMYhs(datepicker.value),
+      Storage.getCreatedDate(),
       isFinished,
     );
-  }
-
-  getCreatedDate(){
-    let d = new Date();
-    return this.formatDate(d);
-
-  }
-  setFormatDateDMYhs(dateLocal){
-    let d = new Date(dateLocal);
-    return this.formatDate(d);
-  }
-
-  formatDate(d){
-      return (d.getDate() < 10 ? '0': '') + d.getDate()  + "-" + (d.getMonth() < 10 ? '0': '') + (d.getMonth()+1) + "-" + d.getFullYear() + " " + (d.getHours() < 10 ? '0': '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0': '') + d.getMinutes(); // 27-05-2018 18:13
-  }
-
-  getCreatedDateMomentJs(){
-      this.MomentJsLocale();
-      return moment().format('LLLL'); // Sonntag, 27. Mai 2018 22:33
-  }
-  setFormatDateDMYhsMomentJs(dateLocal){
-      this.MomentJsLocale();
-      return moment(dateLocal).format('LLLL'); // Sonntag, 27. Mai 2018 22:33
-  }
-
-  MomentJsLocale(){
-      return moment.locale('de-ch');
   }
 
 }

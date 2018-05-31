@@ -1,4 +1,6 @@
 /* global localStorage */
+const moment = require('moment');
+
 
 export default class Storage {
   constructor(storageKey, noteObj) {
@@ -56,5 +58,32 @@ export default class Storage {
 
   removeKeyFromLocalStorage() {
     localStorage.removeItem(this.SESSION_STORE_KEY);
+  }
+
+  static getCreatedDate(){
+      let d = new Date();
+      return this.formatDate(d);
+
+  }
+  static setFormatDateDMYhs(dateLocal){
+      let d = new Date(dateLocal);
+      return Storage.formatDate(d);
+  }
+
+  static formatDate(d){
+      return (d.getDate() < 10 ? '0': '') + d.getDate()  + "-" + (d.getMonth() < 10 ? '0': '') + (d.getMonth()+1) + "-" + d.getFullYear() + " " + (d.getHours() < 10 ? '0': '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0': '') + d.getMinutes(); // 27-05-2018 18:13
+  }
+
+  static getCreatedDateMomentJs(){
+      Storage.MomentJsLocale();
+      return moment().format('LLLL'); // Sonntag, 27. Mai 2018 22:33
+  }
+  static setFormatDateDMYhsMomentJs(dateLocal){
+      Storage.MomentJsLocale();
+      return moment(dateLocal).format('LLLL'); // Sonntag, 27. Mai 2018 22:33
+  }
+
+  static MomentJsLocale(){
+      return moment.locale('de-ch');
   }
 }

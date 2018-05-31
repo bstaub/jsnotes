@@ -2,8 +2,9 @@
 
     <div class="note {{[helpers/isFinished] isFinished}}" data-created="{{createdDate}}">
         <div class="listDateStatus">
-            <p data-finished="{{datepicker}}">{{datepicker}}</p>
+            <p data-finished="{{createdDate}}">{{createdDate}}</p>
             <p><input id="checkBoxisFinished" type="checkbox" data-id="{{id}}" {{[helpers/isFinishedChecked] isFinished}}> Finished</p>
+            <p data-finished="{{datepicker}}">{{datepicker}}</p>
         </div>
         <div class="listTitleDescriptionImportance">
             <div class="flexTitleImportance">
