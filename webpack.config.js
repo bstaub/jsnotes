@@ -121,7 +121,7 @@ var config = {
 var frontendConfig = Object.assign({}, config, {
     // name: 'a',
     //entry: './src/js/index.js',
-    entry: ['babel-polyfill','./src/frontend/js/index.js','./src/frontend/scss/custom.scss'],
+    entry: ['babel-polyfill','./src/frontend/js/webpack.js','./src/frontend/scss/custom.scss'],
     output: {
         filename: 'bundle.js',
         path: __dirname +'/dist/frontend'

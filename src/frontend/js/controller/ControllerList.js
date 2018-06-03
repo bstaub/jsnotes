@@ -7,7 +7,6 @@ import Controller from './Controller';
 
 export default class ControllerList {
   registerAllEventListener(dom) {
-
     if (dom.dynamicList) {
       dom.dynamicList.addEventListener('click', (e) => {
         // console.log("dynamiclist eventobjekt: ",e);
@@ -77,94 +76,81 @@ export default class ControllerList {
         }
 
         // Check Target for Markstars 1-5
-        for (let i=1; i <= 5; i++){
+        for (let i = 1; i <= 5; i++) {
           if (e.target.id === String(i)) {
             ControllerList.markstars(e);
           }
         }
-
-
       });
     }
 
     if (dom.btnSortByFinishdate) {
       dom.btnSortByFinishdate.addEventListener('click', () => {
+        $(() => { // must use in ready function!
+          function sortNotesByFinishedDateASC() {
+            $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
+          }
 
-          $(function() { //must use in ready function!
+          function sortFinishedDateASC(a, b) {
+            const finished1 = $(a).find('p[data-finished]').data('finished');
+            const finished2 = $(b).find('p[data-finished]').data('finished');
 
-              function sortNotesByFinishedDateASC(){
-                  $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
-              }
+            return new Date(finished1) > new Date(finished2);
+          }
 
-              function sortFinishedDateASC(a, b) {
-                  const finished1  = $(a).find('p[data-finished]').data('finished');
-                  const finished2 = $(b).find('p[data-finished]').data('finished');
-
-                  return new Date(finished1) > new Date(finished2);
-              }
-
-              sortNotesByFinishedDateASC();
-          });
-
+          sortNotesByFinishedDateASC();
+        });
       });
     }
 
     if (dom.btnSortByCreateddate) {
       dom.btnSortByCreateddate.addEventListener('click', () => {
+        $(() => {
+          function sortNotesByCreatedDateASC() {
+            $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
+          }
 
-          $(function() {
+          function sortCreatedDateASC(a, b) {
+            const created1 = $(a).attr('data-created');
+            const created2 = $(b).data('created');
 
-              function sortNotesByCreatedDateASC(){
-                  $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
-              }
+            return created1 > created2;
+          }
 
-              function sortCreatedDateASC(a, b) {
-                  const created1  = $(a).attr('data-created');
-                  const created2 = $(b).data('created');
-
-                  return created1 > created2;
-              }
-
-              sortNotesByCreatedDateASC();
-          });
-
+          sortNotesByCreatedDateASC();
+        });
       });
     }
 
     if (dom.btnSortByImportance) {
       dom.btnSortByImportance.addEventListener('click', () => {
+        $(() => {
+          function sortNotesByImportanceDESC() {
+            $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
+          }
+
+          function sortImportanceDESC(a, b) {
+            const importance1 = $(a).find('.importance[data-importance]').data('importance');
+            const importance2 = $(b).find('.importance[data-importance]').data('importance');
 
 
-          $(function() {
+            return importance1 < importance2;
+          }
 
-              function sortNotesByImportanceDESC(){
-                  $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
-              }
-
-              function sortImportanceDESC(a, b) {
-
-                  const importance1  = $(a).find('.importance[data-importance]').data('importance');
-                  const importance2 = $(b).find('.importance[data-importance]').data('importance');
+          function sortImportanceASC(a, b) {
+            const importance1 = $(a).find('.importance[data-importance]').data('importance');
+            const importance2 = $(b).find('.importance[data-importance]').data('importance');
 
 
-                  return importance1 < importance2;
-              }
+            return importance1 > importance2;
+          }
 
-              function sortImportanceASC(a, b) {
-
-                  const importance1  = $(a).find('.importance[data-importance]').data('importance');
-                  const importance2 = $(b).find('.importance[data-importance]').data('importance');
-
-
-                  return importance1 > importance2;
-              }
-
-              sortNotesByImportanceDESC();
-          });
+          sortNotesByImportanceDESC();
+        });
 
 
         // ToDo: Testing sort function without jQuery!
-        //const allnotes = this.getAllNotesFromLocalStorage();
+        // const allnotes = this.getAllNotesFromLocalStorage();
         // console.log('vorher allnotes: ', allnotes);
 
         // const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
@@ -173,21 +159,18 @@ export default class ControllerList {
         // const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
         // console.log('nachher allnotes: ',notesSortedByisFinished);
 
-        //const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
+        // const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
         // console.log('nachher allnotes: ', notesSortedByisFinished);
         // People.sort(dynamicSort("Name"));
 
-        //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-        //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
-        //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
-
-
+        // https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        // console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
+        // console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
       });
     }
 
     if (dom.btnShowFinished) {
       dom.btnShowFinished.addEventListener('click', (e) => {
-
         // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
         if (e.target.innerHTML == 'Show finished') {
           e.target.innerHTML = 'Show all';
@@ -212,7 +195,6 @@ export default class ControllerList {
   }
 
 
-
   getAllNotesFromLocalStorage() {
     const controller = new Controller();
     const allnotes = controller.getAllNotesFromLocalStorage();
@@ -220,9 +202,9 @@ export default class ControllerList {
   }
 
 
-  static markstars(e){
-      ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-      ControllerList.saveStarList(e);
+  static markstars(e) {
+    ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+    ControllerList.saveStarList(e);
   }
 
 

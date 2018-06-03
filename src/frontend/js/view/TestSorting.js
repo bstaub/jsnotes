@@ -1,5 +1,4 @@
 export default class TestSorting {
-
   static sortItemsByisFinished(objArr) { // zuoberst kommen die nicht erledigten notes zurück!!
     return objArr.sort((a, b) => { // return statement nicht vergessen!!!
       if (!a.isFinished && b.isFinished) {
@@ -33,7 +32,6 @@ export default class TestSorting {
     };
   }
   // People.sort(dynamicSort("Name"));
-
 
 
   /*
@@ -87,6 +85,4 @@ export default class TestSorting {
   }
 
   */
-
-
 }

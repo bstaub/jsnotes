@@ -2,21 +2,20 @@
 import Storage from '../client-service/Storage';
 
 export default class ViewHelper {
-
-  static loadStyleSwitcherOnStartpage(){
-    window.onload = function(){
+  static loadStyleSwitcherOnStartpage() {
+    window.onload = function () {
       const homebody = document.getElementsByTagName('body')[0];
       const styleswicher = document.getElementById('dropStyleSwitcher');
 
       const storage = new Storage('styleKey');
-      if(storage.getItemFromLocalStorage()){
-        let styleName = storage.getItemFromLocalStorage();
+      if (storage.getItemFromLocalStorage()) {
+        const styleName = storage.getItemFromLocalStorage();
         homebody.classList.add(styleName);
-        if(styleswicher){
-          ViewHelper.changeDropdownByValue(styleswicher,styleName);
+        if (styleswicher) {
+          ViewHelper.changeDropdownByValue(styleswicher, styleName);
         }
-      };
-    }
+      }
+    };
   }
 
   static styleSwitcher() {
@@ -37,17 +36,17 @@ export default class ViewHelper {
     }
   }
 
-  static changeDropdownByValue(selector,value){
-    var opts = selector.options.length;
-    for (var i=0; i<opts; i++){
-      if (selector.options[i].value == value){
+  static changeDropdownByValue(selector, value) {
+    const opts = selector.options.length;
+    for (let i = 0; i < opts; i++) {
+      if (selector.options[i].value == value) {
         selector.options[i].selected = true;
         break;
       }
     }
   }
 
-  static showAlert2Seconds(message, alert, redirect=false) {
+  static showAlert2Seconds(message, alert, redirect = false) {
     const div = document.createElement('div');
     const note = document.querySelector('.note');
     div.className = alert;
@@ -115,5 +114,4 @@ export default class ViewHelper {
         break;
     }
   }
-
 }

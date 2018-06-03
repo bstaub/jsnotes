@@ -9199,7 +9199,7 @@ var ViewHelper = function () {
           if (styleswicher) {
             ViewHelper.changeDropdownByValue(styleswicher, styleName);
           }
-        };
+        }
       };
     }
   }, {
@@ -9419,7 +9419,7 @@ var Storage = function () {
   }, {
     key: 'formatDate',
     value: function formatDate(d) {
-      return (d.getDate() < 10 ? '0' : '') + d.getDate() + "-" + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + "-" + d.getFullYear() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
+      return (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
     }
 
     // static getCreatedDateMomentJs(){
@@ -26252,10 +26252,8 @@ var ControllerList = function () {
 
       if (dom.btnSortByFinishdate) {
         dom.btnSortByFinishdate.addEventListener('click', function () {
-
           $(function () {
-            //must use in ready function!
-
+            // must use in ready function!
             function sortNotesByFinishedDateASC() {
               $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
             }
@@ -26274,9 +26272,7 @@ var ControllerList = function () {
 
       if (dom.btnSortByCreateddate) {
         dom.btnSortByCreateddate.addEventListener('click', function () {
-
           $(function () {
-
             function sortNotesByCreatedDateASC() {
               $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
             }
@@ -26295,15 +26291,12 @@ var ControllerList = function () {
 
       if (dom.btnSortByImportance) {
         dom.btnSortByImportance.addEventListener('click', function () {
-
           $(function () {
-
             function sortNotesByImportanceDESC() {
               $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
             }
 
             function sortImportanceDESC(a, b) {
-
               var importance1 = $(a).find('.importance[data-importance]').data('importance');
               var importance2 = $(b).find('.importance[data-importance]').data('importance');
 
@@ -26311,7 +26304,6 @@ var ControllerList = function () {
             }
 
             function sortImportanceASC(a, b) {
-
               var importance1 = $(a).find('.importance[data-importance]').data('importance');
               var importance2 = $(b).find('.importance[data-importance]').data('importance');
 
@@ -26322,7 +26314,7 @@ var ControllerList = function () {
           });
 
           // ToDo: Testing sort function without jQuery!
-          //const allnotes = this.getAllNotesFromLocalStorage();
+          // const allnotes = this.getAllNotesFromLocalStorage();
           // console.log('vorher allnotes: ', allnotes);
 
           // const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
@@ -26331,20 +26323,18 @@ var ControllerList = function () {
           // const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
           // console.log('nachher allnotes: ',notesSortedByisFinished);
 
-          //const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
+          // const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
           // console.log('nachher allnotes: ', notesSortedByisFinished);
           // People.sort(dynamicSort("Name"));
 
-          //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-          //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
-          //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
-
+          // https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+          // console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
+          // console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
         });
       }
 
       if (dom.btnShowFinished) {
         dom.btnShowFinished.addEventListener('click', function (e) {
-
           // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
           if (e.target.innerHTML == 'Show finished') {
             e.target.innerHTML = 'Show all';
@@ -36812,7 +36802,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // Modern Way Solution with TemplateString Teamplate
-//import listTemplateWithTemplateString from '../template/listTemplateWithTemplateString';
+// import listTemplateWithTemplateString from '../template/listTemplateWithTemplateString';
 
 // Handlebars requires jQuery also in webpack base config! (must use in this project)
 var listTemplate = __webpack_require__(465);
@@ -36831,7 +36821,7 @@ var ViewList = function () {
       var allnotes = controller.getAllNotesFromLocalStorage();
 
       if (dynamicList) {
-        //listTemplateWithTemplateString(dynamicList,allnotes);
+        // listTemplateWithTemplateString(dynamicList,allnotes);
         dynamicList.innerHTML = listTemplate(allnotes); // webpack precompile the template code, i use this, because i don't have a 'notes' key in the root json structure!
       }
     }
