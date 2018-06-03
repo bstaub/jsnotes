@@ -71,6 +71,9 @@ npm i -g nodemon
 nodemon server.js
 export PORT=5000   (on mac)
 set PORT=5000      (on win)
+
+https://www.npmjs.com/package/joi
+npm i joi
 ````
 
 ## Security

@@ -12,7 +12,7 @@ export default class Controller {
           const noteDto = this.buildNewNoteEntry(dom);
           const storage = new Storage('notesKey', noteDto);
           storage.saveNoteToLocalStorage();
-          ViewHelper.showAlert3Seconds('Eintrag erfolgreich eingetragen', 'alert success');
+          ViewHelper.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
         }
       });
     }

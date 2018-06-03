@@ -1,6 +1,7 @@
 /* global document */
 import ViewHelper from './ViewHelper';
 import Controller from '../controller/Controller';
+import Storage from "../client-service/Storage";
 
 // Modern Way Solution with TemplateString Teamplate
 //import listTemplateWithTemplateString from '../template/listTemplateWithTemplateString';
@@ -10,8 +11,8 @@ const listTemplate = require('../template/listTemplate.hbs');
 
 export default class ViewList {
   static queryAllDomObjects() {
-    const DOM = {
-      // Create new Note is just an a link!
+    const DOMString = {
+      // "btnCreateNewNote" is just an a link to the Detail Page, i don't register here!
       dropStyleSwitcher: document.querySelector('#dropStyleSwitcher'),
       btnSortByFinishdate: document.querySelector('#btnSortByFinishdate'),
       btnSortByCreateddate: document.querySelector('#btnSortByCreateddate'),
@@ -21,8 +22,8 @@ export default class ViewList {
 
     };
 
-    ViewHelper.styleSwitcher(DOM);
-    return DOM;
+    ViewHelper.styleSwitcher(DOMString);
+    return DOMString;
   }
 
   generateListView({ dynamicList }) {

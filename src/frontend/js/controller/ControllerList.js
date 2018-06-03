@@ -76,20 +76,11 @@ export default class ControllerList {
           storage.setItemToLocalStorage(allnotes);
         }
 
-        if (e.target.id === '1') {
-          ControllerList.markstars(e);
-        }
-        if (e.target.id === '2') {
-          ControllerList.markstars(e);
-        }
-        if (e.target.id === '3') {
-          ControllerList.markstars(e);
-        }
-        if (e.target.id === '4') {
-          ControllerList.markstars(e);
-        }
-        if (e.target.id === '5') {
-          ControllerList.markstars(e);
+        // Check Target for Markstars 1-5
+        for (let i=1; i <= 5; i++){
+          if (e.target.id === String(i)) {
+            ControllerList.markstars(e);
+          }
         }
 
 
@@ -108,10 +99,6 @@ export default class ControllerList {
               function sortFinishedDateASC(a, b) {
                   const finished1  = $(a).find('p[data-finished]').data('finished');
                   const finished2 = $(b).find('p[data-finished]').data('finished');
-
-                  console.log("1",new Date(finished1));
-                  console.log("2",new Date(finished2));
-
 
                   return new Date(finished1) > new Date(finished2);
               }
@@ -149,9 +136,6 @@ export default class ControllerList {
 
 
           $(function() {
-              //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-              //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
-              //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
 
               function sortNotesByImportanceDESC(){
                   $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
@@ -180,7 +164,6 @@ export default class ControllerList {
 
 
         // ToDo: Testing sort function without jQuery!
-
         //const allnotes = this.getAllNotesFromLocalStorage();
         // console.log('vorher allnotes: ', allnotes);
 
@@ -194,22 +177,18 @@ export default class ControllerList {
         // console.log('nachher allnotes: ', notesSortedByisFinished);
         // People.sort(dynamicSort("Name"));
 
+        //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
+        //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
+
 
       });
     }
 
     if (dom.btnShowFinished) {
       dom.btnShowFinished.addEventListener('click', (e) => {
-        /*
-            const allnotes = this.getAllNotesFromLocalStorage();
-
-            const filteredNote = allnotes.filter((item) => {
-                return item.isFinished == true;
-            });
-        */
 
         // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
-
         if (e.target.innerHTML == 'Show finished') {
           e.target.innerHTML = 'Show all';
           $('.item--main-content .note:not(.finished)').hide();
@@ -217,6 +196,14 @@ export default class ControllerList {
           e.target.innerHTML = 'Show finished';
           $('.item--main-content .note:not(.finished)').show();
         }
+
+        /*
+        const allnotes = this.getAllNotesFromLocalStorage();
+
+        const filteredNote = allnotes.filter((item) => {
+            return item.isFinished == true;
+        });
+        */
 
         // const viewList = new ViewList();
         // viewList.generateListView(this.)

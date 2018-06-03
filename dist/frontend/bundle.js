@@ -9072,33 +9072,16 @@ var _ViewList = __webpack_require__(464);
 
 var _ViewList2 = _interopRequireDefault(_ViewList);
 
-var _Storage = __webpack_require__(333);
-
-var _Storage2 = _interopRequireDefault(_Storage);
-
 var _ViewHelper = __webpack_require__(332);
 
 var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-window.onload = function () {
-  var homebody = document.getElementsByTagName('body')[0];
-  var styleswicher = document.getElementById('dropStyleSwitcher');
-
-  var storage = new _Storage2.default('styleKey');
-  if (storage.getItemFromLocalStorage()) {
-    var styleName = storage.getItemFromLocalStorage();
-    homebody.classList.add(styleName);
-    if (styleswicher) {
-      _ViewHelper2.default.changeDropdownByValue(styleswicher, styleName);
-    }
-  };
-};
-
 function start() {
   var domnew = _ViewNew2.default.queryAllDomObjects();
   var domlist = _ViewList2.default.queryAllDomObjects();
+  _ViewHelper2.default.loadStyleSwitcherOnStartpage();
 
   if (domlist) {
     var viewlist = new _ViewList2.default();
@@ -9154,7 +9137,7 @@ var ViewNew = function () {
   _createClass(ViewNew, null, [{
     key: 'queryAllDomObjects',
     value: function queryAllDomObjects() {
-      var DOM = {
+      var DOMString = {
         title: document.querySelector('#jsTitle'),
         description: document.querySelector('#jsDescription'),
         importance: document.querySelector('#jsdropImportance'),
@@ -9164,9 +9147,9 @@ var ViewNew = function () {
         cancel: document.querySelector('#jsCancel')
       };
 
-      _ViewHelper2.default.wichtigkeit(DOM);
+      _ViewHelper2.default.wichtigkeit(DOMString);
 
-      return DOM;
+      return DOMString;
     }
   }]);
 
@@ -9203,10 +9186,39 @@ var ViewHelper = function () {
   }
 
   _createClass(ViewHelper, null, [{
-    key: 'checkDomNoNullValueExist',
-    value: function checkDomNoNullValueExist(dom) {
-      if (Object.values(dom).indexOf(null) == -1) {
-        return true;
+    key: 'loadStyleSwitcherOnStartpage',
+    value: function loadStyleSwitcherOnStartpage() {
+      window.onload = function () {
+        var homebody = document.getElementsByTagName('body')[0];
+        var styleswicher = document.getElementById('dropStyleSwitcher');
+
+        var storage = new _Storage2.default('styleKey');
+        if (storage.getItemFromLocalStorage()) {
+          var styleName = storage.getItemFromLocalStorage();
+          homebody.classList.add(styleName);
+          if (styleswicher) {
+            ViewHelper.changeDropdownByValue(styleswicher, styleName);
+          }
+        };
+      };
+    }
+  }, {
+    key: 'styleSwitcher',
+    value: function styleSwitcher() {
+      var dropStyleSwitcher = document.getElementById('dropStyleSwitcher');
+      var homebody = document.getElementsByTagName('body')[0];
+      if (dropStyleSwitcher) {
+        dropStyleSwitcher.addEventListener('change', function () {
+          var storage = new _Storage2.default('styleKey');
+
+          if (dropStyleSwitcher.value.toString() === 'Style2') {
+            homebody.classList.add('Style2');
+            storage.saveStyleToLocalStorage('Style2');
+          } else {
+            homebody.classList.remove('Style2');
+            storage.saveStyleToLocalStorage('Style1');
+          }
+        });
       }
     }
   }, {
@@ -9219,6 +9231,24 @@ var ViewHelper = function () {
           break;
         }
       }
+    }
+  }, {
+    key: 'showAlert2Seconds',
+    value: function showAlert2Seconds(message, alert) {
+      var redirect = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+      var div = document.createElement('div');
+      var note = document.querySelector('.note');
+      div.className = alert;
+      var alertSuccess = document.createTextNode(message);
+      div.appendChild(alertSuccess);
+      document.querySelector('.detail').insertBefore(div, note); // https://www.mediaevent.de/javascript/insertbefore.html
+      div.style.display = 'block'; // show div again
+      setTimeout(function () {
+        div.style.display = 'none';
+        div.innerHTML = '';
+        redirect ? window.location.href = redirect : '';
+      }, 2000);
     }
   }, {
     key: 'wichtigkeitClearAll',
@@ -9247,40 +9277,21 @@ var ViewHelper = function () {
       }
     }
   }, {
-    key: 'styleSwitcher',
-    value: function styleSwitcher() {
-      var dropStyleSwitcher = document.getElementById('dropStyleSwitcher');
-      var homebody = document.getElementsByTagName('body')[0];
-      if (dropStyleSwitcher) {
-        dropStyleSwitcher.addEventListener('change', function () {
-          var storage = new _Storage2.default('styleKey');
+    key: 'markStars',
+    value: function markStars(id, lastStar) {
+      var totalstars = document.querySelectorAll('[data-id="' + id + '"] span');
+      totalstars.forEach(function (item) {
+        if (item.id <= lastStar) {
+          // getAttribute('id')
+          item.classList.add('yellow');
+        } else {
+          item.classList.remove('yellow');
+        }
+      });
+    }
 
-          if (dropStyleSwitcher.value.toString() === 'Style2') {
-            homebody.classList.add('Style2');
-            storage.saveStyleToLocalStorage('Style2');
-          } else {
-            homebody.classList.remove('Style2');
-            storage.saveStyleToLocalStorage('Style1');
-          }
-        });
-      }
-    }
-  }, {
-    key: 'showAlert3Seconds',
-    value: function showAlert3Seconds(message, alert) {
-      // Create DOM Element for Alert Message
-      var div = document.createElement('div');
-      var note = document.querySelector('.note');
-      div.className = alert;
-      var alertSuccess = document.createTextNode(message);
-      div.appendChild(alertSuccess);
-      document.querySelector('.detail').insertBefore(div, note); // https://www.mediaevent.de/javascript/insertbefore.html
-      div.style.display = 'block'; // show div again
-      setTimeout(function () {
-        div.style.display = 'none';
-        div.innerHTML = '';
-      }, 3000);
-    }
+    /*  not used with handlebars, just template string helper */
+
   }, {
     key: 'selectimportance',
     value: function selectimportance(id) {
@@ -9302,114 +9313,6 @@ var ViewHelper = function () {
           break;
       }
     }
-  }, {
-    key: 'markStars',
-    value: function markStars(id, lastStar) {
-      var totalstars = document.querySelectorAll('[data-id="' + id + '"] span');
-      totalstars.forEach(function (item) {
-        if (item.id <= lastStar) {
-          // getAttribute('id')
-          item.classList.add('yellow');
-        } else {
-          item.classList.remove('yellow');
-        }
-      });
-    }
-  }, {
-    key: 'sortItemsByisFinished',
-    value: function sortItemsByisFinished(objArr) {
-      // zuoberst kommen die nicht erledigten notes zurück!!
-      return objArr.sort(function (a, b) {
-        // return statement nicht vergessen!!!
-        if (!a.isFinished && b.isFinished) {
-          return -1;
-        } else if (!b.isFinished && a.isFinished) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-  }, {
-    key: 'sortItemsByImportance',
-    value: function sortItemsByImportance(objArr) {
-      return objArr.sort(function (a, b) {
-        // sortiert mit Nummern noch nicht richtig!!!
-        // console.log('a: ',a, a.importance);
-        // console.log('b: ',b, b.importance);
-        if (!a.importance && b.importance) {
-          return -1;
-        } else if (!b.importance && a.importance) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-
-    /*
-      static sortItemsByObjKey(objArr,key){  //braucht obj_key!
-          return objArr.sort((a, b) => {   //key ist sehr warscheinlich kein object, daher geht dies nicht!
-               console.log('a: ',a, key);
-              console.log('b: ',b, key);
-               if(!a.key && b.key){
-                  return -1;
-              }else if (!b.key && a.key){
-                  return 1;
-              }else{
-                  return 0;
-              }
-          });
-      }
-      */
-
-  }, {
-    key: 'sortItemsByObjKey',
-    value: function sortItemsByObjKey(objArr, key) {
-      // umbau, damit es keine object keys mehr braucht == ist nicht mehr strict ===
-      return objArr.sort(function (a, b) {
-        // key ist sehr warscheinlich kein object, daher geht dies nicht!
-        // console.log('a: ', a, Object.keys(objArr), a.isFinished, a.key, key);
-        // console.log('b: ', b, Object.values(objArr), b.isFinished, b.key, key);
-
-        if (a.key != key && b.key == key) {
-          return -1;
-        } else if (b.key != key && a.key == key) {
-          return 1;
-        }
-        return 0;
-      });
-    }
-
-    // https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value-in-javascript?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-
-  }, {
-    key: 'compare',
-    value: function compare(a, b) {
-      if (a.last_nom < b.last_nom) {
-        return -1;
-      }
-      if (a.last_nom > b.last_nom) {
-        return 1;
-      }
-      return 0;
-    }
-    // objs.sort(compare);
-
-
-  }, {
-    key: 'dynamicSort',
-    value: function dynamicSort(property) {
-      var sortOrder = 1;
-      if (property[0] === '-') {
-        sortOrder = -1;
-        property = property.substr(1);
-      }
-      return function (a, b) {
-        var result = a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-        return result * sortOrder;
-      };
-    }
-    // People.sort(dynamicSort("Name"));
-
   }]);
 
   return ViewHelper;
@@ -9458,11 +9361,6 @@ var Storage = function () {
     key: 'saveStyleToLocalStorage',
     value: function saveStyleToLocalStorage(style) {
       this.setItemToLocalStorage(style);
-    }
-  }, {
-    key: 'getStyleFromLocalStorage',
-    value: function getStyleFromLocalStorage() {
-      return this.getItemFromLocalStorage();
     }
   }, {
     key: 'saveNoteIDToLocalStorage',
@@ -9523,23 +9421,20 @@ var Storage = function () {
     value: function formatDate(d) {
       return (d.getDate() < 10 ? '0' : '') + d.getDate() + "-" + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + "-" + d.getFullYear() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
     }
-  }, {
-    key: 'getCreatedDateMomentJs',
-    value: function getCreatedDateMomentJs() {
-      Storage.MomentJsLocale();
-      return moment().format('LLLL'); // Sonntag, 27. Mai 2018 22:33
-    }
-  }, {
-    key: 'setFormatDateDMYhsMomentJs',
-    value: function setFormatDateDMYhsMomentJs(dateLocal) {
-      Storage.MomentJsLocale();
-      return moment(dateLocal).format('LLLL'); // Sonntag, 27. Mai 2018 22:33
-    }
-  }, {
-    key: 'MomentJsLocale',
-    value: function MomentJsLocale() {
-      return moment.locale('de-ch');
-    }
+
+    // static getCreatedDateMomentJs(){
+    //     Storage.MomentJsLocale();
+    //     return moment().format('LLLL'); // Sonntag, 27. Mai 2018 22:33
+    // }
+    // static setFormatDateDMYhsMomentJs(dateLocal){
+    //     Storage.MomentJsLocale();
+    //     return moment(dateLocal).format('LLLL'); // Sonntag, 27. Mai 2018 22:33
+    // }
+    //
+    // static MomentJsLocale(){
+    //     return moment.locale('de-ch');
+    // }
+
   }]);
 
   return Storage;
@@ -26130,7 +26025,7 @@ var Controller = function () {
             var noteDto = _this.buildNewNoteEntry(dom);
             var storage = new _Storage2.default('notesKey', noteDto);
             storage.saveNoteToLocalStorage();
-            _ViewHelper2.default.showAlert3Seconds('Eintrag erfolgreich eingetragen', 'alert success');
+            _ViewHelper2.default.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
           }
         });
       }
@@ -26346,20 +26241,11 @@ var ControllerList = function () {
             _storage2.setItemToLocalStorage(_allnotes2);
           }
 
-          if (e.target.id === '1') {
-            ControllerList.markstars(e);
-          }
-          if (e.target.id === '2') {
-            ControllerList.markstars(e);
-          }
-          if (e.target.id === '3') {
-            ControllerList.markstars(e);
-          }
-          if (e.target.id === '4') {
-            ControllerList.markstars(e);
-          }
-          if (e.target.id === '5') {
-            ControllerList.markstars(e);
+          // Check Target for Markstars 1-5
+          for (var i = 1; i <= 5; i++) {
+            if (e.target.id === String(i)) {
+              ControllerList.markstars(e);
+            }
           }
         });
       }
@@ -26377,9 +26263,6 @@ var ControllerList = function () {
             function sortFinishedDateASC(a, b) {
               var finished1 = $(a).find('p[data-finished]').data('finished');
               var finished2 = $(b).find('p[data-finished]').data('finished');
-
-              console.log("1", new Date(finished1));
-              console.log("2", new Date(finished2));
 
               return new Date(finished1) > new Date(finished2);
             }
@@ -26414,9 +26297,6 @@ var ControllerList = function () {
         dom.btnSortByImportance.addEventListener('click', function () {
 
           $(function () {
-            //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-            //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
-            //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
 
             function sortNotesByImportanceDESC() {
               $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
@@ -26442,7 +26322,6 @@ var ControllerList = function () {
           });
 
           // ToDo: Testing sort function without jQuery!
-
           //const allnotes = this.getAllNotesFromLocalStorage();
           // console.log('vorher allnotes: ', allnotes);
 
@@ -26456,20 +26335,17 @@ var ControllerList = function () {
           // console.log('nachher allnotes: ', notesSortedByisFinished);
           // People.sort(dynamicSort("Name"));
 
+          //https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+          //console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
+          //console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
+
         });
       }
 
       if (dom.btnShowFinished) {
         dom.btnShowFinished.addEventListener('click', function (e) {
-          /*
-              const allnotes = this.getAllNotesFromLocalStorage();
-               const filteredNote = allnotes.filter((item) => {
-                  return item.isFinished == true;
-              });
-          */
 
           // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
-
           if (e.target.innerHTML == 'Show finished') {
             e.target.innerHTML = 'Show all';
             $('.item--main-content .note:not(.finished)').hide();
@@ -26477,6 +26353,13 @@ var ControllerList = function () {
             e.target.innerHTML = 'Show finished';
             $('.item--main-content .note:not(.finished)').show();
           }
+
+          /*
+          const allnotes = this.getAllNotesFromLocalStorage();
+           const filteredNote = allnotes.filter((item) => {
+              return item.isFinished == true;
+          });
+          */
 
           // const viewList = new ViewList();
           // viewList.generateListView(this.)
@@ -36920,6 +36803,10 @@ var _Controller = __webpack_require__(460);
 
 var _Controller2 = _interopRequireDefault(_Controller);
 
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -36951,8 +36838,8 @@ var ViewList = function () {
   }], [{
     key: 'queryAllDomObjects',
     value: function queryAllDomObjects() {
-      var DOM = {
-        // Create new Note is just an a link!
+      var DOMString = {
+        // "btnCreateNewNote" is just an a link to the Detail Page, i don't register here!
         dropStyleSwitcher: document.querySelector('#dropStyleSwitcher'),
         btnSortByFinishdate: document.querySelector('#btnSortByFinishdate'),
         btnSortByCreateddate: document.querySelector('#btnSortByCreateddate'),
@@ -36962,8 +36849,8 @@ var ViewList = function () {
 
       };
 
-      _ViewHelper2.default.styleSwitcher(DOM);
-      return DOM;
+      _ViewHelper2.default.styleSwitcher(DOMString);
+      return DOMString;
     }
   }]);
 

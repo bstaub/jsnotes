@@ -4,7 +4,7 @@ import ViewHelper from './ViewHelper';
 
 export default class ViewNew {
   static queryAllDomObjects() {
-    const DOM = {
+    const DOMString = {
       title: document.querySelector('#jsTitle'),
       description: document.querySelector('#jsDescription'),
       importance: document.querySelector('#jsdropImportance'),
@@ -14,9 +14,9 @@ export default class ViewNew {
       cancel: document.querySelector('#jsCancel'),
     };
 
-    ViewHelper.wichtigkeit(DOM);
+    ViewHelper.wichtigkeit(DOMString);
 
-    return DOM;
+    return DOMString;
   }
 }
 

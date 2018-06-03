@@ -22,10 +22,6 @@ export default class Storage {
     this.setItemToLocalStorage(style);
   }
 
-  getStyleFromLocalStorage() {
-    return this.getItemFromLocalStorage();
-  }
-
   saveNoteIDToLocalStorage(id) {
     this.setItemToLocalStorage(id);
   }
@@ -74,16 +70,16 @@ export default class Storage {
       return (d.getDate() < 10 ? '0': '') + d.getDate()  + "-" + (d.getMonth() < 10 ? '0': '') + (d.getMonth()+1) + "-" + d.getFullYear() + " " + (d.getHours() < 10 ? '0': '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0': '') + d.getMinutes(); // 27-05-2018 18:13
   }
 
-  static getCreatedDateMomentJs(){
-      Storage.MomentJsLocale();
-      return moment().format('LLLL'); // Sonntag, 27. Mai 2018 22:33
-  }
-  static setFormatDateDMYhsMomentJs(dateLocal){
-      Storage.MomentJsLocale();
-      return moment(dateLocal).format('LLLL'); // Sonntag, 27. Mai 2018 22:33
-  }
-
-  static MomentJsLocale(){
-      return moment.locale('de-ch');
-  }
+  // static getCreatedDateMomentJs(){
+  //     Storage.MomentJsLocale();
+  //     return moment().format('LLLL'); // Sonntag, 27. Mai 2018 22:33
+  // }
+  // static setFormatDateDMYhsMomentJs(dateLocal){
+  //     Storage.MomentJsLocale();
+  //     return moment(dateLocal).format('LLLL'); // Sonntag, 27. Mai 2018 22:33
+  // }
+  //
+  // static MomentJsLocale(){
+  //     return moment.locale('de-ch');
+  // }
 }
