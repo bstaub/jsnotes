@@ -9,7 +9,7 @@ import Storage from '../client-service/Storage';
 // Handlebars requires jQuery also in webpack base config! (must use in this project)
 const listTemplate = require('../template/listTemplate.hbs');
 
-export default class ViewList {
+class ViewList {
   static queryAllDomObjects() {
     const DOMString = {
       // "btnCreateNewNote" is just an a link to the Detail Page, i don't register here!
@@ -36,3 +36,5 @@ export default class ViewList {
     }
   }
 }
+
+export default ViewList;

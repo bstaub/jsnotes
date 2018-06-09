@@ -35,14 +35,19 @@ html{
 }
 
 body{
-  background-color: #ccc;
+  background-color: #fff;
   //background: linear-gradient(to right, #cccccc, #ffffff);
 
   &.Style2{
-    background-color: #fff;
+    background-color: #888585;
 
     button{
-      background-color: yellow;
+      background-color: #0acefb!important;
+
+    }
+
+    .site .home .item--main-content .note{
+      background-color: #0DA6FF;
     }
   }
 }
@@ -80,8 +85,9 @@ button, select.dropStyleSwitcher{
   border: 1px solid black;
   box-shadow: 1px 2px 3px 0px black;
   margin-right:4px;
-  outline-offset: -5px;
+  outline-offset: -3px;
   outline-color: orange;
+  cursor: pointer;
 }
 
 a.btnCreateNewNote{
@@ -90,12 +96,17 @@ a.btnCreateNewNote{
   border: 1px solid black;
   box-shadow: 1px 2px 3px 0px black;
   margin-right:4px;
-  outline-offset: -5px;
+  outline-offset: -3px;
   outline-color: orange;
+  color: black;
 
   @extend .flexCenterCenter;
   text-decoration: none;
   font-size: 11px;
+}
+
+input,textarea{
+  padding: 5px;
 }
 
 
@@ -126,10 +137,10 @@ a.btnCreateNewNote{
           padding-bottom: 15px;
 
           a.btnCreateNewNote{
-            background-color: lightgrey;
+            background-color: #d6e6d7;
           }
           select.dropStyleSwitcher{
-            background-color: lightgrey;
+
           }
 
         }
@@ -139,19 +150,19 @@ a.btnCreateNewNote{
         grid-area: filter;
 
         button#btnSortByFinishdate{
-          background-color: lightgrey;
+
         }
 
         button#btnSortByCreateddate{
-          background-color: lightgrey;
+
         }
 
         button#btnSortByImportance{
-          background-color: lightgrey;
+
         }
 
         button#btnShowFinished{
-          background-color: lightgrey;
+
         }
       }
       &--nav-finished{
@@ -159,7 +170,7 @@ a.btnCreateNewNote{
         display: flex;
         justify-content: flex-end;
         button#btnShowFinished{
-          background-color: lightgrey;
+
         }
       }
       &--main-content{
@@ -223,7 +234,6 @@ a.btnCreateNewNote{
 
             textarea.description{
               width: 100%;
-              padding: 5px;
             }
 
           }

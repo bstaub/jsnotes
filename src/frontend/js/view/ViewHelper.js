@@ -3,7 +3,7 @@ import Storage from '../client-service/Storage';
 
 export default class ViewHelper {
   static loadStyleSwitcherOnStartpage() {
-    window.onload = function () {
+    document.addEventListener("DOMContentLoaded", function() {
       const homebody = document.getElementsByTagName('body')[0];
       const styleswicher = document.getElementById('dropStyleSwitcher');
 
@@ -15,7 +15,7 @@ export default class ViewHelper {
           ViewHelper.changeDropdownByValue(styleswicher, styleName);
         }
       }
-    };
+    });
   }
 
   static styleSwitcher() {

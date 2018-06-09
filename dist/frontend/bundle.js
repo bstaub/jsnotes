@@ -9188,7 +9188,7 @@ var ViewHelper = function () {
   _createClass(ViewHelper, null, [{
     key: 'loadStyleSwitcherOnStartpage',
     value: function loadStyleSwitcherOnStartpage() {
-      window.onload = function () {
+      document.addEventListener("DOMContentLoaded", function () {
         var homebody = document.getElementsByTagName('body')[0];
         var styleswicher = document.getElementById('dropStyleSwitcher');
 
@@ -9200,7 +9200,7 @@ var ViewHelper = function () {
             ViewHelper.changeDropdownByValue(styleswicher, styleName);
           }
         }
-      };
+      });
     }
   }, {
     key: 'styleSwitcher',

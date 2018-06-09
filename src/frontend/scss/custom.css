@@ -27,13 +27,16 @@ html {
 }
 
 body {
-  background-color: #ccc;
-}
-body.Style2 {
   background-color: #fff;
 }
+body.Style2 {
+  background-color: #888585;
+}
 body.Style2 button {
-  background-color: yellow;
+  background-color: #0acefb !important;
+}
+body.Style2 .site .home .item--main-content .note {
+  background-color: #0DA6FF;
 }
 
 div.alert.success {
@@ -69,8 +72,9 @@ button, select.dropStyleSwitcher {
   border: 1px solid black;
   box-shadow: 1px 2px 3px 0px black;
   margin-right: 4px;
-  outline-offset: -5px;
+  outline-offset: -3px;
   outline-color: orange;
+  cursor: pointer;
 }
 
 a.btnCreateNewNote {
@@ -79,10 +83,15 @@ a.btnCreateNewNote {
   border: 1px solid black;
   box-shadow: 1px 2px 3px 0px black;
   margin-right: 4px;
-  outline-offset: -5px;
+  outline-offset: -3px;
   outline-color: orange;
+  color: black;
   text-decoration: none;
   font-size: 11px;
+}
+
+input, textarea {
+  padding: 5px;
 }
 
 /**************
@@ -104,33 +113,15 @@ a.btnCreateNewNote {
   padding-bottom: 15px;
 }
 .site .home .item--navigation .flexNav1 a.btnCreateNewNote {
-  background-color: lightgrey;
-}
-.site .home .item--navigation .flexNav1 select.dropStyleSwitcher {
-  background-color: lightgrey;
+  background-color: #d6e6d7;
 }
 .site .home .item--nav-filters {
   grid-area: filter;
-}
-.site .home .item--nav-filters button#btnSortByFinishdate {
-  background-color: lightgrey;
-}
-.site .home .item--nav-filters button#btnSortByCreateddate {
-  background-color: lightgrey;
-}
-.site .home .item--nav-filters button#btnSortByImportance {
-  background-color: lightgrey;
-}
-.site .home .item--nav-filters button#btnShowFinished {
-  background-color: lightgrey;
 }
 .site .home .item--nav-finished {
   grid-area: nav2;
   display: flex;
   justify-content: flex-end;
-}
-.site .home .item--nav-finished button#btnShowFinished {
-  background-color: lightgrey;
 }
 .site .home .item--main-content {
   grid-area: content;
@@ -183,7 +174,6 @@ a.btnCreateNewNote {
 }
 .site .home .item--main-content .note .listTitleDescriptionImportance textarea.description {
   width: 100%;
-  padding: 5px;
 }
 .site .home .item--main-content .note .listActionButton {
   grid-area: listActionButton;
