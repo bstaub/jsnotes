@@ -4,18 +4,15 @@ const moment = require('moment');
 
 export default class Storage {
   constructor(storageKey, noteObj) {
-    this.SESSION_STORE_KEY = storageKey;
+    this.STORE_KEY = storageKey;
     this.noteObj = noteObj;
   }
 
-  saveNoteToLocalStorage() {
-    if (this.checkIfLocalStorageEmpty()) {
-      const firstnote = [];
-      firstnote.push(this.noteObj);
-      this.setItemToLocalStorage(firstnote);
-    } else {
-      this.appendOneNoteToLocalStorage(this.noteObj);
-    }
+  addNote() {
+    //if first entry get empty array [] back!
+    const itemArray = this.getItemFromLocalStorage();
+    itemArray.push(this.noteObj);
+    this.setItemToLocalStorage(itemArray);
   }
 
   saveStyleToLocalStorage(style) {
@@ -30,30 +27,21 @@ export default class Storage {
     return this.getItemFromLocalStorage();
   }
 
-  appendOneNoteToLocalStorage(notes) {
-    const stored = this.getItemFromLocalStorage();
-    stored.push(notes);
-    localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(stored));
-  }
-
-  checkIfLocalStorageEmpty() {
-    return this.getItemFromLocalStorage() === null;
-  }
-
   getAllNotesFromLocalStorage() {
     return this.getItemFromLocalStorage();
   }
 
+  // get notes object from local storage and parse JSON or set new Array
   getItemFromLocalStorage() {
-    return JSON.parse(localStorage.getItem(this.SESSION_STORE_KEY));
+    return JSON.parse(localStorage.getItem(this.STORE_KEY)) || [];
   }
 
   setItemToLocalStorage(items) {
-    localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
+    localStorage.setItem(this.STORE_KEY, JSON.stringify(items));
   }
 
   removeKeyFromLocalStorage() {
-    localStorage.removeItem(this.SESSION_STORE_KEY);
+    localStorage.removeItem(this.STORE_KEY);
   }
 
   static getCreatedDate() {

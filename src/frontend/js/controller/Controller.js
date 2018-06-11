@@ -4,6 +4,16 @@ import Note from '../model/Note';
 
 
 export default class Controller {
+
+/*
+  constructor(storageKey, noteObj, dataAccess) {
+    this.STORE_KEY = storageKey;
+    this.noteObj = noteObj;
+    this.clientService = clientService
+  }
+*/
+
+
   registerAllEventListener(dom) {
     if (dom.speichern) {
       dom.speichern.addEventListener('click', () => {
@@ -11,7 +21,7 @@ export default class Controller {
         if (checkIfEmpty) {
           const noteDto = this.buildNewNoteEntry(dom);
           const storage = new Storage('notesKey', noteDto);
-          storage.saveNoteToLocalStorage();
+          storage.addNote();
           ViewHelper.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
         }
       });
