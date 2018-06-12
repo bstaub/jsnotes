@@ -1,3 +1,6 @@
+import Storage from "../client-service/Storage";
+import HelperService from "../client-service/HelperService";
+
 export default class Note {
   constructor(
     id,
@@ -16,4 +19,27 @@ export default class Note {
     this.createdDate = createdDate;
     this.isFinished = isFinished;
   }
+
+
+
+  static buildNewNoteEntry({
+                      title, description, importance, datepicker,
+                    }) {
+    const isFinished = false;
+    return new Note(
+      //this.getNewUniqueNoteID(),
+      HelperService.getNewUniqueNoteID(),
+      title.value,
+      description.value,
+      importance.value,
+      Storage.setFormatDateDMYhs(datepicker.value),
+      Storage.getCreatedDate(),
+      isFinished,
+    );
+  }
+
+
 }
+
+
+

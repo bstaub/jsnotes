@@ -3,15 +3,14 @@ const moment = require('moment');
 
 
 export default class Storage {
-  constructor(storageKey, noteObj) {
+  constructor(storageKey) {
     this.STORE_KEY = storageKey;
-    this.noteObj = noteObj;
   }
 
-  addNote() {
+  addNote(note) {
     //if first entry get empty array [] back!
     const itemArray = this.getItemFromLocalStorage();
-    itemArray.push(this.noteObj);
+    itemArray.push(note);
     this.setItemToLocalStorage(itemArray);
   }
 

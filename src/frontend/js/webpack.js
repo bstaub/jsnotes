@@ -4,6 +4,8 @@ import Controller from './controller/Controller';
 import ControllerList from './controller/ControllerList';
 import ViewList from './view/ViewList';
 import ViewHelper from './view/ViewHelper';
+import Storage from './client-service/Storage';
+import Note from './model/Note';
 
 
 function start() {
@@ -16,8 +18,10 @@ function start() {
     viewlist.generateListView(domlist);
   }
 
-  const controller = new Controller();
+
+  //const controller = new Controller();
   if (domnew) {
+    const controller = new Controller(new Storage('notesKey'));
     controller.registerAllEventListener(domnew);
   }
 

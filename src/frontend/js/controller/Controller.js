@@ -5,23 +5,17 @@ import Note from '../model/Note';
 
 export default class Controller {
 
-/*
-  constructor(storageKey, noteObj, dataAccess) {
-    this.STORE_KEY = storageKey;
-    this.noteObj = noteObj;
-    this.clientService = clientService
+  constructor(clientService) {
+    this.clientService = clientService;
   }
-*/
-
 
   registerAllEventListener(dom) {
     if (dom.speichern) {
       dom.speichern.addEventListener('click', () => {
         const checkIfEmpty = this.checkIfNoEmptyFields(dom);
         if (checkIfEmpty) {
-          const noteDto = this.buildNewNoteEntry(dom);
-          const storage = new Storage('notesKey', noteDto);
-          storage.addNote();
+          const noteDto = Note.buildNewNoteEntry(dom);
+          this.clientService.addNote(noteDto);
           ViewHelper.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
         }
       });
@@ -35,6 +29,7 @@ export default class Controller {
   }
 
   getAllNotesFromLocalStorage() {
+    //return new this.clientService.getAllNotesFromLocalStorage();
     const storage = new Storage('notesKey');
     return storage.getAllNotesFromLocalStorage();
   }
@@ -53,6 +48,7 @@ export default class Controller {
     }
   }
 
+  /*
   saveIDToLocalStorage(id) {
     const storage = new Storage('noteKeyLastID');
     storage.saveNoteIDToLocalStorage(id);
@@ -73,7 +69,9 @@ export default class Controller {
     this.saveIDToLocalStorage(id);
     return this.getIDFromLocalStorage();
   }
+  */
 
+  /*
   buildNewNoteEntry({
     title, description, importance, datepicker,
   }) {
@@ -88,4 +86,5 @@ export default class Controller {
       isFinished,
     );
   }
+  */
 }
