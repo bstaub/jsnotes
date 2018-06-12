@@ -75,7 +75,7 @@
 
 __webpack_require__(1);
 __webpack_require__(328);
-module.exports = __webpack_require__(488);
+module.exports = __webpack_require__(489);
 
 
 /***/ }),
@@ -9064,17 +9064,25 @@ var _Controller = __webpack_require__(460);
 
 var _Controller2 = _interopRequireDefault(_Controller);
 
-var _ControllerList = __webpack_require__(462);
+var _ControllerList = __webpack_require__(463);
 
 var _ControllerList2 = _interopRequireDefault(_ControllerList);
 
-var _ViewList = __webpack_require__(464);
+var _ViewList = __webpack_require__(465);
 
 var _ViewList2 = _interopRequireDefault(_ViewList);
 
 var _ViewHelper = __webpack_require__(332);
 
 var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+var _Note = __webpack_require__(461);
+
+var _Note2 = _interopRequireDefault(_Note);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9088,8 +9096,9 @@ function start() {
     viewlist.generateListView(domlist);
   }
 
-  var controller = new _Controller2.default();
+  //const controller = new Controller();
   if (domnew) {
+    var controller = new _Controller2.default(new _Storage2.default('notesKey'));
     controller.registerAllEventListener(domnew);
   }
 
@@ -9339,23 +9348,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var moment = __webpack_require__(334);
 
 var Storage = function () {
-  function Storage(storageKey, noteObj) {
+  function Storage(storageKey) {
     _classCallCheck(this, Storage);
 
-    this.SESSION_STORE_KEY = storageKey;
-    this.noteObj = noteObj;
+    this.STORE_KEY = storageKey;
   }
 
   _createClass(Storage, [{
-    key: 'saveNoteToLocalStorage',
-    value: function saveNoteToLocalStorage() {
-      if (this.checkIfLocalStorageEmpty()) {
-        var firstnote = [];
-        firstnote.push(this.noteObj);
-        this.setItemToLocalStorage(firstnote);
-      } else {
-        this.appendOneNoteToLocalStorage(this.noteObj);
-      }
+    key: 'addNote',
+    value: function addNote(note) {
+      //if first entry get empty array [] back!
+      var itemArray = this.getItemFromLocalStorage();
+      itemArray.push(note);
+      this.setItemToLocalStorage(itemArray);
     }
   }, {
     key: 'saveStyleToLocalStorage',
@@ -9373,36 +9378,27 @@ var Storage = function () {
       return this.getItemFromLocalStorage();
     }
   }, {
-    key: 'appendOneNoteToLocalStorage',
-    value: function appendOneNoteToLocalStorage(notes) {
-      var stored = this.getItemFromLocalStorage();
-      stored.push(notes);
-      localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(stored));
-    }
-  }, {
-    key: 'checkIfLocalStorageEmpty',
-    value: function checkIfLocalStorageEmpty() {
-      return this.getItemFromLocalStorage() === null;
-    }
-  }, {
     key: 'getAllNotesFromLocalStorage',
     value: function getAllNotesFromLocalStorage() {
       return this.getItemFromLocalStorage();
     }
+
+    // get notes object from local storage and parse JSON or set new Array
+
   }, {
     key: 'getItemFromLocalStorage',
     value: function getItemFromLocalStorage() {
-      return JSON.parse(localStorage.getItem(this.SESSION_STORE_KEY));
+      return JSON.parse(localStorage.getItem(this.STORE_KEY)) || [];
     }
   }, {
     key: 'setItemToLocalStorage',
     value: function setItemToLocalStorage(items) {
-      localStorage.setItem(this.SESSION_STORE_KEY, JSON.stringify(items));
+      localStorage.setItem(this.STORE_KEY, JSON.stringify(items));
     }
   }, {
     key: 'removeKeyFromLocalStorage',
     value: function removeKeyFromLocalStorage() {
-      localStorage.removeItem(this.SESSION_STORE_KEY);
+      localStorage.removeItem(this.STORE_KEY);
     }
   }], [{
     key: 'getCreatedDate',
@@ -26009,8 +26005,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Controller = function () {
-  function Controller() {
+  function Controller(clientService) {
     _classCallCheck(this, Controller);
+
+    this.clientService = clientService;
   }
 
   _createClass(Controller, [{
@@ -26022,9 +26020,8 @@ var Controller = function () {
         dom.speichern.addEventListener('click', function () {
           var checkIfEmpty = _this.checkIfNoEmptyFields(dom);
           if (checkIfEmpty) {
-            var noteDto = _this.buildNewNoteEntry(dom);
-            var storage = new _Storage2.default('notesKey', noteDto);
-            storage.saveNoteToLocalStorage();
+            var noteDto = _Note2.default.buildNewNoteEntry(dom);
+            _this.clientService.addNote(noteDto);
             _ViewHelper2.default.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
           }
         });
@@ -26039,6 +26036,7 @@ var Controller = function () {
   }, {
     key: 'getAllNotesFromLocalStorage',
     value: function getAllNotesFromLocalStorage() {
+      //return new this.clientService.getAllNotesFromLocalStorage();
       var storage = new _Storage2.default('notesKey');
       return storage.getAllNotesFromLocalStorage();
     }
@@ -26058,41 +26056,45 @@ var Controller = function () {
         return true;
       }
     }
-  }, {
-    key: 'saveIDToLocalStorage',
-    value: function saveIDToLocalStorage(id) {
-      var storage = new _Storage2.default('noteKeyLastID');
+
+    /*
+    saveIDToLocalStorage(id) {
+      const storage = new Storage('noteKeyLastID');
       storage.saveNoteIDToLocalStorage(id);
     }
-  }, {
-    key: 'getIDFromLocalStorage',
-    value: function getIDFromLocalStorage() {
-      var storage = new _Storage2.default('noteKeyLastID');
+     getIDFromLocalStorage() {
+      const storage = new Storage('noteKeyLastID');
       return storage.getNoteIDFromLocalStorage();
     }
-  }, {
-    key: 'getNewUniqueNoteID',
-    value: function getNewUniqueNoteID() {
+     getNewUniqueNoteID() {
       if (this.getIDFromLocalStorage() === null) {
         this.saveIDToLocalStorage(1);
         return 1;
       }
-      var id = this.getIDFromLocalStorage();
+      let id = this.getIDFromLocalStorage();
       id++;
       this.saveIDToLocalStorage(id);
       return this.getIDFromLocalStorage();
     }
-  }, {
-    key: 'buildNewNoteEntry',
-    value: function buildNewNoteEntry(_ref) {
-      var title = _ref.title,
-          description = _ref.description,
-          importance = _ref.importance,
-          datepicker = _ref.datepicker;
+    */
 
-      var isFinished = false;
-      return new _Note2.default(this.getNewUniqueNoteID(), title.value, description.value, importance.value, _Storage2.default.setFormatDateDMYhs(datepicker.value), _Storage2.default.getCreatedDate(), isFinished);
+    /*
+    buildNewNoteEntry({
+      title, description, importance, datepicker,
+    }) {
+      const isFinished = false;
+      return new Note(
+        this.getNewUniqueNoteID(),
+        title.value,
+        description.value,
+        importance.value,
+        Storage.setFormatDateDMYhs(datepicker.value),
+        Storage.getCreatedDate(),
+        isFinished,
+      );
     }
+    */
+
   }]);
 
   return Controller;
@@ -26111,24 +26113,131 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+var _HelperService = __webpack_require__(462);
+
+var _HelperService2 = _interopRequireDefault(_HelperService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Note = function Note(id, title, description, importance, datepicker, createdDate, isFinished) {
-  _classCallCheck(this, Note);
+var Note = function () {
+  function Note(id, title, description, importance, datepicker, createdDate, isFinished) {
+    _classCallCheck(this, Note);
 
-  this.id = id;
-  this.title = title;
-  this.description = description;
-  this.importance = importance;
-  this.datepicker = datepicker;
-  this.createdDate = createdDate;
-  this.isFinished = isFinished;
-};
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.importance = importance;
+    this.datepicker = datepicker;
+    this.createdDate = createdDate;
+    this.isFinished = isFinished;
+  }
+
+  _createClass(Note, null, [{
+    key: "buildNewNoteEntry",
+    value: function buildNewNoteEntry(_ref) {
+      var title = _ref.title,
+          description = _ref.description,
+          importance = _ref.importance,
+          datepicker = _ref.datepicker;
+
+      var isFinished = false;
+      return new Note(
+      //this.getNewUniqueNoteID(),
+      _HelperService2.default.getNewUniqueNoteID(), title.value, description.value, importance.value, _Storage2.default.setFormatDateDMYhs(datepicker.value), _Storage2.default.getCreatedDate(), isFinished);
+    }
+  }]);
+
+  return Note;
+}();
 
 exports.default = Note;
 
 /***/ }),
 /* 462 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //Helper Funktionen vom Storage hier auslagern
+//getID
+//DateFormat
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var HelperService = function () {
+  function HelperService() {
+    _classCallCheck(this, HelperService);
+  }
+
+  _createClass(HelperService, null, [{
+    key: 'getNewUniqueNoteID',
+    value: function getNewUniqueNoteID() {
+      if (HelperService.getIDFromLocalStorage() === null) {
+        HelperService.saveIDToLocalStorage(1);
+        return 1;
+      }
+      var id = HelperService.getIDFromLocalStorage();
+      id++;
+      HelperService.saveIDToLocalStorage(id);
+      return HelperService.getIDFromLocalStorage();
+    }
+  }, {
+    key: 'saveIDToLocalStorage',
+    value: function saveIDToLocalStorage(id) {
+      var storage = new _Storage2.default('noteKeyLastID');
+      storage.saveNoteIDToLocalStorage(id);
+    }
+  }, {
+    key: 'getIDFromLocalStorage',
+    value: function getIDFromLocalStorage() {
+      var storage = new _Storage2.default('noteKeyLastID');
+      return storage.getNoteIDFromLocalStorage();
+    }
+  }, {
+    key: 'getCreatedDate',
+    value: function getCreatedDate() {
+      var d = new Date();
+      return this.formatDate(d);
+    }
+  }, {
+    key: 'setFormatDateDMYhs',
+    value: function setFormatDateDMYhs(dateLocal) {
+      var d = new Date(dateLocal);
+      return _Storage2.default.formatDate(d);
+    }
+  }, {
+    key: 'formatDate',
+    value: function formatDate(d) {
+      return (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
+    }
+  }]);
+
+  return HelperService;
+}();
+
+exports.default = HelperService;
+
+/***/ }),
+/* 463 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26398,10 +26507,10 @@ var ControllerList = function () {
 }();
 
 exports.default = ControllerList;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(463)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(464)))
 
 /***/ }),
-/* 463 */
+/* 464 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36772,7 +36881,7 @@ return jQuery;
 
 
 /***/ }),
-/* 464 */
+/* 465 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36805,7 +36914,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // import listTemplateWithTemplateString from '../template/listTemplateWithTemplateString';
 
 // Handlebars requires jQuery also in webpack base config! (must use in this project)
-var listTemplate = __webpack_require__(465);
+var listTemplate = __webpack_require__(466);
 
 var ViewList = function () {
   function ViewList() {
@@ -36850,16 +36959,16 @@ var ViewList = function () {
 exports.default = ViewList;
 
 /***/ }),
-/* 465 */
+/* 466 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(466);
+var Handlebars = __webpack_require__(467);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression, alias3=container.lambda;
 
   return "\n    <div class=\"note "
-    + alias2(__default(__webpack_require__(485)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinished","hash":{},"data":data}))
+    + alias2(__default(__webpack_require__(486)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinished","hash":{},"data":data}))
     + "\" data-created=\""
     + alias2(alias3((depth0 != null ? depth0.createdDate : depth0), depth0))
     + "\">\n        <div class=\"listDateStatus\">\n            <p data-finished=\""
@@ -36869,7 +36978,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + "</p>\n            <p><input id=\"checkBoxisFinished\" type=\"checkbox\" data-id=\""
     + alias2(alias3((depth0 != null ? depth0.id : depth0), depth0))
     + "\" "
-    + alias2(__default(__webpack_require__(486)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinishedChecked","hash":{},"data":data}))
+    + alias2(__default(__webpack_require__(487)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinishedChecked","hash":{},"data":data}))
     + "> Finished</p>\n            <p data-finished=\""
     + alias2(alias3((depth0 != null ? depth0.datepicker : depth0), depth0))
     + "\">"
@@ -36881,7 +36990,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + "\" data-importance=\""
     + alias2(alias3((depth0 != null ? depth0.importance : depth0), depth0))
     + "\">\n                        "
-    + ((stack1 = __default(__webpack_require__(487)).call(alias1,(depth0 != null ? depth0.importance : depth0),{"name":"helpers/selectImportance","hash":{},"data":data})) != null ? stack1 : "")
+    + ((stack1 = __default(__webpack_require__(488)).call(alias1,(depth0 != null ? depth0.importance : depth0),{"name":"helpers/selectImportance","hash":{},"data":data})) != null ? stack1 : "")
     + "\n                    </div>\n                </div>\n            </div>\n            <textarea class=\"description\" name=\"description\" cols=\"30\" rows=\"6\" data-description-id=\""
     + alias2(alias3((depth0 != null ? depth0.id : depth0), depth0))
     + "\" disabled=\"disabled\">"
@@ -36898,16 +37007,16 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 },"useData":true});
 
 /***/ }),
-/* 466 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
-module.exports = __webpack_require__(467)['default'];
+module.exports = __webpack_require__(468)['default'];
 
 
 /***/ }),
-/* 467 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36922,30 +37031,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _handlebarsBase = __webpack_require__(468);
+var _handlebarsBase = __webpack_require__(469);
 
 var base = _interopRequireWildcard(_handlebarsBase);
 
 // Each of these augment the Handlebars object. No need to setup here.
 // (This is done to easily share code between commonjs and browse envs)
 
-var _handlebarsSafeString = __webpack_require__(482);
+var _handlebarsSafeString = __webpack_require__(483);
 
 var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 
-var _handlebarsException = __webpack_require__(470);
+var _handlebarsException = __webpack_require__(471);
 
 var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
 
-var _handlebarsUtils = __webpack_require__(469);
+var _handlebarsUtils = __webpack_require__(470);
 
 var Utils = _interopRequireWildcard(_handlebarsUtils);
 
-var _handlebarsRuntime = __webpack_require__(483);
+var _handlebarsRuntime = __webpack_require__(484);
 
 var runtime = _interopRequireWildcard(_handlebarsRuntime);
 
-var _handlebarsNoConflict = __webpack_require__(484);
+var _handlebarsNoConflict = __webpack_require__(485);
 
 var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 
@@ -36980,7 +37089,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 468 */
+/* 469 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36992,17 +37101,17 @@ exports.HandlebarsEnvironment = HandlebarsEnvironment;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = __webpack_require__(469);
+var _utils = __webpack_require__(470);
 
-var _exception = __webpack_require__(470);
+var _exception = __webpack_require__(471);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _helpers = __webpack_require__(471);
+var _helpers = __webpack_require__(472);
 
-var _decorators = __webpack_require__(479);
+var _decorators = __webpack_require__(480);
 
-var _logger = __webpack_require__(481);
+var _logger = __webpack_require__(482);
 
 var _logger2 = _interopRequireDefault(_logger);
 
@@ -37091,7 +37200,7 @@ exports.logger = _logger2['default'];
 
 
 /***/ }),
-/* 469 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37222,7 +37331,7 @@ function appendContextPath(contextPath, id) {
 
 
 /***/ }),
-/* 470 */
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37283,7 +37392,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 471 */
+/* 472 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37295,31 +37404,31 @@ exports.registerDefaultHelpers = registerDefaultHelpers;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _helpersBlockHelperMissing = __webpack_require__(472);
+var _helpersBlockHelperMissing = __webpack_require__(473);
 
 var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 
-var _helpersEach = __webpack_require__(473);
+var _helpersEach = __webpack_require__(474);
 
 var _helpersEach2 = _interopRequireDefault(_helpersEach);
 
-var _helpersHelperMissing = __webpack_require__(474);
+var _helpersHelperMissing = __webpack_require__(475);
 
 var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 
-var _helpersIf = __webpack_require__(475);
+var _helpersIf = __webpack_require__(476);
 
 var _helpersIf2 = _interopRequireDefault(_helpersIf);
 
-var _helpersLog = __webpack_require__(476);
+var _helpersLog = __webpack_require__(477);
 
 var _helpersLog2 = _interopRequireDefault(_helpersLog);
 
-var _helpersLookup = __webpack_require__(477);
+var _helpersLookup = __webpack_require__(478);
 
 var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 
-var _helpersWith = __webpack_require__(478);
+var _helpersWith = __webpack_require__(479);
 
 var _helpersWith2 = _interopRequireDefault(_helpersWith);
 
@@ -37336,7 +37445,7 @@ function registerDefaultHelpers(instance) {
 
 
 /***/ }),
-/* 472 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37344,7 +37453,7 @@ function registerDefaultHelpers(instance) {
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(469);
+var _utils = __webpack_require__(470);
 
 exports['default'] = function (instance) {
   instance.registerHelper('blockHelperMissing', function (context, options) {
@@ -37382,7 +37491,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 473 */
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37393,9 +37502,9 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = __webpack_require__(469);
+var _utils = __webpack_require__(470);
 
-var _exception = __webpack_require__(470);
+var _exception = __webpack_require__(471);
 
 var _exception2 = _interopRequireDefault(_exception);
 
@@ -37483,7 +37592,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 474 */
+/* 475 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37494,7 +37603,7 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _exception = __webpack_require__(470);
+var _exception = __webpack_require__(471);
 
 var _exception2 = _interopRequireDefault(_exception);
 
@@ -37515,7 +37624,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 475 */
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37523,7 +37632,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(469);
+var _utils = __webpack_require__(470);
 
 exports['default'] = function (instance) {
   instance.registerHelper('if', function (conditional, options) {
@@ -37551,7 +37660,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 476 */
+/* 477 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37584,7 +37693,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 477 */
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37603,7 +37712,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 478 */
+/* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37611,7 +37720,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(469);
+var _utils = __webpack_require__(470);
 
 exports['default'] = function (instance) {
   instance.registerHelper('with', function (context, options) {
@@ -37643,7 +37752,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 479 */
+/* 480 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37655,7 +37764,7 @@ exports.registerDefaultDecorators = registerDefaultDecorators;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _decoratorsInline = __webpack_require__(480);
+var _decoratorsInline = __webpack_require__(481);
 
 var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 
@@ -37666,7 +37775,7 @@ function registerDefaultDecorators(instance) {
 
 
 /***/ }),
-/* 480 */
+/* 481 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37674,7 +37783,7 @@ function registerDefaultDecorators(instance) {
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(469);
+var _utils = __webpack_require__(470);
 
 exports['default'] = function (instance) {
   instance.registerDecorator('inline', function (fn, props, container, options) {
@@ -37702,7 +37811,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 481 */
+/* 482 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37710,7 +37819,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(469);
+var _utils = __webpack_require__(470);
 
 var logger = {
   methodMap: ['debug', 'info', 'warn', 'error'],
@@ -37756,7 +37865,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 482 */
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37778,7 +37887,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 483 */
+/* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37799,15 +37908,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _utils = __webpack_require__(469);
+var _utils = __webpack_require__(470);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _exception = __webpack_require__(470);
+var _exception = __webpack_require__(471);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _base = __webpack_require__(468);
+var _base = __webpack_require__(469);
 
 function checkRevision(compilerInfo) {
   var compilerRevision = compilerInfo && compilerInfo[0] || 1,
@@ -38092,7 +38201,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 
 
 /***/ }),
-/* 484 */
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38120,7 +38229,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
 
 /***/ }),
-/* 485 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38131,7 +38240,7 @@ module.exports = function isFinished(checkbool) {
 };
 
 /***/ }),
-/* 486 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38142,7 +38251,7 @@ module.exports = function (isFinished) {
 };
 
 /***/ }),
-/* 487 */
+/* 488 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38169,7 +38278,7 @@ module.exports = function (importance) {
 };
 
 /***/ }),
-/* 488 */
+/* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
