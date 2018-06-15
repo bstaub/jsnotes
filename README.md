@@ -1,83 +1,40 @@
 jsnotes
 ========
 
-simple notes application for for getting your stuff done
+- is a simple notes application with frontend and backend rest api based on javascript and nodejs
 
-## Setup Project
+- it use the modern grid css with handlebars template
+
+
+##### Project Setup and Start
 
 ````
-https://github.com/bstaub/jsnotes.git
+git clone https://github.com/bstaub/jsnotes.git
 npm i
+npm run start
 ````
 
-## Run Project
+##### Project Sources
 
-on MAC:
-
-````
-npm run browsersync
-````
-
-on Win:
+are located in
 
 ````
-npm run browsersyncwin
+src/frondend   #frontend logic source code, listening on http://127.0.0.1:6001
+src/backend    #backend api source code, listening on http://127.0.0.1:6001/api/notes
+dist           #index.html, detaul.html frontend html files
+dist/frontend  #is build automatically from webpack.config.js, and will cleaned in every build
+index.mjs      #node/exprss server startup config (index.js is deprecated old style node server)
 ````
 
-
-## Compile New Releases with Webpack (MAC)
+##### Frontend Webpack DEV Build
 
 ````
 npm run dev    #for devlelopment purpose
 npm run prod   #for production
 ````
 
-## DEV Tools
-
-- webpack ^4.8.1
-- browsersync 0.0.1-security
-- node 8.9.4
-- npm 5.6.0 updated to 6.0.1
+##### Backend Nodemon DEV Build
 
 ````
-npm install font-awesome --save-dev
-npm install jquery
-npm install handlebars handlebars-loader --save-dev
-````
-
-
-## Configure eslint in WebStorm
-
-````
-npm i eslint -D
-npm run lint -- --init
-npm run lint
-````
-
-- Settings ➝ Languages & Frameworks ➝ Code Quality Tools ➝ Eslint
-- Preferences / Editor / Code Style / JavaScript -> Tab size: 2  (default 4)
-
-Links
-
-- configure eslint: https://medium.com/dailyjs/adding-eslint-to-your-project-7bd4feca35a8
-- Troubleshooting: https://stackoverflow.com/questions/38087660/eslintrc-throws-errors-when-extending-airbnb-config?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-
-## APIs
-
-````
-npm i express
-npm i -g nodemon
-
-nodemon server.js
-export PORT=5000   (on mac)
-set PORT=5000      (on win)
-
-https://www.npmjs.com/package/joi
-npm i joi
-````
-
-## Security
-
-````
-npm audit
+npm run startdev
 ````

@@ -13,15 +13,11 @@ export default class ControllerList {
 
         if (e.target.id === 'listDelete') {
           const allnotes = this.getAllNotesFromLocalStorage();
-
-
           const filteredNotes = allnotes.filter(item => item.id != e.target.dataset.id);
-
           const storage = new Storage('notesKey');
           storage.removeKeyFromLocalStorage();
           storage.setItemToLocalStorage(filteredNotes);
-
-          // Remove Note From GUI
+          //Remove from GUI
           e.target.parentElement.parentElement.remove();
         }
 
@@ -32,9 +28,8 @@ export default class ControllerList {
           document.querySelector(`[data-description-id="${id}"]`).removeAttribute('disabled');
 
           const allnotes = this.getAllNotesFromLocalStorage();
-
-          const filteredNote = allnotes.filter(item => item.id == id); /* darf nicht strikt === sein! */
-
+          const filteredNote = allnotes.filter(item => item.id == id);
+          /* don't use strict === here */
 
           if (e.target.innerHTML == 'Edit') {
             e.target.innerHTML = 'Save';
@@ -44,10 +39,8 @@ export default class ControllerList {
             document.querySelector(`[data-description-id="${id}"]`).classList.remove('redborder');
           }
 
-          // Test DOM Traversing ugly stuff..
           // console.log("traverse: ",e.target.parentElement.parentElement.getElementsByClassName('listTitleDescriptionImportance')[0].getElementsByClassName('description')[0].value);
-
-          filteredNote[0].description = document.querySelector(`[data-description-id="${id}"]`).value; // nicht .innerHMTL!!!!
+          filteredNote[0].description = document.querySelector(`[data-description-id="${id}"]`).value;
 
           const positionStartindex = allnotes.findIndex(item => item.id == id);
 
@@ -133,7 +126,6 @@ export default class ControllerList {
             const importance1 = $(a).find('.importance[data-importance]').data('importance');
             const importance2 = $(b).find('.importance[data-importance]').data('importance');
 
-
             return importance1 < importance2;
           }
 
@@ -148,30 +140,12 @@ export default class ControllerList {
           sortNotesByImportanceDESC();
         });
 
-
-        // ToDo: Testing sort function without jQuery!
-        // const allnotes = this.getAllNotesFromLocalStorage();
-        // console.log('vorher allnotes: ', allnotes);
-
-        // const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
-        // console.log(notesSortedByisFinished);
-
-        // const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
-        // console.log('nachher allnotes: ',notesSortedByisFinished);
-
-        // const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
-        // console.log('nachher allnotes: ', notesSortedByisFinished);
-        // People.sort(dynamicSort("Name"));
-
-        // https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-        // console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
-        // console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
       });
     }
 
     if (dom.btnShowFinished) {
       dom.btnShowFinished.addEventListener('click', (e) => {
-        // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
+        // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working correct, because check finished comes from storage!
         if (e.target.innerHTML == 'Show finished') {
           e.target.innerHTML = 'Show all';
           $('.item--main-content .note:not(.finished)').hide();
@@ -180,16 +154,6 @@ export default class ControllerList {
           $('.item--main-content .note:not(.finished)').show();
         }
 
-        /*
-        const allnotes = this.getAllNotesFromLocalStorage();
-
-        const filteredNote = allnotes.filter((item) => {
-            return item.isFinished == true;
-        });
-        */
-
-        // const viewList = new ViewList();
-        // viewList.generateListView(this.)
       });
     }
   }

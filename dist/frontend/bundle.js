@@ -25986,7 +25986,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     NotesStorage.js: Modul, welches alle Funktionalitäten beinhaltet,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     welche benötigt werden um die Notes zu verwalten z.B. folgende Funktionen:
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     - GetNotes(orderBy, filterBy)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     - AddNote(note)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     - UpdateNote(note)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     - GetNoteById(id)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ! Wichtig: Der Store darf kein Zugriff auf den DOM haben.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ! Hinweis: Dieses Modul ist das M von MVC
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
 
 var _Storage = __webpack_require__(333);
 
@@ -26036,6 +26045,7 @@ var Controller = function () {
   }, {
     key: 'getAllNotesFromLocalStorage',
     value: function getAllNotesFromLocalStorage() {
+      //Todo: Implement clientService on all methods
       //return new this.clientService.getAllNotesFromLocalStorage();
       var storage = new _Storage2.default('notesKey');
       return storage.getAllNotesFromLocalStorage();
@@ -26056,45 +26066,6 @@ var Controller = function () {
         return true;
       }
     }
-
-    /*
-    saveIDToLocalStorage(id) {
-      const storage = new Storage('noteKeyLastID');
-      storage.saveNoteIDToLocalStorage(id);
-    }
-     getIDFromLocalStorage() {
-      const storage = new Storage('noteKeyLastID');
-      return storage.getNoteIDFromLocalStorage();
-    }
-     getNewUniqueNoteID() {
-      if (this.getIDFromLocalStorage() === null) {
-        this.saveIDToLocalStorage(1);
-        return 1;
-      }
-      let id = this.getIDFromLocalStorage();
-      id++;
-      this.saveIDToLocalStorage(id);
-      return this.getIDFromLocalStorage();
-    }
-    */
-
-    /*
-    buildNewNoteEntry({
-      title, description, importance, datepicker,
-    }) {
-      const isFinished = false;
-      return new Note(
-        this.getNewUniqueNoteID(),
-        title.value,
-        description.value,
-        importance.value,
-        Storage.setFormatDateDMYhs(datepicker.value),
-        Storage.getCreatedDate(),
-        isFinished,
-      );
-    }
-    */
-
   }]);
 
   return Controller;
@@ -26149,9 +26120,7 @@ var Note = function () {
           datepicker = _ref.datepicker;
 
       var isFinished = false;
-      return new Note(
-      //this.getNewUniqueNoteID(),
-      _HelperService2.default.getNewUniqueNoteID(), title.value, description.value, importance.value, _Storage2.default.setFormatDateDMYhs(datepicker.value), _Storage2.default.getCreatedDate(), isFinished);
+      return new Note(_HelperService2.default.getNewUniqueNoteID(), title.value, description.value, importance.value, _Storage2.default.setFormatDateDMYhs(datepicker.value), _Storage2.default.getCreatedDate(), isFinished);
     }
   }]);
 
@@ -26281,16 +26250,13 @@ var ControllerList = function () {
 
           if (e.target.id === 'listDelete') {
             var allnotes = _this.getAllNotesFromLocalStorage();
-
             var filteredNotes = allnotes.filter(function (item) {
               return item.id != e.target.dataset.id;
             });
-
             var storage = new _Storage2.default('notesKey');
             storage.removeKeyFromLocalStorage();
             storage.setItemToLocalStorage(filteredNotes);
-
-            // Remove Note From GUI
+            //Remove from GUI
             e.target.parentElement.parentElement.remove();
           }
 
@@ -26300,10 +26266,10 @@ var ControllerList = function () {
             document.querySelector('[data-description-id="' + id + '"]').removeAttribute('disabled');
 
             var _allnotes = _this.getAllNotesFromLocalStorage();
-
             var filteredNote = _allnotes.filter(function (item) {
               return item.id == id;
-            }); /* darf nicht strikt === sein! */
+            });
+            /* don't use strict === here */
 
             if (e.target.innerHTML == 'Edit') {
               e.target.innerHTML = 'Save';
@@ -26313,10 +26279,8 @@ var ControllerList = function () {
               document.querySelector('[data-description-id="' + id + '"]').classList.remove('redborder');
             }
 
-            // Test DOM Traversing ugly stuff..
             // console.log("traverse: ",e.target.parentElement.parentElement.getElementsByClassName('listTitleDescriptionImportance')[0].getElementsByClassName('description')[0].value);
-
-            filteredNote[0].description = document.querySelector('[data-description-id="' + id + '"]').value; // nicht .innerHMTL!!!!
+            filteredNote[0].description = document.querySelector('[data-description-id="' + id + '"]').value;
 
             var positionStartindex = _allnotes.findIndex(function (item) {
               return item.id == id;
@@ -26421,30 +26385,12 @@ var ControllerList = function () {
 
             sortNotesByImportanceDESC();
           });
-
-          // ToDo: Testing sort function without jQuery!
-          // const allnotes = this.getAllNotesFromLocalStorage();
-          // console.log('vorher allnotes: ', allnotes);
-
-          // const notesSortedByisFinished = ViewHelper.sortItemsByisFinished(allnotes);  //allnotes object wird by Reference auch geändert!!!
-          // console.log(notesSortedByisFinished);
-
-          // const notesSortedByisFinished = ViewHelper.sortItemsByObjKey(allnotes,'isFinished');  //allnotes object wird by Reference auch geändert!!! geht noch nicht!
-          // console.log('nachher allnotes: ',notesSortedByisFinished);
-
-          // const notesSortedByisFinished = allnotes.sort(ViewHelper.dynamicSort('description')); // geht!!!
-          // console.log('nachher allnotes: ', notesSortedByisFinished);
-          // People.sort(dynamicSort("Name"));
-
-          // https://stackoverflow.com/questions/5309926/how-to-get-the-data-id-attribute?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-          // console.log('xxx1: ',$('.item--main-content .note').find(".importance[data-importance]").attr("data-id")); // will return the string "123"
-          // console.log('xxx2: ',$('.item--main-content .note').find(".importance[data-importance]").data('id')); // will return the number 123
         });
       }
 
       if (dom.btnShowFinished) {
         dom.btnShowFinished.addEventListener('click', function (e) {
-          // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working korrect, because check finished comes from storage!
+          // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working correct, because check finished comes from storage!
           if (e.target.innerHTML == 'Show finished') {
             e.target.innerHTML = 'Show all';
             $('.item--main-content .note:not(.finished)').hide();
@@ -26452,16 +26398,6 @@ var ControllerList = function () {
             e.target.innerHTML = 'Show finished';
             $('.item--main-content .note:not(.finished)').show();
           }
-
-          /*
-          const allnotes = this.getAllNotesFromLocalStorage();
-           const filteredNote = allnotes.filter((item) => {
-              return item.isFinished == true;
-          });
-          */
-
-          // const viewList = new ViewList();
-          // viewList.generateListView(this.)
         });
       }
     }

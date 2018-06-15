@@ -1,3 +1,14 @@
+/*
+NotesStorage.js: Modul, welches alle Funktionalitäten beinhaltet,
+welche benötigt werden um die Notes zu verwalten z.B. folgende Funktionen:
+- GetNotes(orderBy, filterBy)
+- AddNote(note)
+- UpdateNote(note)
+- GetNoteById(id)
+! Wichtig: Der Store darf kein Zugriff auf den DOM haben.
+! Hinweis: Dieses Modul ist das M von MVC
+*/
+
 import Storage from '../client-service/Storage';
 import ViewHelper from '../view/ViewHelper';
 import Note from '../model/Note';
@@ -29,6 +40,7 @@ export default class Controller {
   }
 
   getAllNotesFromLocalStorage() {
+    //Todo: Implement clientService on all methods
     //return new this.clientService.getAllNotesFromLocalStorage();
     const storage = new Storage('notesKey');
     return storage.getAllNotesFromLocalStorage();
@@ -48,43 +60,4 @@ export default class Controller {
     }
   }
 
-  /*
-  saveIDToLocalStorage(id) {
-    const storage = new Storage('noteKeyLastID');
-    storage.saveNoteIDToLocalStorage(id);
-  }
-
-  getIDFromLocalStorage() {
-    const storage = new Storage('noteKeyLastID');
-    return storage.getNoteIDFromLocalStorage();
-  }
-
-  getNewUniqueNoteID() {
-    if (this.getIDFromLocalStorage() === null) {
-      this.saveIDToLocalStorage(1);
-      return 1;
-    }
-    let id = this.getIDFromLocalStorage();
-    id++;
-    this.saveIDToLocalStorage(id);
-    return this.getIDFromLocalStorage();
-  }
-  */
-
-  /*
-  buildNewNoteEntry({
-    title, description, importance, datepicker,
-  }) {
-    const isFinished = false;
-    return new Note(
-      this.getNewUniqueNoteID(),
-      title.value,
-      description.value,
-      importance.value,
-      Storage.setFormatDateDMYhs(datepicker.value),
-      Storage.getCreatedDate(),
-      isFinished,
-    );
-  }
-  */
 }

@@ -21,13 +21,9 @@ export default class Note {
   }
 
 
-
-  static buildNewNoteEntry({
-                      title, description, importance, datepicker,
-                    }) {
+  static buildNewNoteEntry({ title, description, importance, datepicker, }){
     const isFinished = false;
     return new Note(
-      //this.getNewUniqueNoteID(),
       HelperService.getNewUniqueNoteID(),
       title.value,
       description.value,
