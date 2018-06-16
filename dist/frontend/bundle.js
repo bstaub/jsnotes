@@ -75,7 +75,7 @@
 
 __webpack_require__(1);
 __webpack_require__(328);
-module.exports = __webpack_require__(489);
+module.exports = __webpack_require__(490);
 
 
 /***/ }),
@@ -9064,11 +9064,11 @@ var _Controller = __webpack_require__(460);
 
 var _Controller2 = _interopRequireDefault(_Controller);
 
-var _ControllerList = __webpack_require__(463);
+var _ControllerList = __webpack_require__(465);
 
 var _ControllerList2 = _interopRequireDefault(_ControllerList);
 
-var _ViewList = __webpack_require__(465);
+var _ViewList = __webpack_require__(466);
 
 var _ViewList2 = _interopRequireDefault(_ViewList);
 
@@ -9080,9 +9080,9 @@ var _Storage = __webpack_require__(333);
 
 var _Storage2 = _interopRequireDefault(_Storage);
 
-var _Note = __webpack_require__(461);
+var _HttpService = __webpack_require__(461);
 
-var _Note2 = _interopRequireDefault(_Note);
+var _HttpService2 = _interopRequireDefault(_HttpService);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9098,11 +9098,12 @@ function start() {
 
   //const controller = new Controller();
   if (domnew) {
-    var controller = new _Controller2.default(new _Storage2.default('notesKey'));
+    //const controller = new Controller(new Storage('notesKey'));
+    var controller = new _Controller2.default(new _HttpService2.default());
     controller.registerAllEventListener(domnew);
   }
 
-  var controllerlist = new _ControllerList2.default();
+  var controllerlist = new _ControllerList2.default(new _Storage2.default('notesKey'));
   if (domlist) {
     controllerlist.registerAllEventListener(domlist);
   }
@@ -9194,7 +9195,24 @@ var ViewHelper = function () {
     _classCallCheck(this, ViewHelper);
   }
 
-  _createClass(ViewHelper, null, [{
+  _createClass(ViewHelper, [{
+    key: 'markStars',
+    value: function markStars(id, lastStar) {
+      //static markStars(id, lastStar) {
+      var totalstars = document.querySelectorAll('[data-id="' + id + '"] span');
+      totalstars.forEach(function (item) {
+        if (item.id <= lastStar) {
+          // getAttribute('id')
+          item.classList.add('yellow');
+        } else {
+          item.classList.remove('yellow');
+        }
+      });
+    }
+
+    /*  not used with handlebars, just template string helper */
+
+  }], [{
     key: 'loadStyleSwitcherOnStartpage',
     value: function loadStyleSwitcherOnStartpage() {
       document.addEventListener("DOMContentLoaded", function () {
@@ -9286,22 +9304,6 @@ var ViewHelper = function () {
       }
     }
   }, {
-    key: 'markStars',
-    value: function markStars(id, lastStar) {
-      var totalstars = document.querySelectorAll('[data-id="' + id + '"] span');
-      totalstars.forEach(function (item) {
-        if (item.id <= lastStar) {
-          // getAttribute('id')
-          item.classList.add('yellow');
-        } else {
-          item.classList.remove('yellow');
-        }
-      });
-    }
-
-    /*  not used with handlebars, just template string helper */
-
-  }, {
     key: 'selectimportance',
     value: function selectimportance(id) {
       switch (id) {
@@ -9361,6 +9363,11 @@ var Storage = function () {
       var itemArray = this.getItemFromLocalStorage();
       itemArray.push(note);
       this.setItemToLocalStorage(itemArray);
+    }
+  }, {
+    key: 'getNotes',
+    value: function getNotes() {
+      return this.getItemFromLocalStorage();
     }
   }, {
     key: 'saveStyleToLocalStorage',
@@ -25997,15 +26004,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ! Hinweis: Dieses Modul ist das M von MVC
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-var _Storage = __webpack_require__(333);
+//import Storage from '../client-service/Storage';
+//import HTTPService from '../client-service/HttpService';
 
-var _Storage2 = _interopRequireDefault(_Storage);
 
 var _ViewHelper = __webpack_require__(332);
 
 var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
 
-var _Note = __webpack_require__(461);
+var _Note = __webpack_require__(463);
 
 var _Note2 = _interopRequireDefault(_Note);
 
@@ -26031,7 +26038,7 @@ var Controller = function () {
           if (checkIfEmpty) {
             var noteDto = _Note2.default.buildNewNoteEntry(dom);
             _this.clientService.addNote(noteDto);
-            _ViewHelper2.default.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
+            //ViewHelper.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
           }
         });
       }
@@ -26041,14 +26048,6 @@ var Controller = function () {
           _this.clearAllImputs(dom);
         });
       }
-    }
-  }, {
-    key: 'getAllNotesFromLocalStorage',
-    value: function getAllNotesFromLocalStorage() {
-      //Todo: Implement clientService on all methods
-      //return new this.clientService.getAllNotesFromLocalStorage();
-      var storage = new _Storage2.default('notesKey');
-      return storage.getAllNotesFromLocalStorage();
     }
   }, {
     key: 'clearAllImputs',
@@ -26078,7 +26077,7 @@ exports.default = Controller;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function($) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -26086,367 +26085,89 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Storage = __webpack_require__(333);
-
-var _Storage2 = _interopRequireDefault(_Storage);
-
-var _HelperService = __webpack_require__(462);
-
-var _HelperService2 = _interopRequireDefault(_HelperService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Note = function () {
-  function Note(id, title, description, importance, datepicker, createdDate, isFinished) {
-    _classCallCheck(this, Note);
-
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.importance = importance;
-    this.datepicker = datepicker;
-    this.createdDate = createdDate;
-    this.isFinished = isFinished;
+var HttpService = function () {
+  function HttpService() {
+    _classCallCheck(this, HttpService);
   }
 
-  _createClass(Note, null, [{
-    key: "buildNewNoteEntry",
-    value: function buildNewNoteEntry(_ref) {
-      var title = _ref.title,
-          description = _ref.description,
-          importance = _ref.importance,
-          datepicker = _ref.datepicker;
+  _createClass(HttpService, [{
+    key: "getNoteList",
+    value: function getNoteList(callback) {
 
-      var isFinished = false;
-      return new Note(_HelperService2.default.getNewUniqueNoteID(), title.value, description.value, importance.value, _Storage2.default.setFormatDateDMYhs(datepicker.value), _Storage2.default.getCreatedDate(), isFinished);
+      $.ajax({
+        method: "GET",
+        url: "/notes/",
+        success: function success(res) {
+          callback(res);
+        }
+      });
+    }
+  }, {
+    key: "editNoteById",
+    value: function editNoteById(id) {
+
+      $.ajax({
+        method: "GET",
+        url: "/notes/" + id + "/",
+        success: function success(res) {
+          if (res) {
+            $('#title').val(res['title']);
+            $('#description').val(res['message']);
+            $('#date-picker').val(res['taskDate']);
+            if (res['priority'] !== 0) {
+              $("input[value=\"" + res['priority'] + "\"]").addClass("selection-border");
+            }
+          }
+        }
+      });
+    }
+  }, {
+    key: "updateNoteById",
+    value: function updateNoteById(id, note) {
+      $.ajax({
+        method: "PUT",
+        url: "/notes/" + id + "/",
+        data: note,
+        success: function success() {
+          window.location.href = '/';
+        }
+      });
+    }
+  }, {
+    key: "toggleCheckBox",
+    value: function toggleCheckBox(id, status) {
+      $.ajax({
+        method: "POST",
+        url: "/notes/" + id + "/?status=" + status,
+        success: function success() {
+          return 200;
+        }
+      });
+    }
+  }, {
+    key: "addNote",
+    value: function addNote(note) {
+      $.ajax({
+        method: "POST",
+        url: "/api/notes/",
+        data: note,
+        success: function success() {
+          window.location.href = '/';
+        }
+      });
     }
   }]);
 
-  return Note;
+  return HttpService;
 }();
 
-exports.default = Note;
+exports.default = HttpService;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(462)))
 
 /***/ }),
 /* 462 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //Helper Funktionen vom Storage hier auslagern
-//getID
-//DateFormat
-
-var _Storage = __webpack_require__(333);
-
-var _Storage2 = _interopRequireDefault(_Storage);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var HelperService = function () {
-  function HelperService() {
-    _classCallCheck(this, HelperService);
-  }
-
-  _createClass(HelperService, null, [{
-    key: 'getNewUniqueNoteID',
-    value: function getNewUniqueNoteID() {
-      if (HelperService.getIDFromLocalStorage() === null) {
-        HelperService.saveIDToLocalStorage(1);
-        return 1;
-      }
-      var id = HelperService.getIDFromLocalStorage();
-      id++;
-      HelperService.saveIDToLocalStorage(id);
-      return HelperService.getIDFromLocalStorage();
-    }
-  }, {
-    key: 'saveIDToLocalStorage',
-    value: function saveIDToLocalStorage(id) {
-      var storage = new _Storage2.default('noteKeyLastID');
-      storage.saveNoteIDToLocalStorage(id);
-    }
-  }, {
-    key: 'getIDFromLocalStorage',
-    value: function getIDFromLocalStorage() {
-      var storage = new _Storage2.default('noteKeyLastID');
-      return storage.getNoteIDFromLocalStorage();
-    }
-  }, {
-    key: 'getCreatedDate',
-    value: function getCreatedDate() {
-      var d = new Date();
-      return this.formatDate(d);
-    }
-  }, {
-    key: 'setFormatDateDMYhs',
-    value: function setFormatDateDMYhs(dateLocal) {
-      var d = new Date(dateLocal);
-      return _Storage2.default.formatDate(d);
-    }
-  }, {
-    key: 'formatDate',
-    value: function formatDate(d) {
-      return (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
-    }
-  }]);
-
-  return HelperService;
-}();
-
-exports.default = HelperService;
-
-/***/ }),
-/* 463 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
-
-var _Storage = __webpack_require__(333);
-
-var _Storage2 = _interopRequireDefault(_Storage);
-
-var _ViewHelper = __webpack_require__(332);
-
-var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
-
-var _Controller = __webpack_require__(460);
-
-var _Controller2 = _interopRequireDefault(_Controller);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ControllerList = function () {
-  function ControllerList() {
-    _classCallCheck(this, ControllerList);
-  }
-
-  _createClass(ControllerList, [{
-    key: 'registerAllEventListener',
-    value: function registerAllEventListener(dom) {
-      var _this = this;
-
-      if (dom.dynamicList) {
-        dom.dynamicList.addEventListener('click', function (e) {
-          // console.log("dynamiclist eventobjekt: ",e);
-
-          if (e.target.id === 'listDelete') {
-            var allnotes = _this.getAllNotesFromLocalStorage();
-            var filteredNotes = allnotes.filter(function (item) {
-              return item.id != e.target.dataset.id;
-            });
-            var storage = new _Storage2.default('notesKey');
-            storage.removeKeyFromLocalStorage();
-            storage.setItemToLocalStorage(filteredNotes);
-            //Remove from GUI
-            e.target.parentElement.parentElement.remove();
-          }
-
-          if (e.target.id === 'listEdit') {
-            // Enable Textarea Field --> disabled="disabled
-            var id = e.target.dataset.id;
-            document.querySelector('[data-description-id="' + id + '"]').removeAttribute('disabled');
-
-            var _allnotes = _this.getAllNotesFromLocalStorage();
-            var filteredNote = _allnotes.filter(function (item) {
-              return item.id == id;
-            });
-            /* don't use strict === here */
-
-            if (e.target.innerHTML == 'Edit') {
-              e.target.innerHTML = 'Save';
-              document.querySelector('[data-description-id="' + id + '"]').classList.add('redborder');
-            } else if (e.target.innerHTML == 'Save') {
-              e.target.innerHTML = 'Edit';
-              document.querySelector('[data-description-id="' + id + '"]').classList.remove('redborder');
-            }
-
-            // console.log("traverse: ",e.target.parentElement.parentElement.getElementsByClassName('listTitleDescriptionImportance')[0].getElementsByClassName('description')[0].value);
-            filteredNote[0].description = document.querySelector('[data-description-id="' + id + '"]').value;
-
-            var positionStartindex = _allnotes.findIndex(function (item) {
-              return item.id == id;
-            });
-
-            _allnotes.splice(positionStartindex, 1, filteredNote[0]);
-
-            var _storage = new _Storage2.default('notesKey');
-            _storage.removeKeyFromLocalStorage();
-            _storage.setItemToLocalStorage(_allnotes);
-          }
-
-          if (e.target.id === 'checkBoxisFinished') {
-            var _allnotes2 = _this.getAllNotesFromLocalStorage();
-
-            var _filteredNote = _allnotes2.filter(function (item) {
-              return item.id == e.target.dataset.id;
-            });
-
-            // Toggle Finished Status
-            _filteredNote[0].isFinished ? _filteredNote[0].isFinished = false : _filteredNote[0].isFinished = true;
-            var _positionStartindex = _allnotes2.findIndex(function (item) {
-              return item.id == e.target.dataset.id;
-            }); // old way e.target.getAttribute("data-id")
-
-            // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-            _allnotes2.splice(_positionStartindex, 1, _filteredNote[0]);
-
-            var _storage2 = new _Storage2.default('notesKey');
-            _storage2.removeKeyFromLocalStorage();
-            _storage2.setItemToLocalStorage(_allnotes2);
-          }
-
-          // Check Target for Markstars 1-5
-          for (var i = 1; i <= 5; i++) {
-            if (e.target.id === String(i)) {
-              ControllerList.markstars(e);
-            }
-          }
-        });
-      }
-
-      if (dom.btnSortByFinishdate) {
-        dom.btnSortByFinishdate.addEventListener('click', function () {
-          $(function () {
-            // must use in ready function!
-            function sortNotesByFinishedDateASC() {
-              $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
-            }
-
-            function sortFinishedDateASC(a, b) {
-              var finished1 = $(a).find('p[data-finished]').data('finished');
-              var finished2 = $(b).find('p[data-finished]').data('finished');
-
-              return new Date(finished1) > new Date(finished2);
-            }
-
-            sortNotesByFinishedDateASC();
-          });
-        });
-      }
-
-      if (dom.btnSortByCreateddate) {
-        dom.btnSortByCreateddate.addEventListener('click', function () {
-          $(function () {
-            function sortNotesByCreatedDateASC() {
-              $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
-            }
-
-            function sortCreatedDateASC(a, b) {
-              var created1 = $(a).attr('data-created');
-              var created2 = $(b).data('created');
-
-              return created1 > created2;
-            }
-
-            sortNotesByCreatedDateASC();
-          });
-        });
-      }
-
-      if (dom.btnSortByImportance) {
-        dom.btnSortByImportance.addEventListener('click', function () {
-          $(function () {
-            function sortNotesByImportanceDESC() {
-              $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
-            }
-
-            function sortImportanceDESC(a, b) {
-              var importance1 = $(a).find('.importance[data-importance]').data('importance');
-              var importance2 = $(b).find('.importance[data-importance]').data('importance');
-
-              return importance1 < importance2;
-            }
-
-            function sortImportanceASC(a, b) {
-              var importance1 = $(a).find('.importance[data-importance]').data('importance');
-              var importance2 = $(b).find('.importance[data-importance]').data('importance');
-
-              return importance1 > importance2;
-            }
-
-            sortNotesByImportanceDESC();
-          });
-        });
-      }
-
-      if (dom.btnShowFinished) {
-        dom.btnShowFinished.addEventListener('click', function (e) {
-          // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working correct, because check finished comes from storage!
-          if (e.target.innerHTML == 'Show finished') {
-            e.target.innerHTML = 'Show all';
-            $('.item--main-content .note:not(.finished)').hide();
-          } else if (e.target.innerHTML == 'Show all') {
-            e.target.innerHTML = 'Show finished';
-            $('.item--main-content .note:not(.finished)').show();
-          }
-        });
-      }
-    }
-  }, {
-    key: 'getAllNotesFromLocalStorage',
-    value: function getAllNotesFromLocalStorage() {
-      var controller = new _Controller2.default();
-      var allnotes = controller.getAllNotesFromLocalStorage();
-      return allnotes;
-    }
-  }], [{
-    key: 'markstars',
-    value: function markstars(e) {
-      _ViewHelper2.default.markStars(e.target.parentElement.dataset.id, e.target.id);
-      ControllerList.saveStarList(e);
-    }
-  }, {
-    key: 'saveStarList',
-    value: function saveStarList(e) {
-      var controller = new _Controller2.default();
-      var allnotes = controller.getAllNotesFromLocalStorage();
-
-      var filteredNote = allnotes.filter(function (item) {
-        return item.id == e.target.parentElement.dataset.id;
-      });
-
-      filteredNote[0].importance = e.target.id;
-
-      var positionStartindex = allnotes.findIndex(function (item) {
-        return item.id == e.target.parentElement.dataset.id;
-      });
-
-      // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-      allnotes.splice(positionStartindex, 1, filteredNote[0]);
-
-      var storage = new _Storage2.default('notesKey');
-      storage.removeKeyFromLocalStorage();
-      storage.setItemToLocalStorage(allnotes);
-    }
-  }]);
-
-  return ControllerList;
-}();
-
-exports.default = ControllerList;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(464)))
-
-/***/ }),
-/* 464 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36817,7 +36538,370 @@ return jQuery;
 
 
 /***/ }),
+/* 463 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+var _HelperService = __webpack_require__(464);
+
+var _HelperService2 = _interopRequireDefault(_HelperService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Note = function () {
+  function Note(id, title, description, importance, datepicker, createdDate, isFinished) {
+    _classCallCheck(this, Note);
+
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.importance = importance;
+    this.datepicker = datepicker;
+    this.createdDate = createdDate;
+    this.isFinished = isFinished;
+  }
+
+  _createClass(Note, null, [{
+    key: "buildNewNoteEntry",
+    value: function buildNewNoteEntry(_ref) {
+      var title = _ref.title,
+          description = _ref.description,
+          importance = _ref.importance,
+          datepicker = _ref.datepicker;
+
+      var isFinished = false;
+      return new Note(_HelperService2.default.getNewUniqueNoteID(), title.value, description.value, importance.value, _Storage2.default.setFormatDateDMYhs(datepicker.value), _Storage2.default.getCreatedDate(), isFinished);
+    }
+  }]);
+
+  return Note;
+}();
+
+exports.default = Note;
+
+/***/ }),
+/* 464 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); //Helper Funktionen vom Storage hier auslagern
+//getID
+//DateFormat
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var HelperService = function () {
+  function HelperService() {
+    _classCallCheck(this, HelperService);
+  }
+
+  _createClass(HelperService, null, [{
+    key: 'getNewUniqueNoteID',
+    value: function getNewUniqueNoteID() {
+      if (HelperService.getIDFromLocalStorage() === null) {
+        HelperService.saveIDToLocalStorage(1);
+        return 1;
+      }
+      var id = HelperService.getIDFromLocalStorage();
+      id++;
+      HelperService.saveIDToLocalStorage(id);
+      return HelperService.getIDFromLocalStorage();
+    }
+  }, {
+    key: 'saveIDToLocalStorage',
+    value: function saveIDToLocalStorage(id) {
+      var storage = new _Storage2.default('noteKeyLastID');
+      storage.saveNoteIDToLocalStorage(id);
+    }
+  }, {
+    key: 'getIDFromLocalStorage',
+    value: function getIDFromLocalStorage() {
+      var storage = new _Storage2.default('noteKeyLastID');
+      return storage.getNoteIDFromLocalStorage();
+    }
+  }, {
+    key: 'getCreatedDate',
+    value: function getCreatedDate() {
+      var d = new Date();
+      return this.formatDate(d);
+    }
+  }, {
+    key: 'setFormatDateDMYhs',
+    value: function setFormatDateDMYhs(dateLocal) {
+      var d = new Date(dateLocal);
+      return _Storage2.default.formatDate(d);
+    }
+  }, {
+    key: 'formatDate',
+    value: function formatDate(d) {
+      return (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
+    }
+  }]);
+
+  return HelperService;
+}();
+
+exports.default = HelperService;
+
+/***/ }),
 /* 465 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
+
+//import Storage from '../client-service/Storage';
+//import Controller from './Controller';
+
+
+var _ViewHelper = __webpack_require__(332);
+
+var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ControllerList = function () {
+  function ControllerList(clientService) {
+    _classCallCheck(this, ControllerList);
+
+    this.clientService = clientService;
+  }
+
+  _createClass(ControllerList, [{
+    key: 'registerAllEventListener',
+    value: function registerAllEventListener(dom) {
+      var _this = this;
+
+      if (dom.dynamicList) {
+        dom.dynamicList.addEventListener('click', function (e) {
+          // console.log("dynamiclist eventobjekt: ",e);
+
+          if (e.target.id === 'listDelete') {
+            var allnotes = _this.getAllNotesFromLocalStorage();
+            var filteredNotes = allnotes.filter(function (item) {
+              return item.id != e.target.dataset.id;
+            });
+
+            _this.clientService.removeKeyFromLocalStorage();
+            _this.clientService.setItemToLocalStorage(filteredNotes);
+
+            //Remove from GUI
+            e.target.parentElement.parentElement.remove();
+          }
+
+          if (e.target.id === 'listEdit') {
+            // Enable Textarea Field --> disabled="disabled
+            var id = e.target.dataset.id;
+            document.querySelector('[data-description-id="' + id + '"]').removeAttribute('disabled');
+
+            var _allnotes = _this.getAllNotesFromLocalStorage();
+            var filteredNote = _allnotes.filter(function (item) {
+              return item.id == id;
+            });
+            /* don't use strict === here */
+
+            if (e.target.innerHTML == 'Edit') {
+              e.target.innerHTML = 'Save';
+              document.querySelector('[data-description-id="' + id + '"]').classList.add('redborder');
+            } else if (e.target.innerHTML == 'Save') {
+              e.target.innerHTML = 'Edit';
+              document.querySelector('[data-description-id="' + id + '"]').classList.remove('redborder');
+            }
+
+            filteredNote[0].description = document.querySelector('[data-description-id="' + id + '"]').value;
+
+            var positionStartindex = _allnotes.findIndex(function (item) {
+              return item.id == id;
+            });
+
+            _allnotes.splice(positionStartindex, 1, filteredNote[0]);
+
+            _this.clientService.removeKeyFromLocalStorage();
+            _this.clientService.setItemToLocalStorage(_allnotes);
+          }
+
+          if (e.target.id === 'checkBoxisFinished') {
+            var _allnotes2 = _this.getAllNotesFromLocalStorage();
+
+            var _filteredNote = _allnotes2.filter(function (item) {
+              return item.id == e.target.dataset.id;
+            });
+
+            _filteredNote[0].isFinished ? _filteredNote[0].isFinished = false : _filteredNote[0].isFinished = true;
+            var _positionStartindex = _allnotes2.findIndex(function (item) {
+              return item.id == e.target.dataset.id;
+            }); // old way e.target.getAttribute("data-id")
+
+            _allnotes2.splice(_positionStartindex, 1, _filteredNote[0]);
+
+            _this.clientService.removeKeyFromLocalStorage();
+            _this.clientService.setItemToLocalStorage(_allnotes2);
+          }
+
+          // Check Target for Markstars 1-5
+          for (var i = 1; i <= 5; i++) {
+            if (e.target.id === String(i)) {
+              _this.markstars(e);
+            }
+          }
+        });
+      }
+
+      if (dom.btnSortByFinishdate) {
+        dom.btnSortByFinishdate.addEventListener('click', function () {
+          $(function () {
+            // must use in ready function!
+            function sortNotesByFinishedDateASC() {
+              $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
+            }
+
+            function sortFinishedDateASC(a, b) {
+              var finished1 = $(a).find('p[data-finished]').data('finished');
+              var finished2 = $(b).find('p[data-finished]').data('finished');
+
+              return new Date(finished1) > new Date(finished2);
+            }
+
+            sortNotesByFinishedDateASC();
+          });
+        });
+      }
+
+      if (dom.btnSortByCreateddate) {
+        dom.btnSortByCreateddate.addEventListener('click', function () {
+          $(function () {
+            function sortNotesByCreatedDateASC() {
+              $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
+            }
+
+            function sortCreatedDateASC(a, b) {
+              var created1 = $(a).attr('data-created');
+              var created2 = $(b).data('created');
+
+              return created1 > created2;
+            }
+
+            sortNotesByCreatedDateASC();
+          });
+        });
+      }
+
+      if (dom.btnSortByImportance) {
+        dom.btnSortByImportance.addEventListener('click', function () {
+          $(function () {
+            function sortNotesByImportanceDESC() {
+              $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
+            }
+
+            function sortImportanceDESC(a, b) {
+              var importance1 = $(a).find('.importance[data-importance]').data('importance');
+              var importance2 = $(b).find('.importance[data-importance]').data('importance');
+
+              return importance1 < importance2;
+            }
+
+            function sortImportanceASC(a, b) {
+              var importance1 = $(a).find('.importance[data-importance]').data('importance');
+              var importance2 = $(b).find('.importance[data-importance]').data('importance');
+
+              return importance1 > importance2;
+            }
+
+            sortNotesByImportanceDESC();
+          });
+        });
+      }
+
+      if (dom.btnShowFinished) {
+        dom.btnShowFinished.addEventListener('click', function (e) {
+          // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working correct, because check finished comes from storage!
+          if (e.target.innerHTML == 'Show finished') {
+            e.target.innerHTML = 'Show all';
+            $('.item--main-content .note:not(.finished)').hide();
+          } else if (e.target.innerHTML == 'Show all') {
+            e.target.innerHTML = 'Show finished';
+            $('.item--main-content .note:not(.finished)').show();
+          }
+        });
+      }
+    }
+  }, {
+    key: 'getAllNotesFromLocalStorage',
+    value: function getAllNotesFromLocalStorage() {
+      return this.clientService.getNotes();
+    }
+  }, {
+    key: 'markstars',
+    value: function markstars(e) {
+      var viewhelper = new _ViewHelper2.default();
+      viewhelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+
+      this.saveStarList(e);
+    }
+  }, {
+    key: 'saveStarList',
+    value: function saveStarList(e) {
+      var allnotes = this.clientService.getNotes();
+
+      var filteredNote = allnotes.filter(function (item) {
+        return item.id == e.target.parentElement.dataset.id;
+      });
+
+      filteredNote[0].importance = e.target.id;
+
+      var positionStartindex = allnotes.findIndex(function (item) {
+        return item.id == e.target.parentElement.dataset.id;
+      });
+
+      allnotes.splice(positionStartindex, 1, filteredNote[0]);
+
+      this.clientService.removeKeyFromLocalStorage();
+      this.clientService.setItemToLocalStorage(allnotes);
+    }
+  }]);
+
+  return ControllerList;
+}();
+
+exports.default = ControllerList;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(462)))
+
+/***/ }),
+/* 466 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36850,7 +36934,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // import listTemplateWithTemplateString from '../template/listTemplateWithTemplateString';
 
 // Handlebars requires jQuery also in webpack base config! (must use in this project)
-var listTemplate = __webpack_require__(466);
+var listTemplate = __webpack_require__(467);
 
 var ViewList = function () {
   function ViewList() {
@@ -36862,8 +36946,12 @@ var ViewList = function () {
     value: function generateListView(_ref) {
       var dynamicList = _ref.dynamicList;
 
-      var controller = new _Controller2.default();
+
+      var controller = new _Storage2.default('notesKey');
       var allnotes = controller.getAllNotesFromLocalStorage();
+
+      ////const controller = new Controller();
+      ////const allnotes = controller.getAllNotesFromLocalStorage();
 
       if (dynamicList) {
         // listTemplateWithTemplateString(dynamicList,allnotes);
@@ -36895,16 +36983,16 @@ var ViewList = function () {
 exports.default = ViewList;
 
 /***/ }),
-/* 466 */
+/* 467 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(467);
+var Handlebars = __webpack_require__(468);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression, alias3=container.lambda;
 
   return "\n    <div class=\"note "
-    + alias2(__default(__webpack_require__(486)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinished","hash":{},"data":data}))
+    + alias2(__default(__webpack_require__(487)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinished","hash":{},"data":data}))
     + "\" data-created=\""
     + alias2(alias3((depth0 != null ? depth0.createdDate : depth0), depth0))
     + "\">\n        <div class=\"listDateStatus\">\n            <p data-finished=\""
@@ -36914,7 +37002,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + "</p>\n            <p><input id=\"checkBoxisFinished\" type=\"checkbox\" data-id=\""
     + alias2(alias3((depth0 != null ? depth0.id : depth0), depth0))
     + "\" "
-    + alias2(__default(__webpack_require__(487)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinishedChecked","hash":{},"data":data}))
+    + alias2(__default(__webpack_require__(488)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinishedChecked","hash":{},"data":data}))
     + "> Finished</p>\n            <p data-finished=\""
     + alias2(alias3((depth0 != null ? depth0.datepicker : depth0), depth0))
     + "\">"
@@ -36926,7 +37014,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + "\" data-importance=\""
     + alias2(alias3((depth0 != null ? depth0.importance : depth0), depth0))
     + "\">\n                        "
-    + ((stack1 = __default(__webpack_require__(488)).call(alias1,(depth0 != null ? depth0.importance : depth0),{"name":"helpers/selectImportance","hash":{},"data":data})) != null ? stack1 : "")
+    + ((stack1 = __default(__webpack_require__(489)).call(alias1,(depth0 != null ? depth0.importance : depth0),{"name":"helpers/selectImportance","hash":{},"data":data})) != null ? stack1 : "")
     + "\n                    </div>\n                </div>\n            </div>\n            <textarea class=\"description\" name=\"description\" cols=\"30\" rows=\"6\" data-description-id=\""
     + alias2(alias3((depth0 != null ? depth0.id : depth0), depth0))
     + "\" disabled=\"disabled\">"
@@ -36943,16 +37031,16 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 },"useData":true});
 
 /***/ }),
-/* 467 */
+/* 468 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
-module.exports = __webpack_require__(468)['default'];
+module.exports = __webpack_require__(469)['default'];
 
 
 /***/ }),
-/* 468 */
+/* 469 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36967,30 +37055,30 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _handlebarsBase = __webpack_require__(469);
+var _handlebarsBase = __webpack_require__(470);
 
 var base = _interopRequireWildcard(_handlebarsBase);
 
 // Each of these augment the Handlebars object. No need to setup here.
 // (This is done to easily share code between commonjs and browse envs)
 
-var _handlebarsSafeString = __webpack_require__(483);
+var _handlebarsSafeString = __webpack_require__(484);
 
 var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 
-var _handlebarsException = __webpack_require__(471);
+var _handlebarsException = __webpack_require__(472);
 
 var _handlebarsException2 = _interopRequireDefault(_handlebarsException);
 
-var _handlebarsUtils = __webpack_require__(470);
+var _handlebarsUtils = __webpack_require__(471);
 
 var Utils = _interopRequireWildcard(_handlebarsUtils);
 
-var _handlebarsRuntime = __webpack_require__(484);
+var _handlebarsRuntime = __webpack_require__(485);
 
 var runtime = _interopRequireWildcard(_handlebarsRuntime);
 
-var _handlebarsNoConflict = __webpack_require__(485);
+var _handlebarsNoConflict = __webpack_require__(486);
 
 var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 
@@ -37025,7 +37113,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 469 */
+/* 470 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37037,17 +37125,17 @@ exports.HandlebarsEnvironment = HandlebarsEnvironment;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = __webpack_require__(470);
+var _utils = __webpack_require__(471);
 
-var _exception = __webpack_require__(471);
+var _exception = __webpack_require__(472);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _helpers = __webpack_require__(472);
+var _helpers = __webpack_require__(473);
 
-var _decorators = __webpack_require__(480);
+var _decorators = __webpack_require__(481);
 
-var _logger = __webpack_require__(482);
+var _logger = __webpack_require__(483);
 
 var _logger2 = _interopRequireDefault(_logger);
 
@@ -37136,7 +37224,7 @@ exports.logger = _logger2['default'];
 
 
 /***/ }),
-/* 470 */
+/* 471 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37267,7 +37355,7 @@ function appendContextPath(contextPath, id) {
 
 
 /***/ }),
-/* 471 */
+/* 472 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37328,7 +37416,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 472 */
+/* 473 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37340,31 +37428,31 @@ exports.registerDefaultHelpers = registerDefaultHelpers;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _helpersBlockHelperMissing = __webpack_require__(473);
+var _helpersBlockHelperMissing = __webpack_require__(474);
 
 var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 
-var _helpersEach = __webpack_require__(474);
+var _helpersEach = __webpack_require__(475);
 
 var _helpersEach2 = _interopRequireDefault(_helpersEach);
 
-var _helpersHelperMissing = __webpack_require__(475);
+var _helpersHelperMissing = __webpack_require__(476);
 
 var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 
-var _helpersIf = __webpack_require__(476);
+var _helpersIf = __webpack_require__(477);
 
 var _helpersIf2 = _interopRequireDefault(_helpersIf);
 
-var _helpersLog = __webpack_require__(477);
+var _helpersLog = __webpack_require__(478);
 
 var _helpersLog2 = _interopRequireDefault(_helpersLog);
 
-var _helpersLookup = __webpack_require__(478);
+var _helpersLookup = __webpack_require__(479);
 
 var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 
-var _helpersWith = __webpack_require__(479);
+var _helpersWith = __webpack_require__(480);
 
 var _helpersWith2 = _interopRequireDefault(_helpersWith);
 
@@ -37381,7 +37469,7 @@ function registerDefaultHelpers(instance) {
 
 
 /***/ }),
-/* 473 */
+/* 474 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37389,7 +37477,7 @@ function registerDefaultHelpers(instance) {
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(470);
+var _utils = __webpack_require__(471);
 
 exports['default'] = function (instance) {
   instance.registerHelper('blockHelperMissing', function (context, options) {
@@ -37427,7 +37515,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 474 */
+/* 475 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37438,9 +37526,9 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _utils = __webpack_require__(470);
+var _utils = __webpack_require__(471);
 
-var _exception = __webpack_require__(471);
+var _exception = __webpack_require__(472);
 
 var _exception2 = _interopRequireDefault(_exception);
 
@@ -37528,7 +37616,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 475 */
+/* 476 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37539,7 +37627,7 @@ exports.__esModule = true;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _exception = __webpack_require__(471);
+var _exception = __webpack_require__(472);
 
 var _exception2 = _interopRequireDefault(_exception);
 
@@ -37560,7 +37648,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 476 */
+/* 477 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37568,7 +37656,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(470);
+var _utils = __webpack_require__(471);
 
 exports['default'] = function (instance) {
   instance.registerHelper('if', function (conditional, options) {
@@ -37596,7 +37684,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 477 */
+/* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37629,7 +37717,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 478 */
+/* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37648,7 +37736,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 479 */
+/* 480 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37656,7 +37744,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(470);
+var _utils = __webpack_require__(471);
 
 exports['default'] = function (instance) {
   instance.registerHelper('with', function (context, options) {
@@ -37688,7 +37776,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 480 */
+/* 481 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37700,7 +37788,7 @@ exports.registerDefaultDecorators = registerDefaultDecorators;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _decoratorsInline = __webpack_require__(481);
+var _decoratorsInline = __webpack_require__(482);
 
 var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 
@@ -37711,7 +37799,7 @@ function registerDefaultDecorators(instance) {
 
 
 /***/ }),
-/* 481 */
+/* 482 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37719,7 +37807,7 @@ function registerDefaultDecorators(instance) {
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(470);
+var _utils = __webpack_require__(471);
 
 exports['default'] = function (instance) {
   instance.registerDecorator('inline', function (fn, props, container, options) {
@@ -37747,7 +37835,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 482 */
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37755,7 +37843,7 @@ module.exports = exports['default'];
 
 exports.__esModule = true;
 
-var _utils = __webpack_require__(470);
+var _utils = __webpack_require__(471);
 
 var logger = {
   methodMap: ['debug', 'info', 'warn', 'error'],
@@ -37801,7 +37889,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 483 */
+/* 484 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37823,7 +37911,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 484 */
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37844,15 +37932,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _utils = __webpack_require__(470);
+var _utils = __webpack_require__(471);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _exception = __webpack_require__(471);
+var _exception = __webpack_require__(472);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _base = __webpack_require__(469);
+var _base = __webpack_require__(470);
 
 function checkRevision(compilerInfo) {
   var compilerRevision = compilerInfo && compilerInfo[0] || 1,
@@ -38137,7 +38225,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 
 
 /***/ }),
-/* 485 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38165,7 +38253,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(2)))
 
 /***/ }),
-/* 486 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38176,7 +38264,7 @@ module.exports = function isFinished(checkbool) {
 };
 
 /***/ }),
-/* 487 */
+/* 488 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38187,7 +38275,7 @@ module.exports = function (isFinished) {
 };
 
 /***/ }),
-/* 488 */
+/* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38214,7 +38302,7 @@ module.exports = function (importance) {
 };
 
 /***/ }),
-/* 489 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin

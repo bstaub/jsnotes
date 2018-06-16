@@ -16,9 +16,16 @@ import {noteRoutes} from "./src/backend/routes/noteRoutes";
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve('dist')));
+//app.use(express.static(path.resolve('dist/frontend')));
 
-//app.use('/api/', indexRoutes);
-//app.use('/api/notes', noteRoutes);
+
+app.use(function (req, res, next) {
+  console.log('node middleware request method and url: ', req.method, req.url);
+  next();
+});
+
+
+//app.use('/', indexRoutes);
 app.use('/api/', noteRoutes);
 
 

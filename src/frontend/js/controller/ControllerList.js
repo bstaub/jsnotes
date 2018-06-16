@@ -1,11 +1,17 @@
 /* global document */
 
-import Storage from '../client-service/Storage';
+//import Storage from '../client-service/Storage';
+//import Controller from './Controller';
 import ViewHelper from '../view/ViewHelper';
-import Controller from './Controller';
+
 
 
 export default class ControllerList {
+
+  constructor(clientService) {
+    this.clientService = clientService;
+  }
+
   registerAllEventListener(dom) {
     if (dom.dynamicList) {
       dom.dynamicList.addEventListener('click', (e) => {
@@ -14,9 +20,10 @@ export default class ControllerList {
         if (e.target.id === 'listDelete') {
           const allnotes = this.getAllNotesFromLocalStorage();
           const filteredNotes = allnotes.filter(item => item.id != e.target.dataset.id);
-          const storage = new Storage('notesKey');
-          storage.removeKeyFromLocalStorage();
-          storage.setItemToLocalStorage(filteredNotes);
+
+          this.clientService.removeKeyFromLocalStorage();
+          this.clientService.setItemToLocalStorage(filteredNotes);
+
           //Remove from GUI
           e.target.parentElement.parentElement.remove();
         }
@@ -39,16 +46,16 @@ export default class ControllerList {
             document.querySelector(`[data-description-id="${id}"]`).classList.remove('redborder');
           }
 
-          // console.log("traverse: ",e.target.parentElement.parentElement.getElementsByClassName('listTitleDescriptionImportance')[0].getElementsByClassName('description')[0].value);
           filteredNote[0].description = document.querySelector(`[data-description-id="${id}"]`).value;
 
           const positionStartindex = allnotes.findIndex(item => item.id == id);
 
           allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-          const storage = new Storage('notesKey');
-          storage.removeKeyFromLocalStorage();
-          storage.setItemToLocalStorage(allnotes);
+
+          this.clientService.removeKeyFromLocalStorage();
+          this.clientService.setItemToLocalStorage(allnotes);
+
         }
 
         if (e.target.id === 'checkBoxisFinished') {
@@ -56,22 +63,20 @@ export default class ControllerList {
 
           const filteredNote = allnotes.filter(item => item.id == e.target.dataset.id);
 
-          // Toggle Finished Status
           filteredNote[0].isFinished ? filteredNote[0].isFinished = false : filteredNote[0].isFinished = true;
           const positionStartindex = allnotes.findIndex(item => item.id == e.target.dataset.id); // old way e.target.getAttribute("data-id")
 
-          // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
           allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-          const storage = new Storage('notesKey');
-          storage.removeKeyFromLocalStorage();
-          storage.setItemToLocalStorage(allnotes);
+          this.clientService.removeKeyFromLocalStorage();
+          this.clientService.setItemToLocalStorage(allnotes);
+
         }
 
         // Check Target for Markstars 1-5
         for (let i = 1; i <= 5; i++) {
           if (e.target.id === String(i)) {
-            ControllerList.markstars(e);
+            this.markstars(e);
           }
         }
       });
@@ -133,7 +138,6 @@ export default class ControllerList {
             const importance1 = $(a).find('.importance[data-importance]').data('importance');
             const importance2 = $(b).find('.importance[data-importance]').data('importance');
 
-
             return importance1 > importance2;
           }
 
@@ -160,21 +164,21 @@ export default class ControllerList {
 
 
   getAllNotesFromLocalStorage() {
-    const controller = new Controller();
-    const allnotes = controller.getAllNotesFromLocalStorage();
-    return allnotes;
+    return this.clientService.getNotes();
+
   }
 
 
-  static markstars(e) {
-    ViewHelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-    ControllerList.saveStarList(e);
+  markstars(e) {
+    const viewhelper = new ViewHelper();
+    viewhelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+
+    this.saveStarList(e);
   }
 
 
-  static saveStarList(e) {
-    const controller = new Controller();
-    const allnotes = controller.getAllNotesFromLocalStorage();
+  saveStarList(e) {
+    const allnotes = this.clientService.getNotes();
 
     const filteredNote = allnotes.filter(item => item.id == e.target.parentElement.dataset.id);
 
@@ -182,11 +186,9 @@ export default class ControllerList {
 
     const positionStartindex = allnotes.findIndex(item => item.id == e.target.parentElement.dataset.id);
 
-    // https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
     allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-    const storage = new Storage('notesKey');
-    storage.removeKeyFromLocalStorage();
-    storage.setItemToLocalStorage(allnotes);
+    this.clientService.removeKeyFromLocalStorage();
+    this.clientService.setItemToLocalStorage(allnotes);
   }
 }

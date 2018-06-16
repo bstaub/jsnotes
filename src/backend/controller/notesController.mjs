@@ -21,11 +21,6 @@ export class NotesController {
 
 
   async addNote(req, res) {
-    //with res.render i would use handlebars template, i don't use here!
-    //await res.render("succeeded", await noteStore.add(req.body.title, req.body.description, req.body.importance, req.body.datepicker));
-    //await res.send("note erfolgreich in nedb eingetragen!", await noteStore.add(req.body.title, req.body.description, req.body.importance, req.body.datepicker));
-    ////express deprecated res.send(status, body): Use res.status(status).send(body) instead file:/Users/bstaub/WebstormProjects/jsnotes/src/backend/controller/notesController.mjs:18:15
-    //console.log(req.body.title, req.body.description, req.body.importance, req.body.datepicker);
     //await res.status(200).send( await noteStore.add(req.body.title, req.body.description, req.body.importance, req.body.datepicker) );
     res.json( await noteStore.add(req.body.title, req.body.description, req.body.importance, req.body.datepicker) );
   };

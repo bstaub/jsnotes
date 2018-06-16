@@ -14,6 +14,10 @@ export default class Storage {
     this.setItemToLocalStorage(itemArray);
   }
 
+  getNotes(){
+    return this.getItemFromLocalStorage();
+  }
+
   saveStyleToLocalStorage(style) {
     this.setItemToLocalStorage(style);
   }

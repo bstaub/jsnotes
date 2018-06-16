@@ -9,7 +9,8 @@ welche benötigt werden um die Notes zu verwalten z.B. folgende Funktionen:
 ! Hinweis: Dieses Modul ist das M von MVC
 */
 
-import Storage from '../client-service/Storage';
+//import Storage from '../client-service/Storage';
+//import HTTPService from '../client-service/HttpService';
 import ViewHelper from '../view/ViewHelper';
 import Note from '../model/Note';
 
@@ -27,7 +28,7 @@ export default class Controller {
         if (checkIfEmpty) {
           const noteDto = Note.buildNewNoteEntry(dom);
           this.clientService.addNote(noteDto);
-          ViewHelper.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
+          //ViewHelper.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
         }
       });
     }
@@ -39,12 +40,6 @@ export default class Controller {
     }
   }
 
-  getAllNotesFromLocalStorage() {
-    //Todo: Implement clientService on all methods
-    //return new this.clientService.getAllNotesFromLocalStorage();
-    const storage = new Storage('notesKey');
-    return storage.getAllNotesFromLocalStorage();
-  }
 
   clearAllImputs(dom) {
     dom.title.value = '';

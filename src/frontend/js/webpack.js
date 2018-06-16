@@ -5,7 +5,7 @@ import ControllerList from './controller/ControllerList';
 import ViewList from './view/ViewList';
 import ViewHelper from './view/ViewHelper';
 import Storage from './client-service/Storage';
-import Note from './model/Note';
+import HttpService from './client-service/HttpService';
 
 
 function start() {
@@ -21,11 +21,12 @@ function start() {
 
   //const controller = new Controller();
   if (domnew) {
-    const controller = new Controller(new Storage('notesKey'));
+    //const controller = new Controller(new Storage('notesKey'));
+    const controller = new Controller(new HttpService());
     controller.registerAllEventListener(domnew);
   }
 
-  const controllerlist = new ControllerList();
+  const controllerlist = new ControllerList(new Storage('notesKey'));
   if (domlist) {
     controllerlist.registerAllEventListener(domlist);
   }

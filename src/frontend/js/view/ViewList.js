@@ -27,8 +27,12 @@ class ViewList {
   }
 
   generateListView({ dynamicList }) {
-    const controller = new Controller();
+
+    const controller = new Storage('notesKey');
     const allnotes = controller.getAllNotesFromLocalStorage();
+
+    ////const controller = new Controller();
+    ////const allnotes = controller.getAllNotesFromLocalStorage();
 
     if (dynamicList) {
       // listTemplateWithTemplateString(dynamicList,allnotes);

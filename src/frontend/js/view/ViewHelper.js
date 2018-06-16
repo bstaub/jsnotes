@@ -83,7 +83,8 @@ export default class ViewHelper {
   }
 
 
-  static markStars(id, lastStar) {
+  markStars(id, lastStar) {
+  //static markStars(id, lastStar) {
     const totalstars = document.querySelectorAll(`[data-id="${id}"] span`);
     totalstars.forEach((item) => {
       if (item.id <= lastStar) { // getAttribute('id')
