@@ -1,10 +1,6 @@
 /* global document */
-
-//import Storage from '../client-service/Storage';
-//import Controller from './Controller';
 import ViewHelper from '../view/ViewHelper';
-
-
+import Storage from "../client-service/Storage";
 
 export default class ControllerList {
 
@@ -18,11 +14,14 @@ export default class ControllerList {
         // console.log("dynamiclist eventobjekt: ",e);
 
         if (e.target.id === 'listDelete') {
-          const allnotes = this.getAllNotesFromLocalStorage();
+          const allnotes = this.clientService.getNotes();
           const filteredNotes = allnotes.filter(item => item.id != e.target.dataset.id);
 
-          this.clientService.removeKeyFromLocalStorage();
-          this.clientService.setItemToLocalStorage(filteredNotes);
+
+          if (this.clientService instanceof Storage){
+            this.clientService.removeKeyFromLocalStorage();
+            this.clientService.setItemToLocalStorage(filteredNotes);
+          }
 
           //Remove from GUI
           e.target.parentElement.parentElement.remove();
@@ -34,7 +33,7 @@ export default class ControllerList {
           const id = e.target.dataset.id;
           document.querySelector(`[data-description-id="${id}"]`).removeAttribute('disabled');
 
-          const allnotes = this.getAllNotesFromLocalStorage();
+          const allnotes = this.clientService.getNotes();
           const filteredNote = allnotes.filter(item => item.id == id);
           /* don't use strict === here */
 
@@ -52,24 +51,27 @@ export default class ControllerList {
 
           allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-
-          this.clientService.removeKeyFromLocalStorage();
-          this.clientService.setItemToLocalStorage(allnotes);
+          if (this.clientService instanceof Storage){
+            this.clientService.removeKeyFromLocalStorage();
+            this.clientService.setItemToLocalStorage(allnotes);
+          }
 
         }
 
         if (e.target.id === 'checkBoxisFinished') {
-          const allnotes = this.getAllNotesFromLocalStorage();
+          const allnotes = this.clientService.getNotes();
 
           const filteredNote = allnotes.filter(item => item.id == e.target.dataset.id);
-
+          console.log(filteredNote);
           filteredNote[0].isFinished ? filteredNote[0].isFinished = false : filteredNote[0].isFinished = true;
           const positionStartindex = allnotes.findIndex(item => item.id == e.target.dataset.id); // old way e.target.getAttribute("data-id")
 
           allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-          this.clientService.removeKeyFromLocalStorage();
-          this.clientService.setItemToLocalStorage(allnotes);
+          if (this.clientService instanceof Storage){
+            this.clientService.removeKeyFromLocalStorage();
+            this.clientService.setItemToLocalStorage(allnotes);
+          }
 
         }
 
@@ -163,12 +165,6 @@ export default class ControllerList {
   }
 
 
-  getAllNotesFromLocalStorage() {
-    return this.clientService.getNotes();
-
-  }
-
-
   markstars(e) {
     const viewhelper = new ViewHelper();
     viewhelper.markStars(e.target.parentElement.dataset.id, e.target.id);
@@ -188,7 +184,11 @@ export default class ControllerList {
 
     allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-    this.clientService.removeKeyFromLocalStorage();
-    this.clientService.setItemToLocalStorage(allnotes);
+    if (this.clientService instanceof Storage){
+      this.clientService.removeKeyFromLocalStorage();
+      this.clientService.setItemToLocalStorage(allnotes);
+    }
+
   }
+
 }

@@ -1,7 +1,5 @@
 /* global document */
 import ViewHelper from './ViewHelper';
-import Controller from '../controller/Controller';
-import Storage from '../client-service/Storage';
 
 // Modern Way Solution with TemplateString Teamplate
 // import listTemplateWithTemplateString from '../template/listTemplateWithTemplateString';
@@ -10,6 +8,11 @@ import Storage from '../client-service/Storage';
 const listTemplate = require('../template/listTemplate.hbs');
 
 class ViewList {
+
+  constructor(clientService) {
+    this.clientService = clientService;
+  }
+
   static queryAllDomObjects() {
     const DOMString = {
       // "btnCreateNewNote" is just an a link to the Detail Page, i don't register here!
@@ -28,11 +31,14 @@ class ViewList {
 
   generateListView({ dynamicList }) {
 
-    const controller = new Storage('notesKey');
-    const allnotes = controller.getAllNotesFromLocalStorage();
+    //const allnotes = this.clientService.getNotes();
 
-    ////const controller = new Controller();
-    ////const allnotes = controller.getAllNotesFromLocalStorage();
+    const allnotes = this.clientService.getNotes(function(response){  //callback response fom HttpService -> getNotes(callback)!
+      if (dynamicList) {
+        dynamicList.innerHTML = listTemplate(response);
+      }
+    });
+
 
     if (dynamicList) {
       // listTemplateWithTemplateString(dynamicList,allnotes);

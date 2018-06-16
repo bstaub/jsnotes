@@ -1,4 +1,3 @@
-import Storage from "../client-service/Storage";
 import HelperService from "../client-service/HelperService";
 
 export default class Note {
@@ -23,13 +22,14 @@ export default class Note {
 
   static buildNewNoteEntry({ title, description, importance, datepicker, }){
     const isFinished = false;
+
     return new Note(
       HelperService.getNewUniqueNoteID(),
       title.value,
       description.value,
       importance.value,
-      Storage.setFormatDateDMYhs(datepicker.value),
-      Storage.getCreatedDate(),
+      HelperService.setFormatDateDMYhs(datepicker.value),
+      HelperService.getCreatedDate(),
       isFinished,
     );
   }

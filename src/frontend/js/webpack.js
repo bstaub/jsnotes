@@ -14,19 +14,19 @@ function start() {
   ViewHelper.loadStyleSwitcherOnStartpage();
 
   if (domlist) {
-    const viewlist = new ViewList();
+    //const viewlist = new ViewList(new Storage('notesKey'));
+    const viewlist = new ViewList(new HttpService());
     viewlist.generateListView(domlist);
   }
 
-
-  //const controller = new Controller();
   if (domnew) {
     //const controller = new Controller(new Storage('notesKey'));
     const controller = new Controller(new HttpService());
     controller.registerAllEventListener(domnew);
   }
 
-  const controllerlist = new ControllerList(new Storage('notesKey'));
+  //const controllerlist = new ControllerList(new Storage('notesKey'));
+  const controllerlist = new ControllerList(new HttpService());
   if (domlist) {
     controllerlist.registerAllEventListener(domlist);
   }

@@ -28,6 +28,11 @@ app.use(function (req, res, next) {
 //app.use('/', indexRoutes);
 app.use('/api/', noteRoutes);
 
+function notFound(req,res, next) {
+  res.setHeader("Content-Type", 'text/html');
+  res.send(404, 'Diese Seite existiert nicht 404, <a href="/">zurück zur Startseite</a>');
+}
+app.use(notFound);
 
 const hostname = '127.0.0.1';
 const port = 6001;

@@ -1,18 +1,44 @@
 export default class HttpService{
 
-  getNoteList(callback) {
+
+  // Common Methods have to implement in every Service like an Interface start
+  getNotes(callback) {
 
     $.ajax({
       method: "GET",
-      url: "/notes/",
+      url: "/api/notes/",
       success: (res) => {
-        callback(res);
+        if(callback){
+          callback(res);
+        }
+
       }
     });
   }
 
-  editNoteById(id) {
+  addNote(note) {
+    $.ajax({
+      method: "POST",
+      url: "/api/notes/",
+      data: note,
+      success: (() => {
+        window.location.href = '/';
+      })
+    })
+  }
 
+  getNoteByID(id){
+
+  }
+
+  updateNote(note) {
+
+  }
+  // Common Methods have to implement in every Service like an Interface end
+
+
+  /*
+  editNoteById(id) {
     $.ajax({
       method: "GET",
       url: `/notes/${id}/`,
@@ -49,17 +75,8 @@ export default class HttpService{
       })
     });
   }
+  */
 
-  addNote(note) {
-    $.ajax({
-      method: "POST",
-      url: "/api/notes/",
-      data: note,
-      success: (() => {
-        window.location.href = '/';
-      })
-    })
-  }
 
 
 }
