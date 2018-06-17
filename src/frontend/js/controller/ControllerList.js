@@ -1,11 +1,18 @@
 /* global document */
 import ViewHelper from '../view/ViewHelper';
 import Storage from "../client-service/Storage";
+import HttpService from "../client-service/HttpService";
 
 export default class ControllerList {
 
   constructor(clientService) {
     this.clientService = clientService;
+    if (this.clientService instanceof HttpService) {
+      this.api = true;
+    } else {
+      this.api = false; //Use Storage.js Service for LocalStorage
+    }
+
   }
 
   registerAllEventListener(dom) {
@@ -14,46 +21,88 @@ export default class ControllerList {
         // console.log("dynamiclist eventobjekt: ",e);
 
         if (e.target.id === 'listDelete') {
-          const allnotes = this.clientService.getNotes();
-          const filteredNotes = allnotes.filter(item => item.id != e.target.dataset.id);
 
+          if (this.api) {
+            this.clientService.deleteNote(e.target.dataset.id);
+            e.target.parentElement.parentElement.remove();
 
-          if (this.clientService instanceof Storage){
+          } else {
+
+            //LocalStorage
+            const allnotes = this.clientService.getNotes();
+            const filteredNotes = allnotes.filter(item => item.id != e.target.dataset.id);
             this.clientService.removeKeyFromLocalStorage();
             this.clientService.setItemToLocalStorage(filteredNotes);
+            //Remove from GUI
+            e.target.parentElement.parentElement.remove();
           }
 
-          //Remove from GUI
-          e.target.parentElement.parentElement.remove();
+          /*
+          this.clientService.deleteNote(function(response){  //callback response from HttpService -> getNotes(callback)!
+            console.log('response: ',response);
+            console.log('filter: ',xxxxxxxxx;
+          });
+          */
+
         }
 
 
         if (e.target.id === 'listEdit') {
-          // Enable Textarea Field --> disabled="disabled
-          const id = e.target.dataset.id;
-          document.querySelector(`[data-description-id="${id}"]`).removeAttribute('disabled');
 
-          const allnotes = this.clientService.getNotes();
-          const filteredNote = allnotes.filter(item => item.id == id);
-          /* don't use strict === here */
+          if (this.api) {
+            console.log("api, edit");
 
-          if (e.target.innerHTML == 'Edit') {
-            e.target.innerHTML = 'Save';
-            document.querySelector(`[data-description-id="${id}"]`).classList.add('redborder');
-          } else if (e.target.innerHTML == 'Save') {
-            e.target.innerHTML = 'Edit';
-            document.querySelector(`[data-description-id="${id}"]`).classList.remove('redborder');
-          }
+            // Enable Textarea Field --> disabled="disabled
+            const id = e.target.dataset.id;
+            document.querySelector(`[data-description-id="${id}"]`).removeAttribute('disabled');
 
-          filteredNote[0].description = document.querySelector(`[data-description-id="${id}"]`).value;
+            /* don't use strict === here */
+            if (e.target.innerHTML == 'Edit') {
+              e.target.innerHTML = 'Save';
+              document.querySelector(`[data-description-id="${id}"]`).classList.add('redborder');
+            } else if (e.target.innerHTML == 'Save') {
+              e.target.innerHTML = 'Edit';
+              document.querySelector(`[data-description-id="${id}"]`).classList.remove('redborder');
+            }
 
-          const positionStartindex = allnotes.findIndex(item => item.id == id);
+            let note = {  //Destructoring in noteStore.mjs allows only description to motify
+              //id: 'note active',
+              title: document.querySelector(`[data-title-id="${id}"]`).innerText,
+              description: document.querySelector(`[data-description-id="${id}"]`).value,
+              importance: document.querySelector(`.importance[data-id="${id}"]`).dataset.importance,
+              datepicker: document.querySelector(`[data-id="${id}"][data-finished]`).dataset.finished,
+              createdDate: document.querySelector(`[data-id="${id}"][data-created]`).dataset.created,
+              //isFinished: 'not active',
+            };
+            this.clientService.updateNoteById(e.target.dataset.id,note);
 
-          allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-          if (this.clientService instanceof Storage){
+          } else {
+
+            // LocalStorage
+            // Enable Textarea Field --> disabled="disabled
+            const id = e.target.dataset.id;
+            document.querySelector(`[data-description-id="${id}"]`).removeAttribute('disabled');
+
+            const allnotes = this.clientService.getNotes();
+            const filteredNote = allnotes.filter(item => item.id == id);
+
+            /* don't use strict === here */
+            if (e.target.innerHTML == 'Edit') {
+              e.target.innerHTML = 'Save';
+              document.querySelector(`[data-description-id="${id}"]`).classList.add('redborder');
+            } else if (e.target.innerHTML == 'Save') {
+              e.target.innerHTML = 'Edit';
+              document.querySelector(`[data-description-id="${id}"]`).classList.remove('redborder');
+            }
+
+            filteredNote[0].description = document.querySelector(`[data-description-id="${id}"]`).value;
+
+            const positionStartindex = allnotes.findIndex(item => item.id == id);
+            allnotes.splice(positionStartindex, 1, filteredNote[0]);
             this.clientService.removeKeyFromLocalStorage();
             this.clientService.setItemToLocalStorage(allnotes);
+
           }
 
         }
@@ -68,7 +117,7 @@ export default class ControllerList {
 
           allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-          if (this.clientService instanceof Storage){
+          if (this.clientService instanceof Storage) {
             this.clientService.removeKeyFromLocalStorage();
             this.clientService.setItemToLocalStorage(allnotes);
           }
@@ -86,7 +135,7 @@ export default class ControllerList {
 
     if (dom.btnSortByFinishdate) {
       dom.btnSortByFinishdate.addEventListener('click', () => {
-        $(() => { // must use in ready function!
+        ;$(() => { // must use in ready function!
           function sortNotesByFinishedDateASC() {
             $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
           }
@@ -105,7 +154,7 @@ export default class ControllerList {
 
     if (dom.btnSortByCreateddate) {
       dom.btnSortByCreateddate.addEventListener('click', () => {
-        $(() => {
+        ;$(() => {
           function sortNotesByCreatedDateASC() {
             $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
           }
@@ -124,7 +173,7 @@ export default class ControllerList {
 
     if (dom.btnSortByImportance) {
       dom.btnSortByImportance.addEventListener('click', () => {
-        $(() => {
+        ;$(() => {
           function sortNotesByImportanceDESC() {
             $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
           }
@@ -184,7 +233,7 @@ export default class ControllerList {
 
     allnotes.splice(positionStartindex, 1, filteredNote[0]);
 
-    if (this.clientService instanceof Storage){
+    if (this.clientService instanceof Storage) {
       this.clientService.removeKeyFromLocalStorage();
       this.clientService.setItemToLocalStorage(allnotes);
     }

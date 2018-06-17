@@ -1,11 +1,14 @@
 /* global document */
 import ViewHelper from './ViewHelper';
+import HttpService from "../client-service/HttpService";
+import Storage from "../client-service/Storage";
 
 // Modern Way Solution with TemplateString Teamplate
 // import listTemplateWithTemplateString from '../template/listTemplateWithTemplateString';
 
 // Handlebars requires jQuery also in webpack base config! (must use in this project)
 const listTemplate = require('../template/listTemplate.hbs');
+const listTemplate_api_id = require('../template/listTemplate_api_id.hbs');
 
 class ViewList {
 
@@ -31,19 +34,24 @@ class ViewList {
 
   generateListView({ dynamicList }) {
 
-    //const allnotes = this.clientService.getNotes();
-
-    const allnotes = this.clientService.getNotes(function(response){  //callback response fom HttpService -> getNotes(callback)!
+    if(this.clientService instanceof Storage){
+      const allnotes = this.clientService.getNotes();
       if (dynamicList) {
-        dynamicList.innerHTML = listTemplate(response);
+        // listTemplateWithTemplateString(dynamicList,allnotes);
+        dynamicList.innerHTML = listTemplate(allnotes); // webpack precompile the template code, i use this, because i don't have a 'notes' key in the root json structure!
       }
-    });
-
-
-    if (dynamicList) {
-      // listTemplateWithTemplateString(dynamicList,allnotes);
-      dynamicList.innerHTML = listTemplate(allnotes); // webpack precompile the template code, i use this, because i don't have a 'notes' key in the root json structure!
     }
+
+
+    if(this.clientService instanceof HttpService){
+      this.clientService.getNotes(function(response){  //callback response from HttpService -> getNotes(callback)!
+        if (dynamicList) {
+          dynamicList.innerHTML = listTemplate_api_id(response);
+        }
+      });
+    }
+
+
   }
 }
 

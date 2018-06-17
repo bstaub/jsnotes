@@ -1,6 +1,7 @@
 // const moment = require('moment');
 
 import Storage from "./Storage";
+import HttpService from "./HttpService";
 
 export default class HelperService{
 

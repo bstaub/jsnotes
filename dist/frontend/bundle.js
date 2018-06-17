@@ -75,7 +75,7 @@
 
 __webpack_require__(1);
 __webpack_require__(328);
-module.exports = __webpack_require__(364);
+module.exports = __webpack_require__(365);
 
 
 /***/ }),
@@ -9064,11 +9064,11 @@ var _Controller = __webpack_require__(334);
 
 var _Controller2 = _interopRequireDefault(_Controller);
 
-var _ControllerList = __webpack_require__(337);
+var _ControllerList = __webpack_require__(339);
 
 var _ControllerList2 = _interopRequireDefault(_ControllerList);
 
-var _ViewList = __webpack_require__(339);
+var _ViewList = __webpack_require__(340);
 
 var _ViewList2 = _interopRequireDefault(_ViewList);
 
@@ -9080,7 +9080,7 @@ var _Storage = __webpack_require__(333);
 
 var _Storage2 = _interopRequireDefault(_Storage);
 
-var _HttpService = __webpack_require__(340);
+var _HttpService = __webpack_require__(337);
 
 var _HttpService2 = _interopRequireDefault(_HttpService);
 
@@ -9581,6 +9581,10 @@ var _Storage = __webpack_require__(333);
 
 var _Storage2 = _interopRequireDefault(_Storage);
 
+var _HttpService = __webpack_require__(337);
+
+var _HttpService2 = _interopRequireDefault(_HttpService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9591,7 +9595,7 @@ var HelperService = function () {
   }
 
   _createClass(HelperService, null, [{
-    key: 'getNewUniqueNoteID',
+    key: "getNewUniqueNoteID",
     value: function getNewUniqueNoteID() {
       if (HelperService.getIDFromLocalStorage() === null) {
         HelperService.saveIDToLocalStorage(1);
@@ -9603,33 +9607,33 @@ var HelperService = function () {
       return HelperService.getIDFromLocalStorage();
     }
   }, {
-    key: 'saveIDToLocalStorage',
+    key: "saveIDToLocalStorage",
     value: function saveIDToLocalStorage(id) {
       var storage = new _Storage2.default('noteKeyLastID');
       storage.saveNoteIDToLocalStorage(id);
     }
   }, {
-    key: 'getIDFromLocalStorage',
+    key: "getIDFromLocalStorage",
     value: function getIDFromLocalStorage() {
       var storage = new _Storage2.default('noteKeyLastID');
       return storage.getNoteIDFromLocalStorage();
     }
   }, {
-    key: 'getCreatedDate',
+    key: "getCreatedDate",
     value: function getCreatedDate() {
       var d = new Date();
       return HelperService.formatDate(d);
     }
   }, {
-    key: 'setFormatDateDMYhs',
+    key: "setFormatDateDMYhs",
     value: function setFormatDateDMYhs(dateLocal) {
       var d = new Date(dateLocal);
       return HelperService.formatDate(d);
     }
   }, {
-    key: 'formatDate',
+    key: "formatDate",
     value: function formatDate(d) {
-      return (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
+      return (d.getDate() < 10 ? '0' : '') + d.getDate() + "-" + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + "-" + d.getFullYear() + " " + (d.getHours() < 10 ? '0' : '') + d.getHours() + ":" + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
     }
 
     // static getCreatedDateMomentJs(){
@@ -9663,228 +9667,121 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
-
-
-var _ViewHelper = __webpack_require__(332);
-
-var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
-
-var _Storage = __webpack_require__(333);
-
-var _Storage2 = _interopRequireDefault(_Storage);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var ControllerList = function () {
-  function ControllerList(clientService) {
-    _classCallCheck(this, ControllerList);
-
-    this.clientService = clientService;
+var HttpService = function () {
+  function HttpService() {
+    _classCallCheck(this, HttpService);
   }
 
-  _createClass(ControllerList, [{
-    key: 'registerAllEventListener',
-    value: function registerAllEventListener(dom) {
-      var _this = this;
+  _createClass(HttpService, [{
+    key: "getNotes",
 
-      if (dom.dynamicList) {
-        dom.dynamicList.addEventListener('click', function (e) {
-          // console.log("dynamiclist eventobjekt: ",e);
 
-          if (e.target.id === 'listDelete') {
-            var allnotes = _this.clientService.getNotes();
-            var filteredNotes = allnotes.filter(function (item) {
-              return item.id != e.target.dataset.id;
-            });
+    // Common Methods have to implement in every Service like an Interface start
+    value: function getNotes(callback) {
 
-            if (_this.clientService instanceof _Storage2.default) {
-              _this.clientService.removeKeyFromLocalStorage();
-              _this.clientService.setItemToLocalStorage(filteredNotes);
-            }
-
-            //Remove from GUI
-            e.target.parentElement.parentElement.remove();
+      $.ajax({
+        method: "GET",
+        url: "/api/notes/",
+        success: function success(res) {
+          if (callback) {
+            callback(res);
           }
-
-          if (e.target.id === 'listEdit') {
-            // Enable Textarea Field --> disabled="disabled
-            var id = e.target.dataset.id;
-            document.querySelector('[data-description-id="' + id + '"]').removeAttribute('disabled');
-
-            var _allnotes = _this.clientService.getNotes();
-            var filteredNote = _allnotes.filter(function (item) {
-              return item.id == id;
-            });
-            /* don't use strict === here */
-
-            if (e.target.innerHTML == 'Edit') {
-              e.target.innerHTML = 'Save';
-              document.querySelector('[data-description-id="' + id + '"]').classList.add('redborder');
-            } else if (e.target.innerHTML == 'Save') {
-              e.target.innerHTML = 'Edit';
-              document.querySelector('[data-description-id="' + id + '"]').classList.remove('redborder');
-            }
-
-            filteredNote[0].description = document.querySelector('[data-description-id="' + id + '"]').value;
-
-            var positionStartindex = _allnotes.findIndex(function (item) {
-              return item.id == id;
-            });
-
-            _allnotes.splice(positionStartindex, 1, filteredNote[0]);
-
-            if (_this.clientService instanceof _Storage2.default) {
-              _this.clientService.removeKeyFromLocalStorage();
-              _this.clientService.setItemToLocalStorage(_allnotes);
-            }
-          }
-
-          if (e.target.id === 'checkBoxisFinished') {
-            var _allnotes2 = _this.clientService.getNotes();
-
-            var _filteredNote = _allnotes2.filter(function (item) {
-              return item.id == e.target.dataset.id;
-            });
-            console.log(_filteredNote);
-            _filteredNote[0].isFinished ? _filteredNote[0].isFinished = false : _filteredNote[0].isFinished = true;
-            var _positionStartindex = _allnotes2.findIndex(function (item) {
-              return item.id == e.target.dataset.id;
-            }); // old way e.target.getAttribute("data-id")
-
-            _allnotes2.splice(_positionStartindex, 1, _filteredNote[0]);
-
-            if (_this.clientService instanceof _Storage2.default) {
-              _this.clientService.removeKeyFromLocalStorage();
-              _this.clientService.setItemToLocalStorage(_allnotes2);
-            }
-          }
-
-          // Check Target for Markstars 1-5
-          for (var i = 1; i <= 5; i++) {
-            if (e.target.id === String(i)) {
-              _this.markstars(e);
-            }
-          }
-        });
-      }
-
-      if (dom.btnSortByFinishdate) {
-        dom.btnSortByFinishdate.addEventListener('click', function () {
-          $(function () {
-            // must use in ready function!
-            function sortNotesByFinishedDateASC() {
-              $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
-            }
-
-            function sortFinishedDateASC(a, b) {
-              var finished1 = $(a).find('p[data-finished]').data('finished');
-              var finished2 = $(b).find('p[data-finished]').data('finished');
-
-              return new Date(finished1) > new Date(finished2);
-            }
-
-            sortNotesByFinishedDateASC();
-          });
-        });
-      }
-
-      if (dom.btnSortByCreateddate) {
-        dom.btnSortByCreateddate.addEventListener('click', function () {
-          $(function () {
-            function sortNotesByCreatedDateASC() {
-              $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
-            }
-
-            function sortCreatedDateASC(a, b) {
-              var created1 = $(a).attr('data-created');
-              var created2 = $(b).data('created');
-
-              return created1 > created2;
-            }
-
-            sortNotesByCreatedDateASC();
-          });
-        });
-      }
-
-      if (dom.btnSortByImportance) {
-        dom.btnSortByImportance.addEventListener('click', function () {
-          $(function () {
-            function sortNotesByImportanceDESC() {
-              $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
-            }
-
-            function sortImportanceDESC(a, b) {
-              var importance1 = $(a).find('.importance[data-importance]').data('importance');
-              var importance2 = $(b).find('.importance[data-importance]').data('importance');
-
-              return importance1 < importance2;
-            }
-
-            function sortImportanceASC(a, b) {
-              var importance1 = $(a).find('.importance[data-importance]').data('importance');
-              var importance2 = $(b).find('.importance[data-importance]').data('importance');
-
-              return importance1 > importance2;
-            }
-
-            sortNotesByImportanceDESC();
-          });
-        });
-      }
-
-      if (dom.btnShowFinished) {
-        dom.btnShowFinished.addEventListener('click', function (e) {
-          // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working correct, because check finished comes from storage!
-          if (e.target.innerHTML == 'Show finished') {
-            e.target.innerHTML = 'Show all';
-            $('.item--main-content .note:not(.finished)').hide();
-          } else if (e.target.innerHTML == 'Show all') {
-            e.target.innerHTML = 'Show finished';
-            $('.item--main-content .note:not(.finished)').show();
-          }
-        });
-      }
+        }
+      });
     }
   }, {
-    key: 'markstars',
-    value: function markstars(e) {
-      var viewhelper = new _ViewHelper2.default();
-      viewhelper.markStars(e.target.parentElement.dataset.id, e.target.id);
-
-      this.saveStarList(e);
+    key: "addNote",
+    value: function addNote(note) {
+      $.ajax({
+        method: "POST",
+        url: "/api/notes/",
+        data: note,
+        success: function success() {
+          window.location.href = '/';
+        }
+      });
     }
   }, {
-    key: 'saveStarList',
-    value: function saveStarList(e) {
-      var allnotes = this.clientService.getNotes();
+    key: "getNoteByID",
+    value: function getNoteByID(id) {}
+  }, {
+    key: "updateNote",
+    value: function updateNote(note) {}
 
-      var filteredNote = allnotes.filter(function (item) {
-        return item.id == e.target.parentElement.dataset.id;
+    // Common Methods have to implement in every Service like an Interface end
+
+  }, {
+    key: "deleteNote",
+    value: function deleteNote(id) {
+      $.ajax({
+        method: "DELETE",
+        url: "/api/notes/" + id + "/",
+        success: function success(res) {
+          console.log(res);
+        }
       });
-
-      filteredNote[0].importance = e.target.id;
-
-      var positionStartindex = allnotes.findIndex(function (item) {
-        return item.id == e.target.parentElement.dataset.id;
-      });
-
-      allnotes.splice(positionStartindex, 1, filteredNote[0]);
-
-      if (this.clientService instanceof _Storage2.default) {
-        this.clientService.removeKeyFromLocalStorage();
-        this.clientService.setItemToLocalStorage(allnotes);
-      }
     }
+  }, {
+    key: "updateNoteById",
+    value: function updateNoteById(id, note) {
+      $.ajax({
+        method: "PUT",
+        url: "/api/notes/" + id + "/",
+        data: note,
+        success: function success(res) {
+          console.log(res);
+        }
+      });
+    }
+
+    /*
+    editNoteById(id) {
+      $.ajax({
+        method: "GET",
+        url: `/api/notes/${id}/`,
+        success: (res) => {
+          if (res) {
+            $('#title').val(res['title']);
+            $('#description').val(res['message']);
+            $('#date-picker').val(res['taskDate']);
+            if(res['priority'] !== 0) {
+              $(`input[value="${res['priority']}"]`).addClass("selection-border");
+            }
+          }
+        }
+      });
+    }
+     updateNoteById(id, note) {
+      $.ajax({
+        method: "PUT",
+        url: `/api/notes/${id}/`,
+        data: note,
+        success: () => {
+          window.location.href = '/';
+        }
+      });
+    }
+     toggleCheckBox(id, status) {
+      $.ajax({
+        method: "POST",
+        url: `/api/notes/${id}/?status=${status}`,
+        success: (() => {
+          return 200;
+        })
+      });
+    }
+    */
+
   }]);
 
-  return ControllerList;
+  return HttpService;
 }();
 
-exports.default = ControllerList;
+exports.default = HttpService;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(338)))
 
 /***/ }),
@@ -20263,6 +20160,288 @@ return jQuery;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function($) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global document */
+
+
+var _ViewHelper = __webpack_require__(332);
+
+var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
+var _HttpService = __webpack_require__(337);
+
+var _HttpService2 = _interopRequireDefault(_HttpService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ControllerList = function () {
+  function ControllerList(clientService) {
+    _classCallCheck(this, ControllerList);
+
+    this.clientService = clientService;
+    if (this.clientService instanceof _HttpService2.default) {
+      this.api = true;
+    } else {
+      this.api = false; //Use Storage.js Service for LocalStorage
+    }
+  }
+
+  _createClass(ControllerList, [{
+    key: "registerAllEventListener",
+    value: function registerAllEventListener(dom) {
+      var _this = this;
+
+      if (dom.dynamicList) {
+        dom.dynamicList.addEventListener('click', function (e) {
+          // console.log("dynamiclist eventobjekt: ",e);
+
+          if (e.target.id === 'listDelete') {
+
+            if (_this.api) {
+              _this.clientService.deleteNote(e.target.dataset.id);
+              e.target.parentElement.parentElement.remove();
+            } else {
+
+              //LocalStorage
+              var allnotes = _this.clientService.getNotes();
+              var filteredNotes = allnotes.filter(function (item) {
+                return item.id != e.target.dataset.id;
+              });
+              _this.clientService.removeKeyFromLocalStorage();
+              _this.clientService.setItemToLocalStorage(filteredNotes);
+              //Remove from GUI
+              e.target.parentElement.parentElement.remove();
+            }
+
+            /*
+            this.clientService.deleteNote(function(response){  //callback response from HttpService -> getNotes(callback)!
+              console.log('response: ',response);
+              console.log('filter: ',xxxxxxxxx;
+            });
+            */
+          }
+
+          if (e.target.id === 'listEdit') {
+
+            if (_this.api) {
+              console.log("api, edit");
+
+              // Enable Textarea Field --> disabled="disabled
+              var id = e.target.dataset.id;
+              document.querySelector("[data-description-id=\"" + id + "\"]").removeAttribute('disabled');
+
+              /* don't use strict === here */
+              if (e.target.innerHTML == 'Edit') {
+                e.target.innerHTML = 'Save';
+                document.querySelector("[data-description-id=\"" + id + "\"]").classList.add('redborder');
+              } else if (e.target.innerHTML == 'Save') {
+                e.target.innerHTML = 'Edit';
+                document.querySelector("[data-description-id=\"" + id + "\"]").classList.remove('redborder');
+              }
+
+              var note = { //Destructoring in noteStore.mjs allows only description to motify
+                //id: 'note active',
+                title: document.querySelector("[data-title-id=\"" + id + "\"]").innerText,
+                description: document.querySelector("[data-description-id=\"" + id + "\"]").value,
+                importance: document.querySelector(".importance[data-id=\"" + id + "\"]").dataset.importance,
+                datepicker: document.querySelector("[data-id=\"" + id + "\"][data-finished]").dataset.finished,
+                createdDate: document.querySelector("[data-id=\"" + id + "\"][data-created]").dataset.created
+                //isFinished: 'not active',
+              };
+              _this.clientService.updateNoteById(e.target.dataset.id, note);
+            } else {
+
+              // LocalStorage
+              // Enable Textarea Field --> disabled="disabled
+              var _id = e.target.dataset.id;
+              document.querySelector("[data-description-id=\"" + _id + "\"]").removeAttribute('disabled');
+
+              var _allnotes = _this.clientService.getNotes();
+              var filteredNote = _allnotes.filter(function (item) {
+                return item.id == _id;
+              });
+
+              /* don't use strict === here */
+              if (e.target.innerHTML == 'Edit') {
+                e.target.innerHTML = 'Save';
+                document.querySelector("[data-description-id=\"" + _id + "\"]").classList.add('redborder');
+              } else if (e.target.innerHTML == 'Save') {
+                e.target.innerHTML = 'Edit';
+                document.querySelector("[data-description-id=\"" + _id + "\"]").classList.remove('redborder');
+              }
+
+              filteredNote[0].description = document.querySelector("[data-description-id=\"" + _id + "\"]").value;
+
+              var positionStartindex = _allnotes.findIndex(function (item) {
+                return item.id == _id;
+              });
+              _allnotes.splice(positionStartindex, 1, filteredNote[0]);
+              _this.clientService.removeKeyFromLocalStorage();
+              _this.clientService.setItemToLocalStorage(_allnotes);
+            }
+          }
+
+          if (e.target.id === 'checkBoxisFinished') {
+            var _allnotes2 = _this.clientService.getNotes();
+
+            var _filteredNote = _allnotes2.filter(function (item) {
+              return item.id == e.target.dataset.id;
+            });
+            console.log(_filteredNote);
+            _filteredNote[0].isFinished ? _filteredNote[0].isFinished = false : _filteredNote[0].isFinished = true;
+            var _positionStartindex = _allnotes2.findIndex(function (item) {
+              return item.id == e.target.dataset.id;
+            }); // old way e.target.getAttribute("data-id")
+
+            _allnotes2.splice(_positionStartindex, 1, _filteredNote[0]);
+
+            if (_this.clientService instanceof _Storage2.default) {
+              _this.clientService.removeKeyFromLocalStorage();
+              _this.clientService.setItemToLocalStorage(_allnotes2);
+            }
+          }
+
+          // Check Target for Markstars 1-5
+          for (var i = 1; i <= 5; i++) {
+            if (e.target.id === String(i)) {
+              _this.markstars(e);
+            }
+          }
+        });
+      }
+
+      if (dom.btnSortByFinishdate) {
+        dom.btnSortByFinishdate.addEventListener('click', function () {
+          ;$(function () {
+            // must use in ready function!
+            function sortNotesByFinishedDateASC() {
+              $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
+            }
+
+            function sortFinishedDateASC(a, b) {
+              var finished1 = $(a).find('p[data-finished]').data('finished');
+              var finished2 = $(b).find('p[data-finished]').data('finished');
+
+              return new Date(finished1) > new Date(finished2);
+            }
+
+            sortNotesByFinishedDateASC();
+          });
+        });
+      }
+
+      if (dom.btnSortByCreateddate) {
+        dom.btnSortByCreateddate.addEventListener('click', function () {
+          ;$(function () {
+            function sortNotesByCreatedDateASC() {
+              $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
+            }
+
+            function sortCreatedDateASC(a, b) {
+              var created1 = $(a).attr('data-created');
+              var created2 = $(b).data('created');
+
+              return created1 > created2;
+            }
+
+            sortNotesByCreatedDateASC();
+          });
+        });
+      }
+
+      if (dom.btnSortByImportance) {
+        dom.btnSortByImportance.addEventListener('click', function () {
+          ;$(function () {
+            function sortNotesByImportanceDESC() {
+              $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
+            }
+
+            function sortImportanceDESC(a, b) {
+              var importance1 = $(a).find('.importance[data-importance]').data('importance');
+              var importance2 = $(b).find('.importance[data-importance]').data('importance');
+
+              return importance1 < importance2;
+            }
+
+            function sortImportanceASC(a, b) {
+              var importance1 = $(a).find('.importance[data-importance]').data('importance');
+              var importance2 = $(b).find('.importance[data-importance]').data('importance');
+
+              return importance1 > importance2;
+            }
+
+            sortNotesByImportanceDESC();
+          });
+        });
+      }
+
+      if (dom.btnShowFinished) {
+        dom.btnShowFinished.addEventListener('click', function (e) {
+          // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working correct, because check finished comes from storage!
+          if (e.target.innerHTML == 'Show finished') {
+            e.target.innerHTML = 'Show all';
+            $('.item--main-content .note:not(.finished)').hide();
+          } else if (e.target.innerHTML == 'Show all') {
+            e.target.innerHTML = 'Show finished';
+            $('.item--main-content .note:not(.finished)').show();
+          }
+        });
+      }
+    }
+  }, {
+    key: "markstars",
+    value: function markstars(e) {
+      var viewhelper = new _ViewHelper2.default();
+      viewhelper.markStars(e.target.parentElement.dataset.id, e.target.id);
+
+      this.saveStarList(e);
+    }
+  }, {
+    key: "saveStarList",
+    value: function saveStarList(e) {
+      var allnotes = this.clientService.getNotes();
+
+      var filteredNote = allnotes.filter(function (item) {
+        return item.id == e.target.parentElement.dataset.id;
+      });
+
+      filteredNote[0].importance = e.target.id;
+
+      var positionStartindex = allnotes.findIndex(function (item) {
+        return item.id == e.target.parentElement.dataset.id;
+      });
+
+      allnotes.splice(positionStartindex, 1, filteredNote[0]);
+
+      if (this.clientService instanceof _Storage2.default) {
+        this.clientService.removeKeyFromLocalStorage();
+        this.clientService.setItemToLocalStorage(allnotes);
+      }
+    }
+  }]);
+
+  return ControllerList;
+}();
+
+exports.default = ControllerList;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(338)))
+
+/***/ }),
+/* 340 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -20276,6 +20455,14 @@ var _ViewHelper = __webpack_require__(332);
 
 var _ViewHelper2 = _interopRequireDefault(_ViewHelper);
 
+var _HttpService = __webpack_require__(337);
+
+var _HttpService2 = _interopRequireDefault(_HttpService);
+
+var _Storage = __webpack_require__(333);
+
+var _Storage2 = _interopRequireDefault(_Storage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20285,6 +20472,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 // Handlebars requires jQuery also in webpack base config! (must use in this project)
 var listTemplate = __webpack_require__(341);
+var listTemplate_api_id = __webpack_require__(364);
 
 var ViewList = function () {
   function ViewList(clientService) {
@@ -20294,27 +20482,30 @@ var ViewList = function () {
   }
 
   _createClass(ViewList, [{
-    key: 'generateListView',
+    key: "generateListView",
     value: function generateListView(_ref) {
       var dynamicList = _ref.dynamicList;
 
 
-      //const allnotes = this.clientService.getNotes();
-
-      var allnotes = this.clientService.getNotes(function (response) {
-        //callback response fom HttpService -> getNotes(callback)!
+      if (this.clientService instanceof _Storage2.default) {
+        var allnotes = this.clientService.getNotes();
         if (dynamicList) {
-          dynamicList.innerHTML = listTemplate(response);
+          // listTemplateWithTemplateString(dynamicList,allnotes);
+          dynamicList.innerHTML = listTemplate(allnotes); // webpack precompile the template code, i use this, because i don't have a 'notes' key in the root json structure!
         }
-      });
+      }
 
-      if (dynamicList) {
-        // listTemplateWithTemplateString(dynamicList,allnotes);
-        dynamicList.innerHTML = listTemplate(allnotes); // webpack precompile the template code, i use this, because i don't have a 'notes' key in the root json structure!
+      if (this.clientService instanceof _HttpService2.default) {
+        this.clientService.getNotes(function (response) {
+          //callback response from HttpService -> getNotes(callback)!
+          if (dynamicList) {
+            dynamicList.innerHTML = listTemplate_api_id(response);
+          }
+        });
       }
     }
   }], [{
-    key: 'queryAllDomObjects',
+    key: "queryAllDomObjects",
     value: function queryAllDomObjects() {
       var DOMString = {
         // "btnCreateNewNote" is just an a link to the Detail Page, i don't register here!
@@ -20338,110 +20529,6 @@ var ViewList = function () {
 exports.default = ViewList;
 
 /***/ }),
-/* 340 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var HttpService = function () {
-  function HttpService() {
-    _classCallCheck(this, HttpService);
-  }
-
-  _createClass(HttpService, [{
-    key: "getNotes",
-
-
-    // Common Methods have to implement in every Service like an Interface start
-    value: function getNotes(callback) {
-
-      $.ajax({
-        method: "GET",
-        url: "/api/notes/",
-        success: function success(res) {
-          if (callback) {
-            callback(res);
-          }
-        }
-      });
-    }
-  }, {
-    key: "addNote",
-    value: function addNote(note) {
-      $.ajax({
-        method: "POST",
-        url: "/api/notes/",
-        data: note,
-        success: function success() {
-          window.location.href = '/';
-        }
-      });
-    }
-  }, {
-    key: "getNoteByID",
-    value: function getNoteByID(id) {}
-  }, {
-    key: "updateNote",
-    value: function updateNote(note) {}
-    // Common Methods have to implement in every Service like an Interface end
-
-
-    /*
-    editNoteById(id) {
-      $.ajax({
-        method: "GET",
-        url: `/notes/${id}/`,
-        success: (res) => {
-          if (res) {
-            $('#title').val(res['title']);
-            $('#description').val(res['message']);
-            $('#date-picker').val(res['taskDate']);
-            if(res['priority'] !== 0) {
-              $(`input[value="${res['priority']}"]`).addClass("selection-border");
-            }
-          }
-        }
-      });
-    }
-     updateNoteById(id, note) {
-      $.ajax({
-        method: "PUT",
-        url: `/notes/${id}/`,
-        data: note,
-        success: () => {
-          window.location.href = '/';
-        }
-      });
-    }
-     toggleCheckBox(id, status) {
-      $.ajax({
-        method: "POST",
-        url: `/notes/${id}/?status=${status}`,
-        success: (() => {
-          return 200;
-        })
-      });
-    }
-    */
-
-  }]);
-
-  return HttpService;
-}();
-
-exports.default = HttpService;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(338)))
-
-/***/ }),
 /* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -20454,7 +20541,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + alias2(__default(__webpack_require__(361)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinished","hash":{},"data":data}))
     + "\" data-created=\""
     + alias2(alias3((depth0 != null ? depth0.createdDate : depth0), depth0))
-    + "\">\n        <div class=\"listDateStatus\">\n            <p data-finished=\""
+    + "\">\n        <div class=\"listDateStatus\">\n            <p data-created=\""
     + alias2(alias3((depth0 != null ? depth0.createdDate : depth0), depth0))
     + "\">"
     + alias2(alias3((depth0 != null ? depth0.createdDate : depth0), depth0))
@@ -21763,6 +21850,60 @@ module.exports = function (importance) {
 
 /***/ }),
 /* 364 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Handlebars = __webpack_require__(342);
+function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression, alias3=container.lambda;
+
+  return "\n    <div class=\"note "
+    + alias2(__default(__webpack_require__(361)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinished","hash":{},"data":data}))
+    + "\" data-id=\""
+    + alias2(alias3((depth0 != null ? depth0._id : depth0), depth0))
+    + "\" data-created=\""
+    + alias2(alias3((depth0 != null ? depth0.createdDate : depth0), depth0))
+    + "\">\n        <div class=\"listDateStatus\">\n            <p data-created=\""
+    + alias2(alias3((depth0 != null ? depth0.createdDate : depth0), depth0))
+    + "\">"
+    + alias2(alias3((depth0 != null ? depth0.createdDate : depth0), depth0))
+    + "</p>\n            <p><input id=\"checkBoxisFinished\" type=\"checkbox\" data-id=\""
+    + alias2(alias3((depth0 != null ? depth0._id : depth0), depth0))
+    + "\" "
+    + alias2(__default(__webpack_require__(362)).call(alias1,(depth0 != null ? depth0.isFinished : depth0),{"name":"helpers/isFinishedChecked","hash":{},"data":data}))
+    + "> Finished</p>\n            <p data-id="
+    + alias2(alias3((depth0 != null ? depth0._id : depth0), depth0))
+    + " data-finished=\""
+    + alias2(alias3((depth0 != null ? depth0.datepicker : depth0), depth0))
+    + "\">"
+    + alias2(alias3((depth0 != null ? depth0.datepicker : depth0), depth0))
+    + "</p>\n        </div>\n        <div class=\"listTitleDescriptionImportance\">\n            <div class=\"flexTitleImportance\">\n                <div class=\"title\">\n                    <p data-title-id=\""
+    + alias2(alias3((depth0 != null ? depth0._id : depth0), depth0))
+    + "\">"
+    + alias2(alias3((depth0 != null ? depth0.title : depth0), depth0))
+    + "</p>\n                </div>\n                <div class=\"note__importance\">\n                    <div class=\"importance\" data-id=\""
+    + alias2(alias3((depth0 != null ? depth0._id : depth0), depth0))
+    + "\" data-importance=\""
+    + alias2(alias3((depth0 != null ? depth0.importance : depth0), depth0))
+    + "\">\n                        "
+    + ((stack1 = __default(__webpack_require__(363)).call(alias1,(depth0 != null ? depth0.importance : depth0),{"name":"helpers/selectImportance","hash":{},"data":data})) != null ? stack1 : "")
+    + "\n                    </div>\n                </div>\n            </div>\n            <textarea class=\"description\" name=\"description\" cols=\"30\" rows=\"6\" data-description-id=\""
+    + alias2(alias3((depth0 != null ? depth0._id : depth0), depth0))
+    + "\" disabled=\"disabled\">"
+    + alias2(alias3((depth0 != null ? depth0.description : depth0), depth0))
+    + "</textarea>\n        </div>\n        <div class=\"listActionButton\">\n            <button id=\"listEdit\" data-id=\""
+    + alias2(alias3((depth0 != null ? depth0._id : depth0), depth0))
+    + "\">Edit</button>\n            <button id=\"listDelete\" data-id=\""
+    + alias2(alias3((depth0 != null ? depth0._id : depth0), depth0))
+    + "\">Delete</button>\n        </div>\n    </div>\n\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),depth0,{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"useData":true});
+
+/***/ }),
+/* 365 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin

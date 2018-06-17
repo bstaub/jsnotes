@@ -2,21 +2,16 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 
-
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
-//import {indexRoutes} from "./src/backend/routes/indexRoutes";
 import {noteRoutes} from "./src/backend/routes/noteRoutes";
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve('dist')));
-//app.use(express.static(path.resolve('dist/frontend')));
 
 
 app.use(function (req, res, next) {
@@ -24,9 +19,11 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use('/api/notes/', noteRoutes);
 
-//app.use('/', indexRoutes);
-app.use('/api/', noteRoutes);
+app.get('/favicon.ico', function(req, res) {
+  res.status(204);
+});
 
 function notFound(req,res, next) {
   res.setHeader("Content-Type", 'text/html');
