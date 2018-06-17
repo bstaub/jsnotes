@@ -1,0 +1,28 @@
+{{#each this}}
+
+    <div class="note {{[helpers/isFinished] isFinished}}" data-id="{{_id}}" data-created="{{createdDate}}">
+        <div class="listDateStatus">
+            <p data-created="{{createdDate}}">{{createdDate}}</p>
+            <p><input id="checkBoxisFinished" type="checkbox" data-id="{{_id}}" {{[helpers/isFinishedChecked] isFinished}}> Finished</p>
+            <p data-id={{_id}} data-finished="{{datepicker}}">{{datepicker}}</p>
+        </div>
+        <div class="listTitleDescriptionImportance">
+            <div class="flexTitleImportance">
+                <div class="title">
+                    <p data-title-id="{{_id}}">{{title}}</p>
+                </div>
+                <div class="note__importance">
+                    <div class="importance" data-id="{{_id}}" data-importance="{{importance}}">
+                        {{{[helpers/selectImportance] importance}}}
+                    </div>
+                </div>
+            </div>
+            <textarea class="description" name="description" cols="30" rows="6" data-description-id="{{_id}}" disabled="disabled">{{description}}</textarea>
+        </div>
+        <div class="listActionButton">
+            <button id="listEdit" data-id="{{_id}}">Edit</button>
+            <button id="listDelete" data-id="{{_id}}">Delete</button>
+        </div>
+    </div>
+
+{{/each}}
