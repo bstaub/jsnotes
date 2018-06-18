@@ -50,8 +50,6 @@ export default class ControllerList {
         if (e.target.id === 'listEdit') {
 
           if (this.api) {
-            console.log("api, edit");
-
             // Enable Textarea Field --> disabled="disabled
             const id = e.target.dataset.id;
             document.querySelector(`[data-description-id="${id}"]`).removeAttribute('disabled');
@@ -72,7 +70,7 @@ export default class ControllerList {
               importance: document.querySelector(`.importance[data-id="${id}"]`).dataset.importance,
               datepicker: document.querySelector(`[data-id="${id}"][data-finished]`).dataset.finished,
               createdDate: document.querySelector(`[data-id="${id}"][data-created]`).dataset.created,
-              //isFinished: 'not active',
+              isFinished: document.querySelector(`#checkBoxisFinished[data-id="${id}"]`).checked,
             };
             this.clientService.updateNoteById(e.target.dataset.id,note);
 
@@ -108,16 +106,22 @@ export default class ControllerList {
         }
 
         if (e.target.id === 'checkBoxisFinished') {
-          const allnotes = this.clientService.getNotes();
 
-          const filteredNote = allnotes.filter(item => item.id == e.target.dataset.id);
-          console.log(filteredNote);
-          filteredNote[0].isFinished ? filteredNote[0].isFinished = false : filteredNote[0].isFinished = true;
-          const positionStartindex = allnotes.findIndex(item => item.id == e.target.dataset.id); // old way e.target.getAttribute("data-id")
+          if (this.api) {
+            const id = e.target.dataset.id;
+            const checkBoxStatus = document.querySelector(`#checkBoxisFinished[data-id="${id}"]`).checked;
+            console.log('anfang ', checkBoxStatus);
+            this.clientService.toggleCheckBox(id,checkBoxStatus);
 
-          allnotes.splice(positionStartindex, 1, filteredNote[0]);
+          } else {
+            const allnotes = this.clientService.getNotes();
 
-          if (this.clientService instanceof Storage) {
+            const filteredNote = allnotes.filter(item => item.id == e.target.dataset.id);
+            filteredNote[0].isFinished ? filteredNote[0].isFinished = false : filteredNote[0].isFinished = true;
+            const positionStartindex = allnotes.findIndex(item => item.id == e.target.dataset.id); // old way e.target.getAttribute("data-id")
+
+            allnotes.splice(positionStartindex, 1, filteredNote[0]);
+
             this.clientService.removeKeyFromLocalStorage();
             this.clientService.setItemToLocalStorage(allnotes);
           }
@@ -223,20 +227,29 @@ export default class ControllerList {
 
 
   saveStarList(e) {
-    const allnotes = this.clientService.getNotes();
 
-    const filteredNote = allnotes.filter(item => item.id == e.target.parentElement.dataset.id);
+    if (this.api) {
+      let note = {importance : e.target.id};
+      this.clientService.patchNote(e.target.parentElement.dataset.id,note);
 
-    filteredNote[0].importance = e.target.id;
+    } else {
+      const allnotes = this.clientService.getNotes();
+      console.log(allnotes);
 
-    const positionStartindex = allnotes.findIndex(item => item.id == e.target.parentElement.dataset.id);
+      const filteredNote = allnotes.filter(item => item.id == e.target.parentElement.dataset.id);
 
-    allnotes.splice(positionStartindex, 1, filteredNote[0]);
+      filteredNote[0].importance = e.target.id;
 
-    if (this.clientService instanceof Storage) {
+      const positionStartindex = allnotes.findIndex(item => item.id == e.target.parentElement.dataset.id);
+
+      allnotes.splice(positionStartindex, 1, filteredNote[0]);
+
       this.clientService.removeKeyFromLocalStorage();
       this.clientService.setItemToLocalStorage(allnotes);
+
     }
+
+
 
   }
 

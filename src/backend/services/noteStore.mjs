@@ -20,21 +20,18 @@ export class NoteStore {
     this.db = db || new Datastore({filename: './src/backend/data/notes.db', autoload: true});  //path is absolute from project root!
   }
 
-  async all() {  //getNotes
+  async all() {
     return await this.db.find({});
   }
 
   async add(title, description, importance, datepicker) {
     let note = new Note(title, description, importance, datepicker);
-    //console.log('vor insert: ',note);
     return await this.db.insert(note);
   }
 
   async update(id, {title, description, importance, datepicker, createdDate, isFinished}) {
-  //async update(id, {description}) {
     return await this.db.update({ _id: id },
       { title, description, importance, datepicker, createdDate, isFinished }
-      //{ description }
       );
   }
 
@@ -47,6 +44,21 @@ export class NoteStore {
     //return await this.get(id);
     await this.db.remove({_id: id});
     return await this.db.find({});
+  }
+
+  async patch(id, note) {
+    return await this.db.update({_id: id}, {$set: note});
+  }
+
+  async updateStatus(id, status) {
+    if(status == 'true'){
+      var status = true;
+    }
+    if(status == 'false'){
+      var status = false;
+    }
+    let statusObj = { isFinished: status}
+    return await this.db.update({_id: id}, {$set: statusObj });
   }
 
   // Testing Start

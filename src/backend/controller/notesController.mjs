@@ -41,6 +41,16 @@ export class NotesController {
     await res.json( await noteStore.delete(req.params.id));
   };
 
+  async patchNote(req, res) {  //Patch Star
+      var note = {
+        importance: req.body.importance,
+      };
+    await res.json( await noteStore.patch(req.params.id, note));
+  };
+
+  async updateNoteStatus(req, res) { //Toggle Status, with req.query.xxx
+    await res.json( await noteStore.updateStatus(req.params.id, req.query.status));
+  };
 
 }
 

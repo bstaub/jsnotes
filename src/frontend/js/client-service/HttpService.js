@@ -1,7 +1,7 @@
 export default class HttpService {
 
 
-  // Common Methods have to implement in every Service like an Interface start
+  // Common Methods have to implement in every Service like an Interface
   getNotes(callback) {
 
     $.ajax({
@@ -27,18 +27,10 @@ export default class HttpService {
     })
   }
 
-  getNoteByID(id){
+  getNoteByID(id){}
 
-  }
+  updateNote(note){}
 
-  updateNote(note) {
-
-
-
-
-  }
-
-  // Common Methods have to implement in every Service like an Interface end
 
   deleteNote(id) {
     $.ajax({
@@ -62,6 +54,26 @@ export default class HttpService {
     });
   }
 
+  patchNote(id, note) {  //for just one atom value, ie importance, checkbox finished
+    $.ajax({
+      method: "PATCH",
+      url: `/api/notes/${id}/`,
+      data: note,
+      success: () => {
+        return 200;
+      }
+    });
+  }
+
+  toggleCheckBox(id, status) {
+    $.ajax({
+      method: "POST",
+      url: `/api/notes/${id}/?status=${status}`,
+      success: (() => {
+        return 200;
+      })
+    });
+  }
 
   /*
   editNoteById(id) {
