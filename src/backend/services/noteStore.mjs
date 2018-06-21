@@ -3,14 +3,24 @@ import Datastore from 'nedb-promise';
 export class Note {
 
   constructor(title, description, importance, datepicker) {
-    //_id
+
+    function getCreatedDate() {
+      const d = new Date();
+      return formatDate(d);
+    }
+
+    function formatDate(d) {
+      return `${(d.getDate() < 10 ? '0' : '') + d.getDate()}-${d.getMonth() < 10 ? '0' : ''}${d.getMonth() + 1}-${d.getFullYear()} ${d.getHours() < 10 ? '0' : ''}${d.getHours()}:${d.getMinutes() < 10 ? '0' : ''}${d.getMinutes()}`; // 27-05-2018 18:13
+    }
+
+    //_id NeDB creates it's own ID
     this.title = title;
     this.description = description;
     this.importance = importance;
     this.datepicker = datepicker;
-    this.createdDate = new Date();
+    this.createdDate = getCreatedDate();
     this.isFinished = false;
-    //this.state = "OK";  //"HIDDEN","DELETED"
+
   }
 
 }
@@ -21,7 +31,8 @@ export class NoteStore {
   }
 
   async all() {
-    return await this.db.find({});
+    //return await this.db.find({});
+    return await this.db.cfind({}).sort({ createdDate: 1  }).exec();
   }
 
   async add(title, description, importance, datepicker) {
@@ -35,7 +46,7 @@ export class NoteStore {
       );
   }
 
-  async get(id) {  //showNote
+  async get(id) {
     return await this.db.findOne({_id: id});
   }
 
@@ -60,20 +71,6 @@ export class NoteStore {
     let statusObj = { isFinished: status}
     return await this.db.update({_id: id}, {$set: statusObj });
   }
-
-  // Testing Start
-  async getOrderFilter(id, orderBy, filterBy) {
-    return await this.db.find({_id: id, orderedBy : orderBy, filterBy : filterBy});
-  }
-
-  async get7(id, currentUser) {
-    return await this.db.findOne({_id: id, orderedBy : currentUser});
-  }
-
-  async all7(currentUser) {
-    return await this.db.cfind({orderedBy : currentUser}).sort({ orderDate: -1 }).exec();
-  }
-  // Testing End
 
 }
 

@@ -1,9 +1,7 @@
 import ViewHelper from '../view/ViewHelper';
 import Note from '../model/Note';
 
-
 export default class Controller {
-
   constructor(clientService) {
     this.clientService = clientService;
   }
@@ -15,7 +13,8 @@ export default class Controller {
         if (checkIfEmpty) {
           const noteDto = Note.buildNewNoteEntry(dom);
           this.clientService.addNote(noteDto);
-          //ViewHelper.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
+          // showAlert2Seconds executes only for LocalStorage
+          ViewHelper.showAlert2Seconds('Eintrag erfolgreich eingetragen', 'alert success', 'index.html');
         }
       });
     }
@@ -41,5 +40,4 @@ export default class Controller {
       return true;
     }
   }
-
 }

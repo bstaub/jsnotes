@@ -3,20 +3,14 @@ import {noteStore} from "../services/noteStore";
 export class NotesController {
 
   async getNotes(req, res) {
-    //res.json((await noteStore.all(SecurityUtil.currentUser(req)) || []))
-    //GetNotes(orderBy, filterBy)
     res.json((await noteStore.all() || []));
   };
 
   async addNote(req, res) {
-    //await res.status(200).send( await noteStore.add(req.body.title, req.body.description, req.body.importance, req.body.datepicker) );
     res.json( await noteStore.add(req.body.title, req.body.description, req.body.importance, req.body.datepicker) );
   };
 
-  async updateNote(req, res) { //self defined
-    //await res.render("updatenote", await noteStore.update(req.params.id));
-    console.log('notesController vor update: ', req.params.id);
-    //await res.json( await noteStore.update(req.params.id));
+  async updateNote(req, res) {
 
     let note = {
       id: req.params.id,
@@ -26,9 +20,8 @@ export class NotesController {
       datepicker: req.body.datepicker,
       createdDate: req.body.createdDate,
       isFinished: req.body.isFinished,
-
     };
-    console.log('notesController notes: ', note);
+
     await res.json( await noteStore.update(req.params.id, note));
   };
 
@@ -37,7 +30,6 @@ export class NotesController {
   };
 
   async deleteNote(req, res) {
-    console.log('notesController vor delete: ', req.params.id);
     await res.json( await noteStore.delete(req.params.id));
   };
 

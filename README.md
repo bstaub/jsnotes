@@ -23,7 +23,7 @@ src/frondend   #frontend logic source code, listening on http://127.0.0.1:6001
 src/backend    #backend api source code, listening on http://127.0.0.1:6001/api/notes
 dist           #index.html, detaul.html frontend html files
 dist/frontend  #is build automatically from webpack.config.js, and will cleaned in every build
-index.mjs      #node/exprss server startup config (index.js is deprecated old style node server)
+index.mjs      #node/express server startup config (index.js is deprecated old style node server)
 ````
 
 ##### Frontend Webpack DEV Build

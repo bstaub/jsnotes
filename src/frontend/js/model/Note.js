@@ -1,4 +1,4 @@
-import HelperService from "../client-service/HelperService";
+import HelperService from '../client-service/HelperService';
 
 export default class Note {
   constructor(
@@ -20,7 +20,9 @@ export default class Note {
   }
 
 
-  static buildNewNoteEntry({ title, description, importance, datepicker, }){
+  static buildNewNoteEntry({
+    title, description, importance, datepicker,
+  }) {
     const isFinished = false;
 
     return new Note(
@@ -33,9 +35,5 @@ export default class Note {
       isFinished,
     );
   }
-
-
 }
-
-
 

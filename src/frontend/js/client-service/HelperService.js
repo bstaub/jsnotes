@@ -1,8 +1,7 @@
 // const moment = require('moment');
-import Storage from "./Storage";
+import Storage from './Storage';
 
-export default class HelperService{
-
+export default class HelperService {
   static getNewUniqueNoteID() {
     if (HelperService.getIDFromLocalStorage() === null) {
       HelperService.saveIDToLocalStorage(1);
@@ -27,8 +26,8 @@ export default class HelperService{
   static getCreatedDate() {
     const d = new Date();
     return HelperService.formatDate(d);
-
   }
+
   static setFormatDateDMYhs(dateLocal) {
     const d = new Date(dateLocal);
     return HelperService.formatDate(d);
@@ -50,5 +49,4 @@ export default class HelperService{
   // static MomentJsLocale(){
   //     return moment.locale('de-ch');
   // }
-
 }

@@ -1,24 +1,18 @@
 {
   "name": "jsnotes",
   "version": "1.0.0",
-  "description": "simple notes application for for getting your stuff done",
+  "description": "simple notes application programmed with javascript and nodejs",
   "main": "index.js",
   "scripts": {
-    "dev": "rm -rf dist/frontend/ && webpack --watch",
-    "prod": "rm -rf dist/frontend/ && export NODE_ENV=production && webpack",
-    "browsersync": "browser-sync start --server '.' --files '.'",
-    "lint": "eslint ./src --fix",
-    "clean": "rimraf dist",
-    "devwin": "npm run clean && webpack --watch",
-    "prodwin": "npm run clean && export NODE_ENV=production && webpack",
-    "browsersyncwin": "browser-sync",
-    "nodemon": "nodemon",
-    "start5": "node index.js",
-    "startdev5": "nodemon index.js",
     "start": "node --experimental-modules index.mjs",
+    "dev": "npm run clean && webpack --watch",
+    "prod": "npm run clean && export NODE_ENV=production && webpack",
+    "browsersync": "browser-sync start --server '.' --files '.'",
+    "browsersyncwin": "browser-sync",
+    "lint": "eslint ./src --fix",
+    "clean": "rimraf dist/frontend/",
     "startdev": "nodemon --experimental-modules index.mjs",
-    "json-server": "json-server --watch ./src/backend/db.json",
-    "json-server-static3002": "json-server --watch ./src/backend/db.json --static ./src/backend/public --port 3002"
+    "json-server-static3002-testapi": "json-server --watch ./src/backend/db.json --static ./src/backend/public --port 3002"
   },
   "repository": {
     "type": "git",

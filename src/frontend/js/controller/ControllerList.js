@@ -1,18 +1,16 @@
 /* global document */
 import ViewHelper from '../view/ViewHelper';
-import Storage from "../client-service/Storage";
-import HttpService from "../client-service/HttpService";
+import Storage from '../client-service/Storage';
+import HttpService from '../client-service/HttpService';
 
 export default class ControllerList {
-
   constructor(clientService) {
     this.clientService = clientService;
     if (this.clientService instanceof HttpService) {
       this.api = true;
     } else {
-      this.api = false; //Use Storage.js Service for LocalStorage
+      this.api = false; // Use Storage.js Service for LocalStorage
     }
-
   }
 
   registerAllEventListener(dom) {
@@ -21,34 +19,22 @@ export default class ControllerList {
         // console.log("dynamiclist eventobjekt: ",e);
 
         if (e.target.id === 'listDelete') {
-
           if (this.api) {
             this.clientService.deleteNote(e.target.dataset.id);
             e.target.parentElement.parentElement.remove();
-
           } else {
-
-            //LocalStorage
+            // LocalStorage
             const allnotes = this.clientService.getNotes();
             const filteredNotes = allnotes.filter(item => item.id != e.target.dataset.id);
             this.clientService.removeKeyFromLocalStorage();
             this.clientService.setItemToLocalStorage(filteredNotes);
-            //Remove from GUI
+            // Remove from GUI
             e.target.parentElement.parentElement.remove();
           }
-
-          /*
-          this.clientService.deleteNote(function(response){  //callback response from HttpService -> getNotes(callback)!
-            console.log('response: ',response);
-            console.log('filter: ',xxxxxxxxx;
-          });
-          */
-
         }
 
 
         if (e.target.id === 'listEdit') {
-
           if (this.api) {
             // Enable Textarea Field --> disabled="disabled
             const id = e.target.dataset.id;
@@ -63,8 +49,8 @@ export default class ControllerList {
               document.querySelector(`[data-description-id="${id}"]`).classList.remove('redborder');
             }
 
-            let note = {  //Destructoring in noteStore.mjs allows only description to motify
-              //id: 'note active',
+            const note = {
+              // id: 'note active, neDB creates its own _id!',
               title: document.querySelector(`[data-title-id="${id}"]`).innerText,
               description: document.querySelector(`[data-description-id="${id}"]`).value,
               importance: document.querySelector(`.importance[data-id="${id}"]`).dataset.importance,
@@ -72,11 +58,8 @@ export default class ControllerList {
               createdDate: document.querySelector(`[data-id="${id}"][data-created]`).dataset.created,
               isFinished: document.querySelector(`#checkBoxisFinished[data-id="${id}"]`).checked,
             };
-            this.clientService.updateNoteById(e.target.dataset.id,note);
-
-
+            this.clientService.updateNoteById(e.target.dataset.id, note);
           } else {
-
             // LocalStorage
             // Enable Textarea Field --> disabled="disabled
             const id = e.target.dataset.id;
@@ -100,19 +83,17 @@ export default class ControllerList {
             allnotes.splice(positionStartindex, 1, filteredNote[0]);
             this.clientService.removeKeyFromLocalStorage();
             this.clientService.setItemToLocalStorage(allnotes);
-
           }
-
         }
 
         if (e.target.id === 'checkBoxisFinished') {
+          const id = e.target.dataset.id;
+          document.querySelector(`.note[data-id="${id}"]`).classList.toggle('finished');
 
           if (this.api) {
-            const id = e.target.dataset.id;
             const checkBoxStatus = document.querySelector(`#checkBoxisFinished[data-id="${id}"]`).checked;
             console.log('anfang ', checkBoxStatus);
-            this.clientService.toggleCheckBox(id,checkBoxStatus);
-
+            this.clientService.toggleCheckBox(id, checkBoxStatus);
           } else {
             const allnotes = this.clientService.getNotes();
 
@@ -125,7 +106,6 @@ export default class ControllerList {
             this.clientService.removeKeyFromLocalStorage();
             this.clientService.setItemToLocalStorage(allnotes);
           }
-
         }
 
         // Check Target for Markstars 1-5
@@ -139,7 +119,7 @@ export default class ControllerList {
 
     if (dom.btnSortByFinishdate) {
       dom.btnSortByFinishdate.addEventListener('click', () => {
-        ;$(() => { // must use in ready function!
+        $(() => { // must use in ready function!
           function sortNotesByFinishedDateASC() {
             $('.item--main-content .note').sort(sortFinishedDateASC).appendTo('.item--main-content');
           }
@@ -148,7 +128,8 @@ export default class ControllerList {
             const finished1 = $(a).find('p[data-finished]').data('finished');
             const finished2 = $(b).find('p[data-finished]').data('finished');
 
-            return new Date(finished1) > new Date(finished2);
+            // return new Date(finished1) > new Date(finished2);
+            return finished1 > finished2;
           }
 
           sortNotesByFinishedDateASC();
@@ -158,7 +139,7 @@ export default class ControllerList {
 
     if (dom.btnSortByCreateddate) {
       dom.btnSortByCreateddate.addEventListener('click', () => {
-        ;$(() => {
+        $(() => {
           function sortNotesByCreatedDateASC() {
             $('.item--main-content .note').sort(sortCreatedDateASC).appendTo('.item--main-content');
           }
@@ -177,7 +158,7 @@ export default class ControllerList {
 
     if (dom.btnSortByImportance) {
       dom.btnSortByImportance.addEventListener('click', () => {
-        ;$(() => {
+        $(() => {
           function sortNotesByImportanceDESC() {
             $('.item--main-content .note').sort(sortImportanceDESC).appendTo('.item--main-content');
           }
@@ -189,6 +170,10 @@ export default class ControllerList {
             return importance1 < importance2;
           }
 
+          function sortNotesByImportanceASC() {
+            $('.item--main-content .note').sort(sortImportanceASC).appendTo('.item--main-content');
+          }
+
           function sortImportanceASC(a, b) {
             const importance1 = $(a).find('.importance[data-importance]').data('importance');
             const importance2 = $(b).find('.importance[data-importance]').data('importance');
@@ -196,15 +181,18 @@ export default class ControllerList {
             return importance1 > importance2;
           }
 
-          sortNotesByImportanceDESC();
+          const toggle = document.querySelector('#btnSortByImportance').classList.toggle('toggle');
+          if (toggle == false) {
+            sortNotesByImportanceASC();
+          } else {
+            sortNotesByImportanceDESC();
+          }
         });
-
       });
     }
 
     if (dom.btnShowFinished) {
       dom.btnShowFinished.addEventListener('click', (e) => {
-        // ToDo Bug: Trigger Reload Page, otherwise Toggle Show finished not working correct, because check finished comes from storage!
         if (e.target.innerHTML == 'Show finished') {
           e.target.innerHTML = 'Show all';
           $('.item--main-content .note:not(.finished)').hide();
@@ -212,7 +200,6 @@ export default class ControllerList {
           e.target.innerHTML = 'Show finished';
           $('.item--main-content .note:not(.finished)').show();
         }
-
       });
     }
   }
@@ -227,11 +214,9 @@ export default class ControllerList {
 
 
   saveStarList(e) {
-
     if (this.api) {
-      let note = {importance : e.target.id};
-      this.clientService.patchNote(e.target.parentElement.dataset.id,note);
-
+      const note = { importance: e.target.id };
+      this.clientService.patchNote(e.target.parentElement.dataset.id, note);
     } else {
       const allnotes = this.clientService.getNotes();
       console.log(allnotes);
@@ -246,11 +231,6 @@ export default class ControllerList {
 
       this.clientService.removeKeyFromLocalStorage();
       this.clientService.setItemToLocalStorage(allnotes);
-
     }
-
-
-
   }
-
 }

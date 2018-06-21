@@ -3,7 +3,7 @@ import Storage from '../client-service/Storage';
 
 export default class ViewHelper {
   static loadStyleSwitcherOnStartpage() {
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener('DOMContentLoaded', () => {
       const homebody = document.getElementsByTagName('body')[0];
       const styleswicher = document.getElementById('dropStyleSwitcher');
 
@@ -53,7 +53,7 @@ export default class ViewHelper {
     const alertSuccess = document.createTextNode(message);
     div.appendChild(alertSuccess);
     document.querySelector('.detail').insertBefore(div, note); // https://www.mediaevent.de/javascript/insertbefore.html
-    div.style.display = 'block'; // show div again
+    div.style.display = 'block';
     setTimeout(() => {
       div.style.display = 'none';
       div.innerHTML = '';
@@ -84,7 +84,7 @@ export default class ViewHelper {
 
 
   markStars(id, lastStar) {
-  //static markStars(id, lastStar) {
+  // static markStars(id, lastStar) {
     const totalstars = document.querySelectorAll(`[data-id="${id}"] span`);
     totalstars.forEach((item) => {
       if (item.id <= lastStar) { // getAttribute('id')

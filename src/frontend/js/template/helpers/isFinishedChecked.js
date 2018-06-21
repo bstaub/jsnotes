@@ -1,4 +1,3 @@
-//module.exports = function (isFinished) {
-module.exports = function isFinished(isFinished) {
+module.exports = function (isFinished) {
   return isFinished ? 'checked' : '';
 };
