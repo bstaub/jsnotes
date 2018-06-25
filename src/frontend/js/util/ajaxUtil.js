@@ -1,3 +1,4 @@
+// not used in this project!
 (function (util, $) {
   function ajax(metod, url, data, headers) {
     return $.ajax({

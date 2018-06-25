@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="Bruno Staub">
-    <meta name="description" content="Notiz Applikation mit Javascrpt, Projekt1">
+    <meta name="description" content="Notiz Applikation mit JavaScript, Projekt1">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -12,7 +12,6 @@
 </head>
 <body>
 
-<!-- Flex und Grid Layout must use -->
 <div class="site">
     <div class="detail">
         <div class="note">
@@ -21,7 +20,8 @@
             <input type="text" class="note__title" id="jsTitle">
 
             <label class="note__labeldescription" for="jsdescription">Beschreibung</label>
-            <textarea class="note__description" id="jsDescription" name="description" cols="30" rows="6" placeholder="hier die Beschreibung eingeben"></textarea>
+            <textarea class="note__description" id="jsDescription" name="description" cols="30" rows="6"
+                      placeholder="hier die Beschreibung eingeben"></textarea>
 
             <label class="note__labelimportance" for="jsdropImportance">Wichtigkeit</label>
             <div class="note__importance">
@@ -37,16 +37,13 @@
                 </select>
             </div>
 
-
             <div for="datepicker" class="note__labeldate">Datum</div>
-            <input class="note__datepicker" type="datetime-local" id="jsDatepicker">
 
+            <input class="note__datepicker" type="datetime-local" id="jsDatepicker">
 
             <button class="note__speichern" id="jsSpeichern">Speichern</button>
 
-
             <button class="note__cancel" id="jsCancel">Cancel</button>
-
 
         </div>
 
@@ -55,7 +52,6 @@
         </footer>
     </div>
 </div>
-
 
 <script src="frontend/bundle.js"></script>
 </body>

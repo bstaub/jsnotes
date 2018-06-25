@@ -26,6 +26,15 @@ dist/frontend  #is build automatically from webpack.config.js, and will cleaned 
 index.mjs      #node/express server startup config (index.js is deprecated old style node server)
 ````
 
+##### LocalStorage or API usage
+````
+you can use localstorage or api (default) for presist your data
+you just have to switch this files in webpack.js to inject Storage oder HttpService!
+
+// const viewlist = new ViewList(new Storage('notesKey'));
+const viewlist = new ViewList(new HttpService());
+````
+
 ##### Frontend Webpack DEV Build
 
 ````
@@ -33,7 +42,7 @@ npm run dev    #for devlelopment purpose
 npm run prod   #for production
 ````
 
-##### Backend Nodemon DEV Build
+##### Backend Nodemon DEV Build (mjs --experimental-modules)
 
 ````
 npm run startdev

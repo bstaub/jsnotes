@@ -1,5 +1,6 @@
+// this class is not used in this project, just for Testing purpose!
 export default class TestSorting {
-  static sortItemsByisFinished(objArr) { // zuoberst kommen die nicht erledigten notes zurück!!
+  static sortItemsByisFinished(objArr) {
     return objArr.sort((a, b) => { // need return statement!
       if (!a.isFinished && b.isFinished) {
         return -1;
@@ -16,8 +17,6 @@ export default class TestSorting {
     if (a.last_nom > b.last_nom) { return 1; }
     return 0;
   }
-  // objs.sort(compare);
-
 
   static dynamicSort(property) {
     let sortOrder = 1;
@@ -30,5 +29,5 @@ export default class TestSorting {
       return result * sortOrder;
     };
   }
-  // People.sort(dynamicSort("Name"));
+  // obj.sort(dynamicSort("Name"));
 }

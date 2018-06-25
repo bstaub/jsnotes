@@ -27,9 +27,7 @@ export default class HttpService {
     $.ajax({
       method: 'DELETE',
       url: `/api/notes/${id}/`,
-      success: (res) => {
-        console.log(res);
-      },
+      success: () => 200,
     });
   }
 
@@ -38,9 +36,7 @@ export default class HttpService {
       method: 'PUT',
       url: `/api/notes/${id}/`,
       data: note,
-      success: (res) => {
-        console.log(res);
-      },
+      success: () => 200,
     });
   }
 
@@ -57,12 +53,8 @@ export default class HttpService {
     $.ajax({
       method: 'POST',
       url: `/api/notes/${id}/?status=${status}`,
-      success: (() => 200),
+      success: () => 200,
     });
   }
-
-  getNoteByID(id) {}
-
-  updateNote(note) {}
 }
 

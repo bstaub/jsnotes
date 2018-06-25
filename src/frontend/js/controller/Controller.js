@@ -26,7 +26,6 @@ export default class Controller {
     }
   }
 
-
   clearAllImputs(dom) {
     dom.title.value = '';
     dom.description.value = '';

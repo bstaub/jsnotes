@@ -34,9 +34,10 @@ export default class HelperService {
   }
 
   static formatDate(d) {
-    return `${(d.getDate() < 10 ? '0' : '') + d.getDate()}-${d.getMonth() < 10 ? '0' : ''}${d.getMonth() + 1}-${d.getFullYear()} ${d.getHours() < 10 ? '0' : ''}${d.getHours()}:${d.getMinutes() < 10 ? '0' : ''}${d.getMinutes()}`; // 27-05-2018 18:13
+    return `${(d.getDate() < 10 ? '0' : '') + d.getDate()}-${d.getMonth() < 9 ? '0' : ''}${d.getMonth() + 1}-${d.getFullYear()} ${d.getHours() < 10 ? '0' : ''}${d.getHours()}:${d.getMinutes() < 10 ? '0' : ''}${d.getMinutes()}`; // 27-05-2018 18:13
   }
 
+  // moment.js is not used in this project!
   // static getCreatedDateMomentJs(){
   //     HelperService.MomentJsLocale();
   //     return moment().format('LLLL'); // Sonntag, 27. Mai 2018 22:33

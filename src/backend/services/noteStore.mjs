@@ -10,10 +10,10 @@ export class Note {
     }
 
     function formatDate(d) {
-      return `${(d.getDate() < 10 ? '0' : '') + d.getDate()}-${d.getMonth() < 10 ? '0' : ''}${d.getMonth() + 1}-${d.getFullYear()} ${d.getHours() < 10 ? '0' : ''}${d.getHours()}:${d.getMinutes() < 10 ? '0' : ''}${d.getMinutes()}`; // 27-05-2018 18:13
+      return `${(d.getDate() < 10 ? '0' : '') + d.getDate()}-${d.getMonth() < 9 ? '0' : ''}${d.getMonth() + 1}-${d.getFullYear()} ${d.getHours() < 10 ? '0' : ''}${d.getHours()}:${d.getMinutes() < 10 ? '0' : ''}${d.getMinutes()}`; // 27-05-2018 18:13
     }
 
-    //_id NeDB creates it's own ID
+    // _id NeDB creates it's own ID
     this.title = title;
     this.description = description;
     this.importance = importance;
@@ -31,7 +31,7 @@ export class NoteStore {
   }
 
   async all() {
-    //return await this.db.find({});
+    // return await this.db.find({});
     return await this.db.cfind({}).sort({ createdDate: 1  }).exec();
   }
 
@@ -51,8 +51,8 @@ export class NoteStore {
   }
 
   async delete(id) {
-    //await this.db.update({_id: id}, {$set: {"state": "DELETED"}});
-    //return await this.get(id);
+    // await this.db.update({_id: id}, {$set: {"state": "DELETED"}});
+    // return await this.get(id);
     await this.db.remove({_id: id});
     return await this.db.find({});
   }

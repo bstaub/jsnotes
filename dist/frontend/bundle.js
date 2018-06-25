@@ -9625,9 +9625,10 @@ var HelperService = function () {
   }, {
     key: 'formatDate',
     value: function formatDate(d) {
-      return (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' + (d.getMonth() < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
+      return (d.getDate() < 10 ? '0' : '') + d.getDate() + '-' + (d.getMonth() < 9 ? '0' : '') + (d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); // 27-05-2018 18:13
     }
 
+    // moment.js is not used in this project!
     // static getCreatedDateMomentJs(){
     //     HelperService.MomentJsLocale();
     //     return moment().format('LLLL'); // Sonntag, 27. Mai 2018 22:33
@@ -9778,7 +9779,6 @@ var ControllerList = function () {
 
             if (_this.api) {
               var checkBoxStatus = document.querySelector('#checkBoxisFinished[data-id="' + _id2 + '"]').checked;
-              console.log('anfang ', checkBoxStatus);
               _this.clientService.toggleCheckBox(_id2, checkBoxStatus);
             } else {
               var _allnotes2 = _this.clientService.getNotes();
@@ -20360,8 +20360,8 @@ var HttpService = function () {
       $.ajax({
         method: 'DELETE',
         url: '/api/notes/' + id + '/',
-        success: function success(res) {
-          console.log(res);
+        success: function success() {
+          return 200;
         }
       });
     }
@@ -20372,8 +20372,8 @@ var HttpService = function () {
         method: 'PUT',
         url: '/api/notes/' + id + '/',
         data: note,
-        success: function success(res) {
-          console.log(res);
+        success: function success() {
+          return 200;
         }
       });
     }
@@ -20401,12 +20401,6 @@ var HttpService = function () {
         }
       });
     }
-  }, {
-    key: 'getNoteByID',
-    value: function getNoteByID(id) {}
-  }, {
-    key: 'updateNote',
-    value: function updateNote(note) {}
   }]);
 
   return HttpService;

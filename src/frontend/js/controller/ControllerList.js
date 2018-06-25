@@ -92,7 +92,6 @@ export default class ControllerList {
 
           if (this.api) {
             const checkBoxStatus = document.querySelector(`#checkBoxisFinished[data-id="${id}"]`).checked;
-            console.log('anfang ', checkBoxStatus);
             this.clientService.toggleCheckBox(id, checkBoxStatus);
           } else {
             const allnotes = this.clientService.getNotes();
